@@ -84,8 +84,6 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, valueObject.getId());
             singleQuery(stmt, valueObject);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
         }
     }
 
@@ -99,12 +97,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> loadAll() throws SQLException {
 
-        String sql = "SELECT * FROM \"user\" ORDER BY id ASC ";
+        String sql = "SELECT * FROM APP.\"user\" ORDER BY id ASC ";
         List<User> searchResults = null;
         try ( Connection conn = ds.getConnection()){
            searchResults = listQuery(conn.prepareStatement(sql));
-        }catch(SQLException ex){
-            ex.printStackTrace();
         }
         return searchResults;
     }
@@ -119,7 +115,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public synchronized void create(User valueObject) throws SQLException {
 
-        String sql = "INSERT INTO \"user\" ( id, password, name, "
+        String sql = "INSERT INTO APP.\"user\" ( id, password, name, "
                     + "role) VALUES (?, ?, ?, ?) ";
         
         try (Connection conn = ds.getConnection();PreparedStatement stmt = conn.prepareStatement(sql);){ 
@@ -149,7 +145,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void save(User valueObject) throws NotFoundException, SQLException {
 
-        String sql = "UPDATE \"user\" SET password = ?, name = ?, role = ? WHERE (id = ? ) ";
+        String sql = "UPDATE APP.\"user\" SET password = ?, name = ?, role = ? WHERE (id = ? ) ";
         
         try(Connection conn = ds.getConnection();PreparedStatement stmt = conn.prepareStatement(sql);){
             stmt.setString(1, valueObject.getPassword());
@@ -169,8 +165,6 @@ public class UserDaoImpl implements UserDao {
                 throw new SQLException(
                         "PrimaryKey Error when updating DB! (Many objects were affected!)");
             }
-        } catch(SQLException se){
-            se.printStackTrace();
         }
     }
 
@@ -184,7 +178,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void delete(User valueObject) throws NotFoundException, SQLException {
 
-        String sql = "DELETE FROM \"user\" WHERE (id = ? ) ";
+        String sql = "DELETE FROM APP.\"user\" WHERE (id = ? ) ";
        
          try(Connection conn = ds.getConnection();PreparedStatement stmt = conn.prepareStatement(sql);){
             stmt.setString(1, valueObject.getId());
@@ -215,12 +209,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void deleteAll() throws SQLException {
 
-        String sql = "DELETE FROM \"user\"";
+        String sql = "DELETE FROM APP.\"user\"";
         try(Connection conn = ds.getConnection();PreparedStatement stmt = conn.prepareStatement(sql);){
             int rowcount = databaseUpdate(stmt);
             System.out.println("Deleted rows :" + rowcount);
-        } catch(SQLException se){
-            se.printStackTrace();
         }
     }
 
@@ -234,7 +226,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int countAll() throws SQLException {
 
-        String sql = "SELECT count(*) FROM \"user\"";
+        String sql = "SELECT count(*) FROM APP.\"user\"";
         
         ResultSet result = null;
         int allRows = 0;
@@ -245,8 +237,6 @@ public class UserDaoImpl implements UserDao {
             if (result.next()) {
                 allRows = result.getInt(1);
             }
-        }catch(SQLException se){
-            se.printStackTrace();
         }
         return allRows;
     }
@@ -274,9 +264,9 @@ public class UserDaoImpl implements UserDao {
         List<User> searchResults = null;
 
         boolean first = true;
-        StringBuffer sql = new StringBuffer("SELECT * FROM \"user\" WHERE 1=1 ");
+        StringBuffer sql = new StringBuffer("SELECT * FROM APP.\"user\" WHERE 1=1 ");
 
-        if (valueObject.getId() != "") {
+        if (!"".equals(valueObject.getId().trim())) {
             if (first) {
                 first = false;
             }
