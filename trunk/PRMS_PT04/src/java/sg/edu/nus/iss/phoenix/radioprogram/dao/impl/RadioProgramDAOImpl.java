@@ -7,6 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+import sg.edu.nus.iss.phoenix.authenticate.dao.impl.UserDaoImpl;
 
 import sg.edu.nus.iss.phoenix.core.dao.DBConstants;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
@@ -19,9 +24,19 @@ import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
  * instances.
  */
 public class RadioProgramDAOImpl implements RadioProgramDAO {
-
-	Connection connection;
-
+         private static final Logger logger = Logger.getLogger(RadioProgramDAOImpl.class.getName());
+        DataSource ds ;
+	//Connection connection;
+        
+        public RadioProgramDAOImpl()
+        {
+             try {
+            ds = (DataSource) InitialContext.doLookup("jdbc/PrmsDatasource");
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Cannot connect to the DS");
+            }
+        }
+        
 	/* (non-Javadoc)
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#createValueObject()
 	 */
@@ -55,20 +70,14 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			throw new NotFoundException("Can not select without Primary-Key!");
 		}
 
-		String sql = "SELECT * FROM `radio-program` WHERE (`name` = ? ); ";
-		PreparedStatement stmt = null;
-		openConnection();
-		try {
-			stmt = connection.prepareStatement(sql);
+		String sql = "SELECT * FROM APP.\"radio-program\" WHERE (\"name\" = ? ); ";
+		
+		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1, valueObject.getName());
 
 			singleQuery(stmt, valueObject);
 
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			closeConnection();
-		}
+		} 
 	}
 
 	/* (non-Javadoc)
@@ -76,12 +85,12 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 	 */
 	@Override
 	public List<RadioProgram> loadAll() throws SQLException {
-		openConnection();
-		String sql = "SELECT * FROM `radio-program` ORDER BY `name` ASC; ";
-		List<RadioProgram> searchResults = listQuery(connection
-				.prepareStatement(sql));
-		closeConnection();
-		System.out.println("record size"+searchResults.size());
+		List<RadioProgram> searchResults = null;
+		String sql = "SELECT * FROM APP.\"radio-program\" ORDER BY \"name\" ASC; ";
+                try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+                    searchResults = listQuery(stmt);
+                    System.out.println("record size"+searchResults.size());
+                }
 		return searchResults;
 	}
 
@@ -92,12 +101,8 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 	public synchronized void create(RadioProgram valueObject)
 			throws SQLException {
 
-		String sql = "";
-		PreparedStatement stmt = null;
-		openConnection();
-		try {
-			sql = "INSERT INTO `radio-program` (`name`, `desc`, `typicalDuration`) VALUES (?,?,?); ";
-			stmt = connection.prepareStatement(sql);
+		String sql = "INSERT INTO APP.\"radio-program\" (\"name\", \"desc\", \"typicalDuration\") VALUES (?,?,?); ";
+		 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1, valueObject.getName());
 			stmt.setString(2, valueObject.getDescription());
 			stmt.setTime(3, valueObject.getTypicalDuration());
@@ -107,10 +112,6 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 				throw new SQLException("PrimaryKey Error when updating DB!");
 			}
 
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			closeConnection();
 		}
 
 	}
@@ -122,11 +123,8 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 	public void save(RadioProgram valueObject) throws NotFoundException,
 			SQLException {
 
-		String sql = "UPDATE `radio-program` SET `desc` = ?, `typicalDuration` = ? WHERE (`name` = ? ); ";
-		PreparedStatement stmt = null;
-		openConnection();
-		try {
-			stmt = connection.prepareStatement(sql);
+		String sql = "UPDATE APP.\"radio-program\" SET \"desc\" = ?, \"typicalDuration\" = ? WHERE (\"name\" = ? ); ";
+		 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1, valueObject.getDescription());
 			stmt.setTime(2, valueObject.getTypicalDuration());
 
@@ -143,10 +141,6 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 				throw new SQLException(
 						"PrimaryKey Error when updating DB! (Many objects were affected!)");
 			}
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			closeConnection();
 		}
 	}
 
@@ -162,11 +156,8 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			throw new NotFoundException("Can not delete without Primary-Key!");
 		}
 
-		String sql = "DELETE FROM `radio-program` WHERE (`name` = ? ); ";
-		PreparedStatement stmt = null;
-		openConnection();
-		try {
-			stmt = connection.prepareStatement(sql);
+		String sql = "DELETE FROM  APP.\"radio-program\" WHERE (\"name\" = ? ); ";
+		 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1, valueObject.getName());
 
 			int rowcount = databaseUpdate(stmt);
@@ -180,10 +171,6 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 				throw new SQLException(
 						"PrimaryKey Error when updating DB! (Many objects were deleted!)");
 			}
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			closeConnection();
 		}
 	}
 
@@ -193,19 +180,11 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 	@Override
 	public void deleteAll(Connection conn) throws SQLException {
 
-		String sql = "DELETE FROM `radio-program`";
-		PreparedStatement stmt = null;
-		openConnection();
-		try {
-			stmt = connection.prepareStatement(sql);
+		String sql = "DELETE FROM APP.\"radio-program\"";
+		 PreparedStatement stmt = conn.prepareStatement(sql);
 			int rowcount = databaseUpdate(stmt);
 			System.out.println(""+rowcount);
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			closeConnection();
-			
-		}
+		
 	}
 
 	/* (non-Javadoc)
@@ -214,24 +193,15 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 	@Override
 	public int countAll() throws SQLException {
 
-		String sql = "SELECT count(*) FROM `radio-program`";
-		PreparedStatement stmt = null;
+		String sql = "SELECT count(*) FROM APP.\"radio-program\"";
 		ResultSet result = null;
 		int allRows = 0;
-		openConnection();
-		try {
-			stmt = connection.prepareStatement(sql);
+		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			result = stmt.executeQuery();
 
 			if (result.next())
 				allRows = result.getInt(1);
-		} finally {
-			if (result != null)
-				result.close();
-			if (stmt != null)
-				stmt.close();
-			closeConnection();
-		}
+		} 
 		return allRows;
 	}
 
@@ -242,10 +212,10 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 	public List<RadioProgram> searchMatching(RadioProgram valueObject) throws SQLException {
 
 		List<RadioProgram> searchResults = new ArrayList<RadioProgram>();
-		openConnection();
+		//openConnection();
 		boolean first = true;
 		StringBuffer sql = new StringBuffer(
-				"SELECT * FROM `radio-program` WHERE 1=1 ");
+				"SELECT * FROM APP.\"radio-program\" WHERE 1=1 ");
 
 		if (valueObject.getName() != null) {
 			if (first) {
@@ -277,10 +247,12 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 		// Use loadAll if all rows must be returned.
 		if (first)
 			searchResults = new ArrayList<RadioProgram>();
-		else
-			searchResults = listQuery(connection.prepareStatement(sql
-					.toString()));
-		closeConnection();
+                else{
+                     try( Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString());) {
+			searchResults = listQuery(stmt);
+                     }
+                }
+		
 		return searchResults;
 	}
 
@@ -320,7 +292,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			throws NotFoundException, SQLException {
 
 		ResultSet result = null;
-		openConnection();
+		//openConnection();
 		try {
 			result = stmt.executeQuery();
 
@@ -340,7 +312,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 				result.close();
 			if (stmt != null)
 				stmt.close();
-			closeConnection();
+			//closeConnection();
 		}
 	}
 
@@ -359,7 +331,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 
 		ArrayList<RadioProgram> searchResults = new ArrayList<RadioProgram>();
 		ResultSet result = null;
-		openConnection();
+		//openConnection();
 		try {
 			result = stmt.executeQuery();
 
@@ -378,12 +350,13 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 				result.close();
 			if (stmt != null)
 				stmt.close();
-			closeConnection();
+			//closeConnection();
 		}
 
 		return (List<RadioProgram>) searchResults;
 	}
-
+        
+        /*
 	private void openConnection() {
 		try {
 			Class.forName(DBConstants.COM_MYSQL_JDBC_DRIVER);
@@ -409,5 +382,5 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 }
