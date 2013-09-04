@@ -101,7 +101,7 @@ public class RoleDaoImpl implements RoleDao {
 	@Override
 	public List<Role> loadAll() throws SQLException {
 		List<Role> searchResults = null;
-		String sql = "SELECT * FROM role ORDER BY role ASC ";
+		String sql = "SELECT * FROM APP.\"role\" ORDER BY role ASC ";
                  try (Connection conn = ds.getConnection(); ) {
                     searchResults = listQuery(conn
 				.prepareStatement(sql));
@@ -120,7 +120,7 @@ public class RoleDaoImpl implements RoleDao {
 	@Override
 	public synchronized void create(Role valueObject) throws SQLException {
 
-		String sql = "INSERT INTO role ( role, accessPrivilege) VALUES (?, ?) ";
+		String sql = "INSERT INTO APP.\"role\" ( role, accessPrivilege) VALUES (?, ?) ";
 		
 		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			
@@ -147,7 +147,7 @@ public class RoleDaoImpl implements RoleDao {
 	@Override
 	public void save(Role valueObject) throws NotFoundException, SQLException {
 
-		String sql = "UPDATE role SET accessPrivilege = ? WHERE (role = ? ) ";
+		String sql = "UPDATE APP.\"role\" SET accessPrivilege = ? WHERE (role = ? ) ";
 		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1, valueObject.getAccessPrivilege());
 
@@ -182,7 +182,7 @@ public class RoleDaoImpl implements RoleDao {
 			throw new NotFoundException("Can not delete without Primary-Key!");
 		}
 
-		String sql = "DELETE FROM role WHERE (role = ? ) ";
+		String sql = "DELETE FROM APP.\"role\" WHERE (role = ? ) ";
 		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1, valueObject.getRole());
 
@@ -210,7 +210,7 @@ public class RoleDaoImpl implements RoleDao {
 	@Override
 	public void deleteAll() throws SQLException {
 
-		String sql = "DELETE FROM role";
+		String sql = "DELETE FROM APP.\"role\"";
 		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			int rowcount = databaseUpdate(stmt);
 			System.out.println("deleted rows" + rowcount);
@@ -227,7 +227,7 @@ public class RoleDaoImpl implements RoleDao {
 	@Override
 	public int countAll() throws SQLException {
 
-		String sql = "SELECT count(*) FROM role";
+		String sql = "SELECT count(*) FROM APP.\"role\"";
 	
 		ResultSet result = null;
 		int allRows = 0;
@@ -263,7 +263,7 @@ public class RoleDaoImpl implements RoleDao {
 		List<Role> searchResults = null;
 		
 		boolean first = true;
-		StringBuffer sql = new StringBuffer("SELECT * FROM role WHERE 1=1 ");
+		StringBuffer sql = new StringBuffer("SELECT * FROM APP.\"role\" WHERE 1=1 ");
 
 		if (valueObject.getRole() != null) {
 			if (first) {
