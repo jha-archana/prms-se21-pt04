@@ -1,0 +1,11 @@
+Wed Sep 04 11:47:59 SGT 2013 : Apache Derby Network Server - 10.9.1.0 - (1344872) started and ready to accept connections on port 1527
+----------------------------------------------------------------
+Wed Sep 04 11:55:09 SGT 2013:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0140-e715-7c17-000028d2bfd4 
+on database directory E:\tmswj\iss\projects\PRMS_PT04\db\PRMS_PT04  with class loader sun.misc.Launcher$AppClassLoader@65f4ba51 
+Loaded from file:/D:/appln/glassfish-4.0/javadb/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_25-b17
+user.dir=D:\appln\glassfish-4.0\javadb
+derby.system.home=E:\tmswj\iss\projects\PRMS_PT04\db
+Database Class Loader started - derby.database.classpath=''
