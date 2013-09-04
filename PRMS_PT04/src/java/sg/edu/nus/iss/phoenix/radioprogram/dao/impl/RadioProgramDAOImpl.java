@@ -70,7 +70,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			throw new NotFoundException("Can not select without Primary-Key!");
 		}
 
-		String sql = "SELECT * FROM APP.\"radio-program\" WHERE (\"name\" = ? ); ";
+		String sql = "SELECT * FROM APP.\"radio-program\" WHERE (\"name\" = ? )";
 		
 		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1, valueObject.getName());
@@ -86,7 +86,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 	@Override
 	public List<RadioProgram> loadAll() throws SQLException {
 		List<RadioProgram> searchResults = null;
-		String sql = "SELECT * FROM APP.\"radio-program\" ORDER BY \"name\" ASC; ";
+		String sql = "SELECT * FROM APP.\"radio-program\" ORDER BY \"name\" ASC ";
                 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
                     searchResults = listQuery(stmt);
                     System.out.println("record size"+searchResults.size());
@@ -101,7 +101,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 	public synchronized void create(RadioProgram valueObject)
 			throws SQLException {
 
-		String sql = "INSERT INTO APP.\"radio-program\" (\"name\", \"desc\", \"typicalDuration\") VALUES (?,?,?); ";
+		String sql = "INSERT INTO APP.\"radio-program\" (\"name\", \"desc\", \"typicalDuration\") VALUES (?,?,?) ";
 		 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1, valueObject.getName());
 			stmt.setString(2, valueObject.getDescription());
@@ -123,7 +123,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 	public void save(RadioProgram valueObject) throws NotFoundException,
 			SQLException {
 
-		String sql = "UPDATE APP.\"radio-program\" SET \"desc\" = ?, \"typicalDuration\" = ? WHERE (\"name\" = ? ); ";
+		String sql = "UPDATE APP.\"radio-program\" SET \"desc\" = ?, \"typicalDuration\" = ? WHERE (\"name\" = ? ) ";
 		 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1, valueObject.getDescription());
 			stmt.setTime(2, valueObject.getTypicalDuration());
@@ -156,7 +156,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			throw new NotFoundException("Can not delete without Primary-Key!");
 		}
 
-		String sql = "DELETE FROM  APP.\"radio-program\" WHERE (\"name\" = ? ); ";
+		String sql = "DELETE FROM  APP.\"radio-program\" WHERE (\"name\" = ? ) ";
 		 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1, valueObject.getName());
 
