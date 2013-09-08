@@ -31,6 +31,13 @@
 				</a>
 			</td>
 	</tr>
+          <tr>
+		<td>
+				<a href="<c:url value="/controller/loadusr"/>"> <fmt:message
+						key="caption.menu.loadusr" />
+				</a>
+			</td>
+	</tr>
 	</c:if>
 	<tr>
 		<td><a href="<c:url value="/controller/logout"/>"> <fmt:message

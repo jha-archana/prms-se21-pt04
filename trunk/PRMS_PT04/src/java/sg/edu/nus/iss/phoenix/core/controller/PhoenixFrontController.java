@@ -15,70 +15,74 @@ import javax.servlet.http.HttpServletResponse;
 //we set the front controller prefix to be app
 //@WebServlet(name="front",urlPatterns="/app/*")
 public class PhoenixFrontController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public PhoenixFrontController() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-        @Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);
-	}
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public PhoenixFrontController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-        @Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("DO POST'");
-		processRequest(request, response);
-	}
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    @Override
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
-	/**
-	 * Process requests from clients.
-	 */
-	protected void processRequest(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		String pathInfo = request.getPathInfo();
-		String action = FCUtilities.stripPath(pathInfo);
-		String result = chooseUseCase(action);
-                System.out.println(result);
-		RequestDispatcher rd = getServletContext().getRequestDispatcher(result);
-                System.out.println(rd==null);
-		rd.forward(request, response);
-	}
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    @Override
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("DO POST'");
+        processRequest(request, response);
+    }
 
-	private String chooseUseCase(String action) {
-		switch (action) {
-		case "login":
-			return "/LoginController/login";
-		case "searchrp":
-			return "/ProcessController/search";
-		case "setuprp":
-			return "/ProcessController/process";
-		case "crudrp":
-			return "/CRUDRpController";
-		case "loadrp":
-			return "/ProcessController/load";	
-		case "deleterp":
-			return "/ProcessController/delete";
-		case "logout":
-			return "/LoginController/logout";
-		default:
-			return "/pages/home.jsp";
-		}
-	}
+    /**
+     * Process requests from clients.
+     */
+    protected void processRequest(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+        String pathInfo = request.getPathInfo();
+        String action = FCUtilities.stripPath(pathInfo);
+        String result = chooseUseCase(action);
+        System.out.println(result);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher(result);
+        System.out.println(rd == null);
+        rd.forward(request, response);
+    }
 
+    private String chooseUseCase(String action) {
+        switch (action) {
+            case "login":
+                return "/LoginController/login";
+            case "searchrp":
+                return "/ProcessController/search";
+            case "setuprp":
+                return "/ProcessController/process";
+            case "crudrp":
+                return "/CRUDRpController";
+            case "loadrp":
+                return "/ProcessController/load";
+            case "deleterp":
+                return "/ProcessController/delete";
+            case "loadusr":
+                return "/AuthenticateController/load";
+            case "setupusr":
+                return "/AuthenticateController/process";
+            case "logout":
+                return "/LoginController/logout";
+            default:
+                return "/pages/home.jsp";
+        }
+    }
 }

@@ -23,405 +23,401 @@ import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
  */
 public class RoleDaoImpl implements RoleDao {
 
-	private static final Logger logger = Logger.getLogger(RoleDaoImpl.class.getName());
-        private DataSource ds;
-	//Connection connection;
+    private static final Logger logger = Logger.getLogger(RoleDaoImpl.class.getName());
+    private DataSource ds;
+    //Connection connection;
 
-	public RoleDaoImpl() {
-		super();
-		// TODO Auto-generated constructor stub
-		//connection = openConnection();
-                 try {
-                    ds = (DataSource) InitialContext.doLookup("jdbc/PrmsDatasource");
-                } catch (Exception e) {
-                    logger.log(Level.SEVERE, "Cannot connect to the DS");
-                }
-	}
+    public RoleDaoImpl() {
+        super();
+        // TODO Auto-generated constructor stub
+        //connection = openConnection();
+        try {
+            ds = (DataSource) InitialContext.doLookup("jdbc/PrmsDatasource");
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Cannot connect to the DS");
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#createValueObject()
-	 */
-	@Override
-	public Role createValueObject() {
-		return new Role();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#createValueObject()
+     */
+    @Override
+    public Role createValueObject() {
+        return new Role();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#getObject(java.sql
-	 * .Connection, java.lang.String)
-	 */
-	@Override
-	public Role getObject(String role) throws NotFoundException, SQLException {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#getObject(java.sql
+     * .Connection, java.lang.String)
+     */
+    @Override
+    public Role getObject(String role) throws NotFoundException, SQLException {
 
-		Role valueObject = createValueObject();
-		valueObject.setRole(role);
-		load(valueObject);
-		return valueObject;
-	}
+        Role valueObject = createValueObject();
+        valueObject.setRole(role);
+        load(valueObject);
+        return valueObject;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#load(java.sql.Connection
-	 * , sg.edu.nus.iss.phoenix.authenticate.entity.Role)
-	 */
-	@Override
-	public void load(Role valueObject) throws NotFoundException, SQLException {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#load(java.sql.Connection
+     * , sg.edu.nus.iss.phoenix.authenticate.entity.Role)
+     */
+    @Override
+    public void load(Role valueObject) throws NotFoundException, SQLException {
 
-		if (valueObject.getRole() == null) {
-			// System.out.println("Can not select without Primary-Key!");
-			throw new NotFoundException("Can not select without Primary-Key!");
-		}
+        if (valueObject.getRole() == null) {
+            // System.out.println("Can not select without Primary-Key!");
+            throw new NotFoundException("Can not select without Primary-Key!");
+        }
 
-		String sql = "SELECT * FROM APP.\"role\" WHERE (\"role\" = ? ) ";
-		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-			stmt.setString(1, valueObject.getRole());
+        String sql = "SELECT * FROM APP.\"role\" WHERE (\"role\" = ? ) ";
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setString(1, valueObject.getRole());
 
-			singleQuery(stmt, valueObject);
+            singleQuery(stmt, valueObject);
 
-		}catch(SQLException se){
-                    se.printStackTrace();
-                }
-	}
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#loadAll(java.sql
-	 * .Connection)
-	 */
-	@Override
-	public List<Role> loadAll() throws SQLException {
-		List<Role> searchResults = null;
-		String sql = "SELECT * FROM APP.\"role\" ORDER BY role ASC ";
-                 try (Connection conn = ds.getConnection(); ) {
-                    searchResults = listQuery(conn
-				.prepareStatement(sql));
-                 }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#loadAll(java.sql
+     * .Connection)
+     */
+    @Override
+    public List<Role> loadAll() throws SQLException {
+        List<Role> searchResults = null;
+        String sql = "SELECT * FROM APP.\"role\" ORDER BY \"role\" ASC ";
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+            searchResults = listQuery(stmt);
+            System.out.println("record size" + searchResults.size());
+        }
+        return searchResults;
+    }
 
-		return searchResults;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#create(java.sql.
+     * Connection, sg.edu.nus.iss.phoenix.authenticate.entity.Role)
+     */
+    @Override
+    public synchronized void create(Role valueObject) throws SQLException {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#create(java.sql.
-	 * Connection, sg.edu.nus.iss.phoenix.authenticate.entity.Role)
-	 */
-	@Override
-	public synchronized void create(Role valueObject) throws SQLException {
+        String sql = "INSERT INTO APP.\"role\" ( role, accessPrivilege) VALUES (?, ?) ";
 
-		String sql = "INSERT INTO APP.\"role\" ( role, accessPrivilege) VALUES (?, ?) ";
-		
-		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-			
-			stmt.setString(1, valueObject.getRole());
-			stmt.setString(2, valueObject.getAccessPrivilege());
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 
-			int rowcount = databaseUpdate(stmt);
-			if (rowcount != 1) {
-				// System.out.println("PrimaryKey Error when updating DB!");
-				throw new SQLException("PrimaryKey Error when updating DB!");
-			}
+            stmt.setString(1, valueObject.getRole());
+            stmt.setString(2, valueObject.getAccessPrivilege());
 
-		} 
+            int rowcount = databaseUpdate(stmt);
+            if (rowcount != 1) {
+                // System.out.println("PrimaryKey Error when updating DB!");
+                throw new SQLException("PrimaryKey Error when updating DB!");
+            }
 
-	}
+        }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#save(java.sql.Connection
-	 * , sg.edu.nus.iss.phoenix.authenticate.entity.Role)
-	 */
-	@Override
-	public void save(Role valueObject) throws NotFoundException, SQLException {
+    }
 
-		String sql = "UPDATE APP.\"role\" SET accessPrivilege = ? WHERE (role = ? ) ";
-		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-			stmt.setString(1, valueObject.getAccessPrivilege());
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#save(java.sql.Connection
+     * , sg.edu.nus.iss.phoenix.authenticate.entity.Role)
+     */
+    @Override
+    public void save(Role valueObject) throws NotFoundException, SQLException {
 
-			stmt.setString(2, valueObject.getRole());
+        String sql = "UPDATE APP.\"role\" SET accessPrivilege = ? WHERE (role = ? ) ";
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setString(1, valueObject.getAccessPrivilege());
 
-			int rowcount = databaseUpdate(stmt);
-			if (rowcount == 0) {
-				// System.out.println("Object could not be saved! (PrimaryKey not found)");
-				throw new NotFoundException(
-						"Object could not be saved! (PrimaryKey not found)");
-			}
-			if (rowcount > 1) {
-				// System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
-				throw new SQLException(
-						"PrimaryKey Error when updating DB! (Many objects were affected!)");
-			}
-		} 
-	}
+            stmt.setString(2, valueObject.getRole());
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#delete(java.sql.
-	 * Connection, sg.edu.nus.iss.phoenix.authenticate.entity.Role)
-	 */
-	@Override
-	public void delete(Role valueObject) throws NotFoundException, SQLException {
+            int rowcount = databaseUpdate(stmt);
+            if (rowcount == 0) {
+                // System.out.println("Object could not be saved! (PrimaryKey not found)");
+                throw new NotFoundException(
+                        "Object could not be saved! (PrimaryKey not found)");
+            }
+            if (rowcount > 1) {
+                // System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
+                throw new SQLException(
+                        "PrimaryKey Error when updating DB! (Many objects were affected!)");
+            }
+        }
+    }
 
-		if (valueObject.getRole() == null) {
-			// System.out.println("Can not delete without Primary-Key!");
-			throw new NotFoundException("Can not delete without Primary-Key!");
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#delete(java.sql.
+     * Connection, sg.edu.nus.iss.phoenix.authenticate.entity.Role)
+     */
+    @Override
+    public void delete(Role valueObject) throws NotFoundException, SQLException {
 
-		String sql = "DELETE FROM APP.\"role\" WHERE (role = ? ) ";
-		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-			stmt.setString(1, valueObject.getRole());
+        if (valueObject.getRole() == null) {
+            // System.out.println("Can not delete without Primary-Key!");
+            throw new NotFoundException("Can not delete without Primary-Key!");
+        }
 
-			int rowcount = databaseUpdate(stmt);
-			if (rowcount == 0) {
-				// System.out.println("Object could not be deleted (PrimaryKey not found)");
-				throw new NotFoundException(
-						"Object could not be deleted! (PrimaryKey not found)");
-			}
-			if (rowcount > 1) {
-				// System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-				throw new SQLException(
-						"PrimaryKey Error when updating DB! (Many objects were deleted!)");
-			}
-		} 
-	}
+        String sql = "DELETE FROM APP.\"role\" WHERE (role = ? ) ";
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setString(1, valueObject.getRole());
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#deleteAll(java.sql
-	 * .Connection)
-	 */
-	@Override
-	public void deleteAll() throws SQLException {
+            int rowcount = databaseUpdate(stmt);
+            if (rowcount == 0) {
+                // System.out.println("Object could not be deleted (PrimaryKey not found)");
+                throw new NotFoundException(
+                        "Object could not be deleted! (PrimaryKey not found)");
+            }
+            if (rowcount > 1) {
+                // System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
+                throw new SQLException(
+                        "PrimaryKey Error when updating DB! (Many objects were deleted!)");
+            }
+        }
+    }
 
-		String sql = "DELETE FROM APP.\"role\"";
-		try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-			int rowcount = databaseUpdate(stmt);
-			System.out.println("deleted rows" + rowcount);
-		} 
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#deleteAll(java.sql
+     * .Connection)
+     */
+    @Override
+    public void deleteAll() throws SQLException {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#countAll(java.sql
-	 * .Connection)
-	 */
-	@Override
-	public int countAll() throws SQLException {
+        String sql = "DELETE FROM APP.\"role\"";
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+            int rowcount = databaseUpdate(stmt);
+            System.out.println("deleted rows" + rowcount);
+        }
+    }
 
-		String sql = "SELECT count(*) FROM APP.\"role\"";
-	
-		ResultSet result = null;
-		int allRows = 0;
-                try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-			result = stmt.executeQuery();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#countAll(java.sql
+     * .Connection)
+     */
+    @Override
+    public int countAll() throws SQLException {
 
-			if (result.next())
-				allRows = result.getInt(1);
-		} 
-		return allRows;
-	}
+        String sql = "SELECT count(*) FROM APP.\"role\"";
 
-	@Override
-	public Role searchMatching(String role) throws SQLException {
-		try {
-			return (getObject(role));
-		} catch (NotFoundException ex) {
-			logger.log(Level.WARNING, "Cannot find role {0}", role);
-		}
-		return (null);
-	}
+        ResultSet result = null;
+        int allRows = 0;
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+            result = stmt.executeQuery();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#searchMatching(java
-	 * .sql.Connection, sg.edu.nus.iss.phoenix.authenticate.entity.Role)
-	 */
-	@Override
-	public List<Role> searchMatching(Role valueObject) throws SQLException {
+            if (result.next()) {
+                allRows = result.getInt(1);
+            }
+        }
+        return allRows;
+    }
 
-		List<Role> searchResults = null;
-		
-		boolean first = true;
-		StringBuffer sql = new StringBuffer("SELECT * FROM APP.\"role\" WHERE 1=1 ");
+    @Override
+    public Role searchMatching(String role) throws SQLException {
+        try {
+            return (getObject(role));
+        } catch (NotFoundException ex) {
+            logger.log(Level.WARNING, "Cannot find role {0}", role);
+        }
+        return (null);
+    }
 
-		if (valueObject.getRole() != null) {
-			if (first) {
-				first = false;
-			}
-			sql.append("AND role LIKE '").append(valueObject.getRole())
-					.append("%' ");
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDao#searchMatching(java
+     * .sql.Connection, sg.edu.nus.iss.phoenix.authenticate.entity.Role)
+     */
+    @Override
+    public List<Role> searchMatching(Role valueObject) throws SQLException {
 
-		if (valueObject.getAccessPrivilege() != null) {
-			if (first) {
-				first = false;
-			}
-			sql.append("AND accessPrivilege LIKE '")
-					.append(valueObject.getAccessPrivilege()).append("%' ");
-		}
+        List<Role> searchResults = null;
 
-		sql.append("ORDER BY role ASC ");
+        boolean first = true;
+        StringBuffer sql = new StringBuffer("SELECT * FROM APP.\"role\" WHERE 1=1 ");
 
-		// Prevent accidential full table results.
-		// Use loadAll if all rows must be returned.
-		if (first)
-			searchResults = new ArrayList<Role>();
-                else{
-                        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString());) {
-                            searchResults = listQuery(stmt);
-                        }
-                }
-		return searchResults;
-	}
+        if (valueObject.getRole() != null) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND role LIKE '").append(valueObject.getRole())
+                    .append("%' ");
+        }
 
-	/**
-	 * databaseUpdate-method. This method is a helper method for internal use.
-	 * It will execute all database handling that will change the information in
-	 * tables. SELECT queries will not be executed here however. The return
-	 * value indicates how many rows were affected. This method will also make
-	 * sure that if cache is used, it will reset when data changes.
-	 * 
-	 * @param conn
-	 *            This method requires working database connection.
-	 * @param stmt
-	 *            This parameter contains the SQL statement to be excuted.
-	 */
-	protected int databaseUpdate(PreparedStatement stmt) throws SQLException {
+        if (valueObject.getAccessPrivilege() != null) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND accessPrivilege LIKE '")
+                    .append(valueObject.getAccessPrivilege()).append("%' ");
+        }
 
-		int result = stmt.executeUpdate();
+        sql.append("ORDER BY role ASC ");
 
-		return result;
-	}
+        // Prevent accidential full table results.
+        // Use loadAll if all rows must be returned.
+        if (first) {
+            searchResults = new ArrayList<Role>();
+        } else {
+            try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString());) {
+                searchResults = listQuery(stmt);
+            }
+        }
+        return searchResults;
+    }
 
-	/**
-	 * databaseQuery-method. This method is a helper method for internal use. It
-	 * will execute all database queries that will return only one row. The
-	 * resultset will be converted to valueObject. If no rows were found,
-	 * NotFoundException will be thrown.
-	 * 
-	 * @param conn
-	 *            This method requires working database connection.
-	 * @param stmt
-	 *            This parameter contains the SQL statement to be excuted.
-	 * @param valueObject
-	 *            Class-instance where resulting data will be stored.
-	 */
-	protected void singleQuery(PreparedStatement stmt, Role valueObject)
-			throws NotFoundException, SQLException {
+    /**
+     * databaseUpdate-method. This method is a helper method for internal use.
+     * It will execute all database handling that will change the information in
+     * tables. SELECT queries will not be executed here however. The return
+     * value indicates how many rows were affected. This method will also make
+     * sure that if cache is used, it will reset when data changes.
+     *
+     * @param conn This method requires working database connection.
+     * @param stmt This parameter contains the SQL statement to be excuted.
+     */
+    protected int databaseUpdate(PreparedStatement stmt) throws SQLException {
 
-		ResultSet result = null;
+        int result = stmt.executeUpdate();
 
-		try {
-			result = stmt.executeQuery();
+        return result;
+    }
 
-			if (result.next()) {
+    /**
+     * databaseQuery-method. This method is a helper method for internal use. It
+     * will execute all database queries that will return only one row. The
+     * resultset will be converted to valueObject. If no rows were found,
+     * NotFoundException will be thrown.
+     *
+     * @param conn This method requires working database connection.
+     * @param stmt This parameter contains the SQL statement to be excuted.
+     * @param valueObject Class-instance where resulting data will be stored.
+     */
+    protected void singleQuery(PreparedStatement stmt, Role valueObject)
+            throws NotFoundException, SQLException {
 
-				valueObject.setRole(result.getString("role"));
-				valueObject.setAccessPrivilege(result
-						.getString("accessPrivilege"));
+        ResultSet result = null;
 
-			} else {
-				// System.out.println("Role Object Not Found!");
-				throw new NotFoundException("Role Object Not Found!");
-			}
-		} finally {
-			if (result != null)
-				result.close();
-			if (stmt != null)
-				stmt.close();
-			//closeConnection();
-		}
-	}
+        try {
+            result = stmt.executeQuery();
 
-	/**
-	 * databaseQuery-method. This method is a helper method for internal use. It
-	 * will execute all database queries that will return multiple rows. The
-	 * resultset will be converted to the List of valueObjects. If no rows were
-	 * found, an empty List will be returned.
-	 * 
-	 * @param conn
-	 *            This method requires working database connection.
-	 * @param stmt
-	 *            This parameter contains the SQL statement to be excuted.
-	 */
-	protected List<Role> listQuery(PreparedStatement stmt) throws SQLException {
+            if (result.next()) {
 
-		ArrayList<Role> searchResults = new ArrayList<Role>();
-		ResultSet result = null;
-		//connection = openConnection();
-		try {
-			result = stmt.executeQuery();
+                valueObject.setRole(result.getString("role"));
+                valueObject.setAccessPrivilege(result
+                        .getString("accessPrivilege"));
 
-			while (result.next()) {
-				Role temp = createValueObject();
+            } else {
+                // System.out.println("Role Object Not Found!");
+                throw new NotFoundException("Role Object Not Found!");
+            }
+        } finally {
+            if (result != null) {
+                result.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            //closeConnection();
+        }
+    }
 
-				temp.setRole(result.getString("role"));
-				temp.setAccessPrivilege(result.getString("accessPrivilege"));
+    /**
+     * databaseQuery-method. This method is a helper method for internal use. It
+     * will execute all database queries that will return multiple rows. The
+     * resultset will be converted to the List of valueObjects. If no rows were
+     * found, an empty List will be returned.
+     *
+     * @param conn This method requires working database connection.
+     * @param stmt This parameter contains the SQL statement to be excuted.
+     */
+    protected List<Role> listQuery(PreparedStatement stmt) throws SQLException {
 
-				searchResults.add(temp);
-			}
+        ArrayList<Role> searchResults = new ArrayList<Role>();
+        ResultSet result = null;
+        //connection = openConnection();
+        try {
+            result = stmt.executeQuery();
 
-		} finally {
-			if (result != null)
-				result.close();
-			if (stmt != null)
-				stmt.close();
-			//closeConnection();
-		}
+            while (result.next()) {
+                Role temp = createValueObject();
 
-		return (List<Role>) searchResults;
-	}
+                temp.setRole(result.getString("role"));
+                temp.setAccessPrivilege(result.getString("accessPrivilege"));
 
-	/*
-         private Connection openConnection() {
-		Connection conn = null;
+                searchResults.add(temp);
+            }
 
-		try {
-			Class.forName(DBConstants.COM_MYSQL_JDBC_DRIVER);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        } finally {
+            if (result != null) {
+                result.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            //closeConnection();
+        }
 
-		try {
-			conn = DriverManager.getConnection(DBConstants.dbUrl,
-					DBConstants.dbUserName, DBConstants.dbPassword);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return conn;
-	}
+        return (List<Role>) searchResults;
+    }
 
-	private void closeConnection() {
-		try {
-			this.connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-        * */
+    /*
+     private Connection openConnection() {
+     Connection conn = null;
 
+     try {
+     Class.forName(DBConstants.COM_MYSQL_JDBC_DRIVER);
+     } catch (ClassNotFoundException e) {
+     // TODO Auto-generated catch block
+     e.printStackTrace();
+     }
+
+     try {
+     conn = DriverManager.getConnection(DBConstants.dbUrl,
+     DBConstants.dbUserName, DBConstants.dbPassword);
+     } catch (SQLException e) {
+     // TODO Auto-generated catch block
+     e.printStackTrace();
+     }
+     return conn;
+     }
+
+     private void closeConnection() {
+     try {
+     this.connection.close();
+     } catch (SQLException e) {
+     // TODO Auto-generated catch block
+     e.printStackTrace();
+     }
+     }
+     * */
 }
