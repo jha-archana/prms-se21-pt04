@@ -99,8 +99,8 @@ public class UserDaoImpl implements UserDao {
 
         String sql = "SELECT * FROM APP.\"user\" ORDER BY id ASC ";
         List<User> searchResults = null;
-        try ( Connection conn = ds.getConnection()){
-           searchResults = listQuery(conn.prepareStatement(sql));
+        try (Connection conn = ds.getConnection()) {
+            searchResults = listQuery(conn.prepareStatement(sql));
         }
         return searchResults;
     }
@@ -115,21 +115,20 @@ public class UserDaoImpl implements UserDao {
     @Override
     public synchronized void create(User valueObject) throws SQLException {
 
-        String sql = "INSERT INTO APP.\"user\" ( id, password, name, "
-                    + "role) VALUES (?, ?, ?, ?) ";
-        
-        try (Connection conn = ds.getConnection();PreparedStatement stmt = conn.prepareStatement(sql);){ 
+        String sql = "INSERT INTO APP.\"user\" ( \"id\", \"password\", \"name\", \"role\") VALUES (?, ?, ?, ?) ";
+
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, valueObject.getId());
             stmt.setString(2, valueObject.getPassword());
             stmt.setString(3, valueObject.getName());
-            stmt.setString(4, valueObject.getRoles().get(0).getRole());
+            stmt.setString(4, valueObject.getRoleString());
 
             int rowcount = databaseUpdate(stmt);
             if (rowcount != 1) {
                 // System.out.println("PrimaryKey Error when updating DB!");
                 throw new SQLException("PrimaryKey Error when updating DB!");
             }
-        }catch(SQLException se){
+        } catch (SQLException se) {
             se.printStackTrace();;
         }
 
@@ -146,8 +145,8 @@ public class UserDaoImpl implements UserDao {
     public void save(User valueObject) throws NotFoundException, SQLException {
 
         String sql = "UPDATE APP.\"user\" SET password = ?, name = ?, role = ? WHERE (id = ? ) ";
-        
-        try(Connection conn = ds.getConnection();PreparedStatement stmt = conn.prepareStatement(sql);){
+
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, valueObject.getPassword());
             stmt.setString(2, valueObject.getName());
             stmt.setString(3, valueObject.getRoles().get(0).getRole());
@@ -179,8 +178,8 @@ public class UserDaoImpl implements UserDao {
     public void delete(User valueObject) throws NotFoundException, SQLException {
 
         String sql = "DELETE FROM APP.\"user\" WHERE (id = ? ) ";
-       
-         try(Connection conn = ds.getConnection();PreparedStatement stmt = conn.prepareStatement(sql);){
+
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, valueObject.getId());
 
             int rowcount = databaseUpdate(stmt);
@@ -194,7 +193,7 @@ public class UserDaoImpl implements UserDao {
                 throw new SQLException(
                         "PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
-        } catch(SQLException se){
+        } catch (SQLException se) {
             se.printStackTrace();
         }
     }
@@ -210,7 +209,7 @@ public class UserDaoImpl implements UserDao {
     public void deleteAll() throws SQLException {
 
         String sql = "DELETE FROM APP.\"user\"";
-        try(Connection conn = ds.getConnection();PreparedStatement stmt = conn.prepareStatement(sql);){
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             int rowcount = databaseUpdate(stmt);
             System.out.println("Deleted rows :" + rowcount);
         }
@@ -227,11 +226,11 @@ public class UserDaoImpl implements UserDao {
     public int countAll() throws SQLException {
 
         String sql = "SELECT count(*) FROM APP.\"user\"";
-        
+
         ResultSet result = null;
         int allRows = 0;
-         try(Connection conn = ds.getConnection();PreparedStatement stmt = conn.prepareStatement(sql);){
-           
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+
             result = stmt.executeQuery();
 
             if (result.next()) {
@@ -305,12 +304,12 @@ public class UserDaoImpl implements UserDao {
         if (first) {
             searchResults = new ArrayList<User>();
         } else {
-             try(Connection conn = ds.getConnection();){
+            try (Connection conn = ds.getConnection();) {
                 searchResults = listQuery(conn.prepareStatement(sql
-                    .toString()));
-             }catch(SQLException se){
-                 se.printStackTrace();
-             }
+                        .toString()));
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
         }
 
         return searchResults;
@@ -428,25 +427,24 @@ public class UserDaoImpl implements UserDao {
         }
         return (roleList);
     }
-    
     /*
-    private Connection openConnection() {
-        Connection conn = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+     private Connection openConnection() {
+     Connection conn = null;
+     try {
+     Class.forName("com.mysql.jdbc.Driver");
+     } catch (ClassNotFoundException e) {
+     // TODO Auto-generated catch block
+     e.printStackTrace();
+     }
 
-        try {
-            conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/phoenix", "phoenix",
-                    "password");
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return conn;
-    }*/
+     try {
+     conn = DriverManager.getConnection(
+     "jdbc:mysql://localhost:3306/phoenix", "phoenix",
+     "password");
+     } catch (SQLException e) {
+     // TODO Auto-generated catch block
+     e.printStackTrace();
+     }
+     return conn;
+     }*/
 }
