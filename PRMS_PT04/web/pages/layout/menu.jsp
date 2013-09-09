@@ -38,6 +38,13 @@
 				</a>
 			</td>
 	</tr>
+         <tr>
+		<td>
+				<a href="<c:url value="/controller/loadSchd"/>"> <fmt:message
+						key="caption.menu.loadSchedule" />
+				</a>
+			</td>
+	</tr>
 	</c:if>
 	<tr>
 		<td><a href="<c:url value="/controller/logout"/>"> <fmt:message
