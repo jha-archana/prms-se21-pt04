@@ -83,17 +83,15 @@ public class ProgramSlot implements Cloneable, Serializable {
      * individual set-methods.
      */
 
-   /* public void setAll(String nameIn,
-          String descriptionIn,
-          Time typicalDurationIn) {
-          this.name = nameIn;
-          this.description = descriptionIn;
-          this.typicalDuration = typicalDurationIn;
-    }*/
-
-
+    public void setAll(Time durationIn,Date dateOfProgramIn,Time startTimeIn,String radioProgramIn) {
+          this.duration = durationIn;
+          this.dateOfProgram = dateOfProgramIn;
+          this.startTime = startTimeIn;
+          RadioProgram rp= new RadioProgram(radioProgramIn);
+          this.radioProgram= rp;
+    }
     /** 
-     * hasEqualMapping-method will compare two RadioProgram instances
+     * hasEqualMapping-method will compare two ProgramSlot instances
      * and return true if they contain same values in all persistent instance 
      * variables. If hasEqualMapping returns true, it does not mean the objects
      * are the same instance. However it does mean that in that moment, they 
@@ -113,7 +111,12 @@ public class ProgramSlot implements Cloneable, Serializable {
      */
     public String toString() {
         StringBuffer out = new StringBuffer();
-        //to do
+        out.append("\nProgramSlot class, mapping to table program-slot\n");
+        out.append("Persistent attributes: \n"); 
+        out.append("duration = " + this.duration + "\n"); 
+        out.append("dateOfProgram = " + this.dateOfProgram + "\n"); 
+        out.append("startTime = " + this.startTime + "\n"); 
+        out.append("radioProgram = " + this.radioProgram.getName()+ "\n"); 
         return out.toString();
     }
 

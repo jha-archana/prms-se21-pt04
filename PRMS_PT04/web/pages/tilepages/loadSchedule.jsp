@@ -18,9 +18,10 @@
 <body>
         <h1><fmt:message key="label.maintainSchedule"/></h1>
         <c:url var="url" scope="page" value="/pages/loadSchedule.jsp">
-                <c:param name="name" value=""/>
-                <c:param name="description" value=""/>
                 <c:param name="duration" value=""/>
+                <c:param name="dateOfProgram" value=""/>
+                <c:param name="startTime" value=""/>
+                <c:param name="programName" value=""/>
                 <c:param name="insert" value="true"/>
         </c:url>
         <a href="${url}"><fmt:message key="label.maintainSchedule.add"/></a>
@@ -38,19 +39,19 @@
                     <td class="nowrap">${crudps.duration}</td>
                     <td class="nowrap">${crudps.dateOfProgram}</td>
                     <td class="nowrap">${crudps.startTime}</td>
-                     <td class="nowrap">${crudps.radioProgram}</td>
+                     <td class="nowrap">${crudps.radioProgram.name}</td>
                     <td class="nowrap">
                         <c:url var="updurl" scope="page" value="/pages/loadSchedule.jsp">
                             <c:param name="duration" value="${crudps.duration}"/>
                             <c:param name="dateOfProgram" value="${crudps.dateOfProgram}"/>
                             <c:param name="startTime" value="${crudps.startTime}"/>
-                             <c:param name="radioProgram" value="${crudps.radioProgram}"/>
+                             <c:param name="radioProgram" value="${crudps.radioProgram.name}"/>
                              <c:param name="insert" value="false"/>
                         </c:url>
                         <a href="${updurl}"><fmt:message key="label.maintainSchedule.edit"/></a>
                         &nbsp;&nbsp;&nbsp;
                         <c:url var="delurl" scope="page" value="/controller/deleterp">
-                            <c:param name="name" value="${crudps.name}"/>
+                            <c:param name="name" value="${crudps.dateOfProgram}"/>
                         </c:url>
                         <a href="${delurl}"><fmt:message key="label.maintainSchedule.delete"/></a>
                     </td>

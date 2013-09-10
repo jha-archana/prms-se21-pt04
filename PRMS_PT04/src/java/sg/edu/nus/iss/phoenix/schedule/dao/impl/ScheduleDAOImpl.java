@@ -2,6 +2,7 @@ package sg.edu.nus.iss.phoenix.schedule.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
+import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 
@@ -66,7 +68,12 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	@Override
 	public List<ProgramSlot> loadAll() throws SQLException {
 		List<ProgramSlot> searchResults = null;
-		//To do 
+		//To do
+		String sql = "SELECT * FROM APP.\"program-slot\" ORDER BY \"dateOfProgram\" DESC ";
+                try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+                    searchResults = listQuery(stmt);
+                    System.out.println("record size"+searchResults.size());
+                }
 		return searchResults;
 	}
 
@@ -181,6 +188,30 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
 		ArrayList<ProgramSlot> searchResults = new ArrayList<ProgramSlot>();
 		//To do
+                ResultSet result = null;
+		//openConnection();
+		try {
+			result = stmt.executeQuery();
+
+			while (result.next()) {
+				ProgramSlot temp = createValueObject();
+
+				temp.setDuration(result.getTime("duration"));
+				temp.setDateOfProgram(result.getDate("dateOfProgram"));
+				temp.setStartTime(result.getTime("startTime"));
+                                RadioProgram rp = new RadioProgram(result.getString("program-name"));
+                                temp.setRadioProgram(rp);
+				searchResults.add(temp);
+			}
+
+		} finally {
+			if (result != null)
+				result.close();
+			if (stmt != null)
+				stmt.close();
+			//closeConnection();
+		}
+
 		return (List<ProgramSlot>) searchResults;
 	}
         
