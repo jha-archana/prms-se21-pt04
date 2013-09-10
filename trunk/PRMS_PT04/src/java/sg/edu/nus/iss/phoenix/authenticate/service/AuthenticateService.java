@@ -105,6 +105,17 @@ public class AuthenticateService {
         return userList;
     }
 
+    public User findUser(String userId) {
+        User u = null;
+        try {
+            u = udao.searchMatching(userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Logger.getLogger(AuthenticateService.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return u;
+    }
+
     public void insertUser(User user) {
         try {
             if (!isExist(user.getId())) {
