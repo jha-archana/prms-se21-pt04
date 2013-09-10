@@ -33,6 +33,10 @@ public class AuthenticateDelegate {
         return service.isExist(user.getId());
     }
 
+    public User findUser(String userId){
+        AuthenticateService service = new AuthenticateService();
+        return service.findUser(userId);
+    } 
     public void insertUser(User user) {
         AuthenticateService service = new AuthenticateService();
         service.insertUser(user);

@@ -65,55 +65,62 @@ A:hover { text-decoration:none; color: red;}
 .nowrap { white-space:nowrap; }
 
 button {
-	
-	border-style : none none none none;
-	background : transparent;
-	margin : 0px 0px 0px 0px;
-	padding : 0px 0px 0px 0px;
-	white-space : normal;
-	width : auto;
+
+    border-style : none none none none;
+    background : transparent;
+    margin : 0px 0px 0px 0px;
+    padding : 0px 0px 0px 0px;
+    white-space : normal;
+    width : auto;
 }
 
 frame	{
-	margin : 0px 0px 0px 0px;
-	border : none;
-	border-width : 0px 0px 0px 0px;
-	padding : 0px 0px 0px 0px;
+    margin : 0px 0px 0px 0px;
+    border : none;
+    border-width : 0px 0px 0px 0px;
+    padding : 0px 0px 0px 0px;
 }
 
 table.framed	{
-	border : thin groove #001E33;
-	 width: 100%;
+    border : thin groove #001E33;
+    width: 100%;
 }
 
 
 .applicationTitle {
-	background : #0F0066;
-	color : white;
-	font-size : 30pt;
+    background : #0F0066;
+    color : white;
+    font-size : 30pt;
 }
 
 .pageTitle {
-	color : #003366;
-	font-weight : lighter;
-	font-size : 16pt;
+    color : #003366;
+    font-weight : lighter;
+    font-size : 16pt;
 }
 
 .userTitle {
-	color : #000066;
-	font-size : 12pt;
-	font-weight : lighter;
+    color : #000066;
+    font-size : 12pt;
+    font-weight : lighter;
 }
 
 .listSectionHeading {
-	color : #000066;
-	font-size : 11pt;
-	background : #EEEEFF;
-        text-align : left;
+    color : #000066;
+    font-size : 11pt;
+    background : #EEEEFF;
+    text-align : left;
 }
 
 .listHeading {
 }
 
 .listRecord {
+}
+
+.select:disabled option{
+    color:black;
+}
+.select:disabled option:selected{    
+    background-color: #99ccff !important;
 }

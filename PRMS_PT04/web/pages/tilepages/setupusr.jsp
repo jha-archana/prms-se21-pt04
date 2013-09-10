@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<jsp:useBean id="allRoles" class="sg.edu.nus.iss.phoenix.authenticate.delegate.AuthenticateDelegate" scope="page"/>
+<jsp:useBean id="adel" class="sg.edu.nus.iss.phoenix.authenticate.delegate.AuthenticateDelegate" scope="page"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
@@ -80,16 +81,36 @@
                     </tr>
                     <tr>
                         <th><fmt:message key="label.crudusr.role" /></th>
+                            <c:set var="strRoles" value="${param['role']}"/>
                         <td><c:if test="${param['insert'] == 'true'}">
                                 <select name="role" id="role" multiple="multiple" style="width:125px">
-                                    <c:forEach var="item" items="${allRoles.findAllRole()}" >
-                                        <option value="${item.getRole()}">${item.getRole()}</option>
+                                    <c:forEach var="item" items="${adel.findAllRole()}" >
+                                        <c:set var="strRole" value="${item.getRole()}" />
+                                        <c:choose>
+                                            <c:when test="${fn:contains(strRoles, strRole)}">
+                                                <option value="${item.getRole()}" selected="true">${item.getRole()}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${item.getRole()}">${item.getRole()}</option>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:forEach>
                                 </select>                              
                             </c:if> 
                             <c:if test="${param['insert']=='false'}">
-                                <input type="text" name="rorole" value="${param['role']}" size=15
-                                       maxlength=20 readonly="readonly">
+                                <select name="role" id="role" multiple="multiple" style="width:125px" disabled="disabled" class="select">
+                                    <c:forEach var="item" items="${adel.findAllRole()}" >
+                                        <c:set var="strRole" value="${item.getRole()}" />
+                                        <c:choose>
+                                            <c:when test="${fn:contains(strRoles, strRole)}">
+                                                <option value="${item.getRole()}" selected="true">${item.getRole()}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${item.getRole()}">${item.getRole()}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </select>
                                 <input type="hidden" name="ins" value="false" />
                             </c:if></td>
                     </tr>
