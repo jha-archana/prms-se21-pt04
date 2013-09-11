@@ -33,4 +33,10 @@
     <definition name="loadSchedulePage" extends="homePage">
         <put-attribute name="body" value="/pages/tilepages/loadSchedule.jsp" />
     </definition>
+    <definition name="presenterSearchPage" extends="homePage">
+        <put-attribute name="body" value="/pages/presenter/_search.jsp" />
+    </definition>
+    <definition name="producerSearchPage" extends="homePage">
+        <put-attribute name="body" value="/pages/producer/_search.jsp" />
+    </definition>
 </tiles-definitions>
