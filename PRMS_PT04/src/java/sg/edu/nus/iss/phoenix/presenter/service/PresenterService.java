@@ -4,8 +4,11 @@
  */
 package sg.edu.nus.iss.phoenix.presenter.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
@@ -55,5 +58,21 @@ public class PresenterService {
     
     public List<Presenter> findAllPresenters(Presenter example) {
         return findAllPresenters(example, PaginationCriteria.getDefaultCriteria());
+    }
+    
+    public Presenter findPresenter(String id){
+        User user;
+        try {
+            user = udao.searchMatching(id);
+            if(user !=null){
+                Presenter presenter = new Presenter();
+                presenter.setId(user.getId());
+                presenter.setName(user.getName());
+                return presenter;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PresenterService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
