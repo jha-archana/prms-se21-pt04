@@ -97,7 +97,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> loadAll() throws SQLException {
 
-        String sql = "SELECT * FROM APP.\"user\" ORDER BY id ASC ";
+        String sql = "SELECT * FROM APP.\"user\" ORDER BY \"id\" ASC ";
         List<User> searchResults = null;
         try (Connection conn = ds.getConnection()) {
             searchResults = listQuery(conn.prepareStatement(sql));
@@ -144,7 +144,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void save(User valueObject) throws NotFoundException, SQLException {
 
-        String sql = "UPDATE APP.\"user\" SET password = ?, name = ?, role = ? WHERE (id = ? ) ";
+        String sql = "UPDATE APP.\"user\" SET \"password\" = ?, \"name\" = ?, \"role\" = ? WHERE (\"id\" = ? ) ";
 
         try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, valueObject.getPassword());
@@ -177,7 +177,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void delete(User valueObject) throws NotFoundException, SQLException {
 
-        String sql = "DELETE FROM APP.\"user\" WHERE (id = ? ) ";
+        String sql = "DELETE FROM APP.\"user\" WHERE (\"id\" = ? ) ";
 
         try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, valueObject.getId());
@@ -269,14 +269,14 @@ public class UserDaoImpl implements UserDao {
             if (first) {
                 first = false;
             }
-            sql.append("AND id = ").append(valueObject.getId()).append(" ");
+            sql.append("AND \"id\" = ").append(valueObject.getId()).append(" ");
         }
 
         if (valueObject.getPassword() != null) {
             if (first) {
                 first = false;
             }
-            sql.append("AND password LIKE '").append(valueObject.getPassword())
+            sql.append("AND \"password\" LIKE '%").append(valueObject.getPassword())
                     .append("%' ");
         }
 
@@ -284,7 +284,7 @@ public class UserDaoImpl implements UserDao {
             if (first) {
                 first = false;
             }
-            sql.append("AND name LIKE '").append(valueObject.getName())
+            sql.append("AND \"name\" LIKE '%").append(valueObject.getName())
                     .append("%' ");
         }
 
@@ -292,13 +292,13 @@ public class UserDaoImpl implements UserDao {
             if (first) {
                 first = false;
             }
-            sql.append("AND role LIKE '")
+            sql.append("AND \"role\" LIKE '%")
                     .append(valueObject.getRoles().get(0).getRole())
                     .append("%' ");
         }
 
-        sql.append("ORDER BY id ASC ");
-
+        sql.append("ORDER BY \"id\" ASC ");
+        
         // Prevent accidential full table results.
         // Use loadAll if all rows must be returned.
         if (first) {

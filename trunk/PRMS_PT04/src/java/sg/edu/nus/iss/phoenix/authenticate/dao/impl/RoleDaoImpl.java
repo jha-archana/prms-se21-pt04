@@ -119,7 +119,7 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public synchronized void create(Role valueObject) throws SQLException {
 
-        String sql = "INSERT INTO APP.\"role\" ( role, accessPrivilege) VALUES (?, ?) ";
+        String sql = "INSERT INTO APP.\"role\" ( \"role\", \"accessPrivilege\") VALUES (?, ?) ";
 
         try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 
@@ -146,7 +146,7 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public void save(Role valueObject) throws NotFoundException, SQLException {
 
-        String sql = "UPDATE APP.\"role\" SET accessPrivilege = ? WHERE (role = ? ) ";
+        String sql = "UPDATE APP.\"role\" SET \"accessPrivilege\" = ? WHERE (\"role\" = ? ) ";
         try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, valueObject.getAccessPrivilege());
 
@@ -181,7 +181,7 @@ public class RoleDaoImpl implements RoleDao {
             throw new NotFoundException("Can not delete without Primary-Key!");
         }
 
-        String sql = "DELETE FROM APP.\"role\" WHERE (role = ? ) ";
+        String sql = "DELETE FROM APP.\"role\" WHERE (\"role\" = ? ) ";
         try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, valueObject.getRole());
 
@@ -269,7 +269,7 @@ public class RoleDaoImpl implements RoleDao {
             if (first) {
                 first = false;
             }
-            sql.append("AND role LIKE '").append(valueObject.getRole())
+            sql.append("AND \"role\" LIKE '").append(valueObject.getRole())
                     .append("%' ");
         }
 
@@ -277,11 +277,11 @@ public class RoleDaoImpl implements RoleDao {
             if (first) {
                 first = false;
             }
-            sql.append("AND accessPrivilege LIKE '")
+            sql.append("AND \"accessPrivilege\" LIKE '%")
                     .append(valueObject.getAccessPrivilege()).append("%' ");
         }
 
-        sql.append("ORDER BY role ASC ");
+        sql.append("ORDER BY \"role\" ASC ");
 
         // Prevent accidential full table results.
         // Use loadAll if all rows must be returned.
