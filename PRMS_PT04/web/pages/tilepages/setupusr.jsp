@@ -37,18 +37,19 @@
         <title><fmt:message key="title.setupusr" /></title>
     </head>
     <body>
+        <c:set var="usr" value="${adel.findUser(param['id'])}"/>
         <form name="usrForm" action="${pageContext.request.contextPath}/controller/setupusr" method="post" onsubmit="return validateForm()" >
             <center>
                 <table cellpadding=4 cellspacing=2 border=0>
                     <tr>
                         <th><fmt:message key="label.crudusr.id" /></th>
                         <td><c:if test="${param['insert'] == 'true'}">
-                                <input type="text" name="id" value="${param['id']}" size=15
+                                <input type="text" name="id" value="${usr.getId()}" size=15
                                        maxlength=20>
                                 <input type="hidden" name="ins" value="true" />
                             </c:if> 
                             <c:if test="${param['insert']=='false'}">
-                                <input type="text" name="roid" value="${param['id']}" size=15
+                                <input type="text" name="roid" value="${usr.getId()}" size=15
                                        maxlength=20 readonly="readonly">
                                 <input type="hidden" name="ins" value="false" />
                             </c:if></td>
@@ -56,12 +57,12 @@
                     <tr>
                         <th><fmt:message key="label.crudusr.name" /></th>
                         <td><c:if test="${param['insert'] == 'true'}">
-                                <input type="text" name="name" value="${param['name']}" size=15
+                                <input type="text" name="name" value="${usr.getName()}" size=15
                                        maxlength=20>
                                 <input type="hidden" name="ins" value="true" />
                             </c:if> 
                             <c:if test="${param['insert']=='false'}">
-                                <input type="text" name="roname" value="${param['name']}" size=15
+                                <input type="text" name="roname" value="${usr.getName()}" size=15
                                        maxlength=20 readonly="readonly">
                                 <input type="hidden" name="ins" value="false" />
                             </c:if></td>
@@ -69,19 +70,19 @@
                     <tr>
                         <th><fmt:message key="label.crudusr.pwd" /></th>
                         <td><c:if test="${param['insert'] == 'true'}">
-                                <input type="text" name="pwd" value="${param['pwd']}" size=15
+                                <input type="text" name="pwd" value="${usr.getPassword()}" size=15
                                        maxlength=20>
                                 <input type="hidden" name="ins" value="true" />
                             </c:if> 
                             <c:if test="${param['insert']=='false'}">
-                                <input type="text" name="ropwd" value="${param['pwd']}" size=15
+                                <input type="text" name="ropwd" value="${usr.getPassword()}" size=15
                                        maxlength=20 readonly="readonly">
                                 <input type="hidden" name="ins" value="false" />
                             </c:if></td>
                     </tr>
                     <tr>
                         <th><fmt:message key="label.crudusr.role" /></th>
-                            <c:set var="strRoles" value="${param['role']}"/>
+                            <c:set var="strRoles" value="${usr.getRoleString()}"/>
                         <td><c:if test="${param['insert'] == 'true'}">
                                 <select name="role" id="role" multiple="multiple" style="width:125px">
                                     <c:forEach var="item" items="${adel.findAllRole()}" >
