@@ -4,8 +4,11 @@
  */
 package sg.edu.nus.iss.phoenix.producer.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
@@ -55,5 +58,22 @@ public class ProducerService {
     
     public List<Producer> findAllProducers(Producer example) {
         return findAllProducers(example, PaginationCriteria.getDefaultCriteria());
+    }
+    
+    public Producer findProducer(String id){
+        User user;
+        try {
+            user = udao.searchMatching(id);
+            if(user != null ){
+                Producer producer = new Producer();
+                producer.setId(user.getId());
+                producer.setName(user.getName());
+                
+                return producer;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
