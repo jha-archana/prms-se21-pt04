@@ -15,6 +15,9 @@
     <definition name="errorPage" extends="homePage">
         <put-attribute name="body" value="/pages/tilepages/error.jsp" />
     </definition>
+    <definition name="searchuserPage" extends="homePage">
+        <put-attribute name="body" value="/pages/tilepages/searchuser.jsp" />
+    </definition>
     <definition name="searchrpPage" extends="homePage">
         <put-attribute name="body" value="/pages/tilepages/searchrp.jsp" />
     </definition>
