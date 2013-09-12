@@ -221,7 +221,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			if (first) {
 				first = false;
 			}
-			sql.append("AND `name` LIKE '").append(valueObject.getName())
+			sql.append("AND \"name\" LIKE '").append(valueObject.getName())
 					.append("%' ");
 		}
 
@@ -229,7 +229,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			if (first) {
 				first = false;
 			}
-			sql.append("AND `desc` LIKE '").append(valueObject.getDescription())
+			sql.append("AND \"desc\" LIKE '").append(valueObject.getDescription())
 					.append("%' ");
 		}
 
@@ -237,11 +237,11 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			if (first) {
 				first = false;
 			}
-			sql.append("AND `typicalDuration` = '")
+			sql.append("AND \"typicalDuration\" = '")
 					.append(valueObject.getTypicalDuration()).append("' ");
 		}
 
-		sql.append("ORDER BY `name` ASC ");
+		sql.append("ORDER BY \"name\" ASC ");
 
 		// Prevent accidential full table results.
 		// Use loadAll if all rows must be returned.
