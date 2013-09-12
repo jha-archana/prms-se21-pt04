@@ -17,25 +17,16 @@
 </head>
 <body>
         <h1><fmt:message key="label.maintainSchedule"/></h1>
-        <c:url var="url" scope="page" value="/pages/loadSchedule.jsp">
+        <c:url var="url" scope="page" value="/pages/setupschedule.jsp">
                 <c:param name="duration" value=""/>
                 <c:param name="dateOfProgram" value=""/>
                 <c:param name="startTime" value=""/>
                 <c:param name="programName" value=""/>
+                <c:param name="presenter" value=""/>
+                <c:param name="producer" value=""/>
                 <c:param name="insert" value="true"/>
-        </c:url>
-        <c:url var="urlcopy" scope="page" value="/pages/loadSchedule.jsp">
-                <c:param name="program-name" value=""/>
-                <c:param name="duration" value=""/>
-                <c:param name="dateOfProgram" value=""/>
-                <c:param name="startTime" value=""/>
-                <c:param name="presenter-id" value=""/>
-                <c:param name="producer-id" value=""/>
-                <c:param name="insert" value="true"/>
-                <c:param name="copy" value="true"/>
         </c:url>
         <a href="${url}"><fmt:message key="label.maintainSchedule.add"/></a>
-        <a href="${urlcopy}"><fmt:message key="label.maintainSchedule.addcopy"/></a>
         <br/><br/>
         <table class="borderAll">
             <tr>
@@ -43,10 +34,9 @@
                 <th><fmt:message key="label.maintainSchedule.dateOfProgram"/></th>
                 <th><fmt:message key="label.maintainSchedule.startTime"/></th>
                 <th><fmt:message key="label.maintainSchedule.programName"/></th>
-                <th><fmt:message key="label.maintainSchedule.presenter"/></th>
-                <th><fmt:message key="label.maintainSchedule.producer"/></th>
-                <th><fmt:message key="label.maintainSchedule.edit"/> 
-                    <fmt:message key="label.maintainSchedule.delete"/></th>
+                <th><fmt:message key="label.maintainSchedule.presenterName"/></th>
+                <th><fmt:message key="label.maintainSchedule.producerName"/></th>
+                <th><fmt:message key="label.maintainSchedule.edit"/> <fmt:message key="label.maintainSchedule.delete"/></th>
             </tr>
             <c:forEach var="crudps" items="${schd}" varStatus="status">
                 <tr class="${status.index%2==0?'even':'odd'}">
@@ -54,24 +44,22 @@
                     <td class="nowrap">${crudps.dateOfProgram}</td>
                     <td class="nowrap">${crudps.startTime}</td>
                      <td class="nowrap">${crudps.radioProgram.name}</td>
-                     <td class="nowrap">${crudps.presenter.name}</td>
-                     <td class="nowrap">${crudps.producer.name}</td>
+                     <td class="nowrap">${crudps.presenter.id}</td>
+                     <td class="nowrap">${crudps.producer.id}</td>
                     <td class="nowrap">
-                        <c:url var="updurl" scope="page" value="/pages/loadSchedule.jsp">
+                        <c:url var="updurl" scope="page" value="/pages/setupschedule.jsp">
                             <c:param name="duration" value="${crudps.duration}"/>
                             <c:param name="dateOfProgram" value="${crudps.dateOfProgram}"/>
                             <c:param name="startTime" value="${crudps.startTime}"/>
                              <c:param name="radioProgram" value="${crudps.radioProgram.name}"/>
-                             <c:param name="producer-id" value="${crudps.producer.id}"/>
-                             <c:param name="presenter-id" value="${crudps.presenter.id}"/>
+                             <c:param name="presenter" value="${crudps.presenter.id}"/>
+                             <c:param name="producer" value="${crudps.producer.id}"/>
                              <c:param name="insert" value="false"/>
                         </c:url>
                         <a href="${updurl}"><fmt:message key="label.maintainSchedule.edit"/></a>
                         &nbsp;&nbsp;&nbsp;
-                        <c:url var="delurl" scope="page" value="/controller/deleterp">
-                            <c:param name="duration" value="${crudps.duration}"/>
-                            <c:param name="dateOfProgram" value="${crudps.dateOfProgram}"/>
-                            <c:param name="startTime" value="${crudps.startTime}"/>
+                        <c:url var="delurl" scope="page" value="/controller/deleteschedule">
+                            <c:param name="name" value="${crudps.dateOfProgram}"/>
                         </c:url>
                         <a href="${delurl}"><fmt:message key="label.maintainSchedule.delete"/></a>
                     </td>
