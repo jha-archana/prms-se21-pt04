@@ -82,6 +82,8 @@ public class PhoenixFrontController extends HttpServlet {
                 return "/AuthenticateController/process";
             case "loadSchd":
                 return "/ScheduleController/loadSched";
+            case "setupschedule":
+                return "/ScheduleController/setupschedule";
             case "logout":
                 return "/LoginController/logout";
             default:
