@@ -16,6 +16,13 @@
 		</a></td>
 	</tr>
 	<c:if test="${sessionScope.user.roles[0].role=='manager'}">
+        	<tr>
+		<td>
+				<a href="<c:url value="/controller/searchuser"/>"> <fmt:message
+						key="caption.menu.searchuser" />
+				</a>
+			</td>
+	</tr>
 	<tr>
 		<td>
 				<a href="<c:url value="/controller/searchrp"/>"> <fmt:message
