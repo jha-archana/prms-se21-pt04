@@ -36,7 +36,10 @@ public class ScheduleDelegate {
 	}
 	
 	public void insertProgramSlot(ProgramSlot rp) {
-		//to do
+            if (rp!=null){
+		ScheduleService service = new ScheduleService();
+                service.insertProgramSlot(rp);
+            }
 	}
 	public void updateProgramSlot(ProgramSlot rp) {
 		//to do
