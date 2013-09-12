@@ -28,7 +28,7 @@ public interface ScheduleDAO {
 	 * as a parameter. Returned valueObject will be created using the
 	 * createValueObject() method.
 	 */
-	public abstract ProgramSlot getObject(Time duration, Date dateOfProgram, Time startTime)
+	public abstract ProgramSlot getObject(String duration, Date dateOfProgram, String startTime)
 			throws NotFoundException, SQLException;
 
 	/**
