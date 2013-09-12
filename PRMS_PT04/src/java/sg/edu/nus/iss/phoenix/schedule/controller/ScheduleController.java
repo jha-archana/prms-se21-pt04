@@ -6,7 +6,6 @@ package sg.edu.nus.iss.phoenix.schedule.controller;
 
 import java.io.IOException;
 import java.util.Date;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +15,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sg.edu.nus.iss.phoenix.authenticate.delegate.AuthenticateDelegate;
+import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.core.controller.FCUtilities;
 import sg.edu.nus.iss.phoenix.radioprogram.delegate.RPDelegate;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
@@ -82,6 +83,14 @@ public class ScheduleController extends HttpServlet {
                 String programName = request.getParameter("programName");
                 RadioProgram rp = rpDel.findRP(programName);
                 ps.setRadioProgram(rp);
+                AuthenticateDelegate authDel = new AuthenticateDelegate();
+                String p1 = request.getParameter("presenter");
+                User presenter = authDel.findUser(p1);
+                ps.setPresenter(presenter);
+                String p2 = request.getParameter("producer");
+                User producer = authDel.findUser(p2);
+                ps.setProducer(producer);
+                
                 System.out.println(ps.toString());
                 /*if (ins.equalsIgnoreCase("true")) {
                  rpdel.insertRP(rp);
