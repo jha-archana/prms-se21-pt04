@@ -22,6 +22,11 @@ public class Presenter implements Serializable,Cloneable{
         this.name="";
     }
     
+     public Presenter(String name){
+        this.id="";
+        this.name = name;
+    }
+    
     public Presenter(String id, String name) {
         this.id = id;
         this.name = name;
