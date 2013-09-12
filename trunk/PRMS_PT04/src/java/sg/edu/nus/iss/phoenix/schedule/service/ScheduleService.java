@@ -50,7 +50,12 @@ public class ScheduleService {
 	}
 
 	public void insertProgramSlot(ProgramSlot ps) {
-		//to do 
+		try {
+			schdao.create(ps);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 
 	public void updateProgramSlot(ProgramSlot ps) {
