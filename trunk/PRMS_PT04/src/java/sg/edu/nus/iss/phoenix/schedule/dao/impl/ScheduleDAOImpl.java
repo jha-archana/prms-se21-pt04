@@ -94,12 +94,14 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 			throws SQLException {
                         System.out.println("duration=="+valueObject.getDuration());
                         System.out.println("date=="+valueObject.getdateOfProgram());
-		String sql = "INSERT INTO APP.\"program-slot\" (\"duration\", \"dateOfProgram\",\"startTime\", \"program-name\") VALUES (?,?,?,?) ";
+		String sql = "INSERT INTO APP.\"program-slot\" (\"duration\", \"dateOfProgram\",\"startTime\", \"program-name\", \"presenter-id\", \"producer-id\") VALUES (?,?,?,?,?,?) ";
 		 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1,valueObject.getDuration());
                         stmt.setDate(2, new java.sql.Date(valueObject.getdateOfProgram().getTime()));
                         stmt.setString(3, valueObject.getStartTime());
                         stmt.setString(4, valueObject.getRadioProgram().getName());
+                        stmt.setString(5, valueObject.getPresenter().getId());
+                        stmt.setString(6, valueObject.getProducer().getId());
 			int rowcount = databaseUpdate(stmt);
 			if (rowcount != 1) {
 				// System.out.println("PrimaryKey Error when updating DB!");
