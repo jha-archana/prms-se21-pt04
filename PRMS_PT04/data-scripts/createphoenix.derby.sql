@@ -114,7 +114,7 @@ CREATE INDEX "id_annual_schedule" ON "annual-schedule" ("assingedBy" ASC) ;
 CREATE  TABLE "program-slot" (
   "duration" VARCHAR(20) NOT NULL ,
   "dateOfProgram" DATE NOT NULL ,
-  "startTime" TIME NOT NULL ,
+  "startTime" VARCHAR(20) NOT NULL ,
   "program-name" VARCHAR(45) DEFAULT NULL ,
    "presenter-id" VARCHAR(40) DEFAULT NULL,
     "producer-id" VARCHAR(40) DEFAULT NULL,
