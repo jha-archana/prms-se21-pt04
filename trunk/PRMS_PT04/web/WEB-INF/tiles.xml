@@ -51,4 +51,7 @@
     <definition name="weeklySchedulePage" extends="homePage">
         <put-attribute name="body" value="/pages/schedule/_weeklySchedule.jsp" />
     </definition>
+    <definition name="setupschedulePage" extends="homePage">
+        <put-attribute name="body" value="/pages/tilepages/setupschedule.jsp" />
+    </definition>
 </tiles-definitions>
