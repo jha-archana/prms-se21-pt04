@@ -147,6 +147,16 @@ INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-n
 
 INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-name", "presenter-id", "producer-id") 
 	VALUES ('02:00:00', '2013-09-11', '01:30:00', 'top 10', 'dilbert', 'dogbert');
+
+-- With Time Stamp Conversion 
+--INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-name", "presenter-id", "producer-id") 
+--	VALUES (Time('00:30:00'), TimeStamp('2013-09-11 00:30:00'), TimeStamp('2013-09-11 00:00:00'), 'news', 'dilbert', 'wally');
+
+--INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-name", "presenter-id", "producer-id") 
+--	VALUES (Time('01:00:00'), TimeStamp('2013-09-11 00:30:00'), TimeStamp('2013-09-11 00:30:00'), 'your choice', 'dilbert', 'dilbert');
+
+--INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-name", "presenter-id", "producer-id") 
+--	VALUES (Time('02:00:00'), TimeStamp('2013-09-11 00:00:00'), TimeStamp('2013-09
 -- -----------------------------------------------------
 -- Table "weekly-schedule"
 -- -----------------------------------------------------
