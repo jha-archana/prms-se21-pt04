@@ -1,8 +1,8 @@
 package sg.edu.nus.iss.phoenix.schedule.entity;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.Date;
+import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
 import sg.edu.nus.iss.phoenix.producer.entity.Producer;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
@@ -22,12 +22,12 @@ public class ProgramSlot implements Cloneable, Serializable {
      * Persistent Instance variables. This data is directly 
      * mapped to the columns of database table.
      */
-    private Time duration; //duration, i.e. 00:30:00 30 seconds
-    private Date dateOfProgram; //date, i.e. 2012-01-01 1st Jan 2012
-    private Time startTime; //start time, i.e. 12:30:00 tweleve thirty
+    private String duration;
+    private Date dateOfProgram;
+    private String startTime;
     private RadioProgram radioProgram;
-    private Producer producer;
-    private Presenter presenter;
+    private User presenter;
+    private User producer;
 
 
 
@@ -49,10 +49,10 @@ public class ProgramSlot implements Cloneable, Serializable {
      * so these might require some manual additions.
      */
 
-    public Time getDuration() {
+    public String getDuration() {
           return this.duration;
     }
-    public void setDuration(Time durationIn) {
+    public void setDuration(String durationIn) {
           this.duration = durationIn;
     }
 
@@ -63,10 +63,10 @@ public class ProgramSlot implements Cloneable, Serializable {
           this.dateOfProgram = dateOfProgram;
     }
 
-    public Time getStartTime() {
+    public String getStartTime() {
           return this.startTime;
     }
-    public void setStartTime(Time startTime) {
+    public void setStartTime(String startTime) {
           this.startTime = startTime;
     }
     
@@ -77,6 +77,19 @@ public class ProgramSlot implements Cloneable, Serializable {
           this.radioProgram = radioProgram;
     }
 
+    public User getPresenter() {
+          return this.presenter;
+    }
+    public void setPresenter(User presenter) {
+          this.presenter = presenter;
+    }
+    
+    public User getProducer() {
+          return this.producer;
+    }
+    public void setProducer(User producer) {
+          this.producer = producer;
+    }
 
 
     /** 
@@ -87,12 +100,17 @@ public class ProgramSlot implements Cloneable, Serializable {
      * individual set-methods.
      */
 
-    public void setAll(Time durationIn,Date dateOfProgramIn,Time startTimeIn,String radioProgramIn) {
+    public void setAll(String durationIn,Date dateOfProgramIn,String startTimeIn,
+            String radioProgramIn,String presenterIn,String producerIn) {
           this.duration = durationIn;
           this.dateOfProgram = dateOfProgramIn;
           this.startTime = startTimeIn;
           RadioProgram rp= new RadioProgram(radioProgramIn);
           this.radioProgram= rp;
+          User p1 = new User(presenterIn);
+          this.presenter=p1;
+          User p2 = new User(producerIn);
+          this.producer=p2;
     }
     /** 
      * hasEqualMapping-method will compare two ProgramSlot instances
@@ -120,7 +138,9 @@ public class ProgramSlot implements Cloneable, Serializable {
         out.append("duration = " + this.duration + "\n"); 
         out.append("dateOfProgram = " + this.dateOfProgram + "\n"); 
         out.append("startTime = " + this.startTime + "\n"); 
-        out.append("radioProgram = " + this.radioProgram.getName()+ "\n"); 
+        out.append("radioProgram = " + this.radioProgram.getName()+ "\n");
+        out.append("presenter = " + this.presenter.getId()+ "\n");
+        out.append("producer = " + this.producer.getId()+ "\n");
         return out.toString();
     }
 
@@ -138,21 +158,6 @@ public class ProgramSlot implements Cloneable, Serializable {
         return cloned;
     }
 
-    public Producer getProducer() {
-        return producer;
-    }
-
-    public void setProducer(Producer producer) {
-        this.producer = producer;
-    }
-
-    public Presenter getPresenter() {
-        return presenter;
-    }
-
-    public void setPresenter(Presenter presenter) {
-        this.presenter = presenter;
-    }
-    
-    
 }
+
+
