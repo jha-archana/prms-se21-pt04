@@ -2,9 +2,10 @@ package sg.edu.nus.iss.phoenix.schedule.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
-import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 
 /**
@@ -27,7 +28,7 @@ public interface ScheduleDAO {
 	 * as a parameter. Returned valueObject will be created using the
 	 * createValueObject() method.
 	 */
-	public abstract ProgramSlot getObject(String name)
+	public abstract ProgramSlot getObject(Time duration, Date dateOfProgram, Time startTime)
 			throws NotFoundException, SQLException;
 
 	/**
