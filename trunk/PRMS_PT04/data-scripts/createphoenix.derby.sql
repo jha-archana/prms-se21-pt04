@@ -113,12 +113,12 @@ CREATE INDEX "id_annual_schedule" ON "annual-schedule" ("assingedBy" ASC) ;
 
 CREATE  TABLE "program-slot" (
   "duration" TIME NOT NULL ,
-  "dateOfProgram" TIMESTAMP NOT NULL ,
-  "startTime" TIMESTAMP NOT NULL ,
+  "dateOfProgram" DATE NOT NULL ,
+  "startTime" TIME NOT NULL ,
   "program-name" VARCHAR(45) DEFAULT NULL ,
    "presenter-id" VARCHAR(40) DEFAULT NULL,
     "producer-id" VARCHAR(40) DEFAULT NULL,
-  PRIMARY KEY ("duration", "dateOfProgram") ,
+  PRIMARY KEY ("duration", "dateOfProgram","startTime") ,
   CONSTRAINT "name"
     FOREIGN KEY ("program-name" )
     REFERENCES "radio-program" ("name" )
@@ -140,13 +140,13 @@ CREATE INDEX "name_program_slot" ON "program-slot" ("program-name" ASC) ;
 
 --CREATE UNIQUE INDEX "dateOfProgram_UNIQUE" ON "program-slot" ("dateOfProgram" ASC) ;
 INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-name", "presenter-id", "producer-id") 
-	VALUES ('00:30:00', '2013-09-11 00:00:00', '00:00:00', 'news', 'dilbert', 'wally');
+	VALUES ('00:30:00', '2013-09-11', '00:00:00', 'news', 'dilbert', 'wally');
 
 INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-name", "presenter-id", "producer-id") 
-	VALUES ('01:00:00', '2013-09-11 00:30:00', '00:30:00', 'your choice', 'dilbert', 'dilbert');
+	VALUES ('01:00:00', '2013-09-11', '00:30:00', 'your choice', 'dilbert', 'dilbert');
 
 INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-name", "presenter-id", "producer-id") 
-	VALUES ('02:00:00', '2013-09-11 01:30:00', '01:30:00', 'top 10', 'dilbert', 'dogbert');
+	VALUES ('02:00:00', '2013-09-11', '01:30:00', 'top 10', 'dilbert', 'dogbert');
 -- -----------------------------------------------------
 -- Table "weekly-schedule"
 -- -----------------------------------------------------
