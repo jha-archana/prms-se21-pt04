@@ -43,7 +43,10 @@
                 <th><fmt:message key="label.maintainSchedule.dateOfProgram"/></th>
                 <th><fmt:message key="label.maintainSchedule.startTime"/></th>
                 <th><fmt:message key="label.maintainSchedule.programName"/></th>
-                <th><fmt:message key="label.maintainSchedule.edit"/> <fmt:message key="label.maintainSchedule.delete"/></th>
+                <th><fmt:message key="label.maintainSchedule.presenter"/></th>
+                <th><fmt:message key="label.maintainSchedule.producer"/></th>
+                <th><fmt:message key="label.maintainSchedule.edit"/> 
+                    <fmt:message key="label.maintainSchedule.delete"/></th>
             </tr>
             <c:forEach var="crudps" items="${schd}" varStatus="status">
                 <tr class="${status.index%2==0?'even':'odd'}">
@@ -51,14 +54,16 @@
                     <td class="nowrap">${crudps.dateOfProgram}</td>
                     <td class="nowrap">${crudps.startTime}</td>
                      <td class="nowrap">${crudps.radioProgram.name}</td>
+                     <td class="nowrap">${crudps.presenter.name}</td>
+                     <td class="nowrap">${crudps.producer.name}</td>
                     <td class="nowrap">
                         <c:url var="updurl" scope="page" value="/pages/loadSchedule.jsp">
                             <c:param name="duration" value="${crudps.duration}"/>
                             <c:param name="dateOfProgram" value="${crudps.dateOfProgram}"/>
                             <c:param name="startTime" value="${crudps.startTime}"/>
                              <c:param name="radioProgram" value="${crudps.radioProgram.name}"/>
-                             <c:param name="producer-id" value="${crudps.radioProgram.producer.id}"/>
-                             <c:param name="presenter-id" value="${crudps.radioProgram.presenter.id}"/>
+                             <c:param name="producer-id" value="${crudps.producer.id}"/>
+                             <c:param name="presenter-id" value="${crudps.presenter.id}"/>
                              <c:param name="insert" value="false"/>
                         </c:url>
                         <a href="${updurl}"><fmt:message key="label.maintainSchedule.edit"/></a>
