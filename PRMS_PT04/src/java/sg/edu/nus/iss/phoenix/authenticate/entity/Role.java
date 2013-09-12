@@ -101,11 +101,12 @@ public class Role implements Cloneable, Serializable {
 	 * when application is writing object states in textlog.
 	 */
 	public String toString() {
-		StringBuffer out = new StringBuffer("toString: ");
-		out.append("\nclass Role, mapping to table role\n");
-		out.append("Persistent attributes: \n");
-		out.append("role = " + this.role + "\n");
-		out.append("accessPrivilege = " + this.accessPrivilege + "\n");
+            	StringBuffer out = new StringBuffer(this.role);
+		//StringBuffer out = new StringBuffer("toString: ");
+		//out.append("\nclass Role, mapping to table role\n");
+		//out.append("Persistent attributes: \n");
+		//out.append("role = " + this.role + "\n");
+		//out.append("accessPrivilege = " + this.accessPrivilege + "\n");
 		return out.toString();
 	}
 
