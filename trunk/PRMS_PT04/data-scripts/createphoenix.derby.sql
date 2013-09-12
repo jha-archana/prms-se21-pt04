@@ -112,7 +112,7 @@ CREATE INDEX "id_annual_schedule" ON "annual-schedule" ("assingedBy" ASC) ;
 -- -----------------------------------------------------
 
 CREATE  TABLE "program-slot" (
-  "duration" TIME NOT NULL ,
+  "duration" VARCHAR(20) NOT NULL ,
   "dateOfProgram" DATE NOT NULL ,
   "startTime" TIME NOT NULL ,
   "program-name" VARCHAR(45) DEFAULT NULL ,
@@ -163,21 +163,3 @@ CREATE  TABLE "weekly-schedule" (
 CREATE UNIQUE INDEX "startDate_UNIQUE" ON "weekly-schedule" ("startDate" ASC) ;
 
 CREATE INDEX "id_assigned_by" ON "weekly-schedule" ("assignedBy" ASC) ;
-
-//Addded by Archana
-
-delete from APP."program-slot";
-
-drop table APP."program-slot";
-
-CREATE  TABLE "program-slot" (
-  "duration" VARCHAR(20) NOT NULL ,
-  "dateOfProgram" TIMESTAMP NOT NULL ,
-  "startTime" TIMESTAMP DEFAULT NULL ,
-  "program-name" VARCHAR(45) DEFAULT NULL ,
-  PRIMARY KEY ("startTime", "dateOfProgram") ,
-  CONSTRAINT "name"
-    FOREIGN KEY ("program-name" )
-    REFERENCES "radio-program" ("name" )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
