@@ -3,6 +3,8 @@ package sg.edu.nus.iss.phoenix.schedule.entity;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
+import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
+import sg.edu.nus.iss.phoenix.producer.entity.Producer;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 
 /**
@@ -20,10 +22,12 @@ public class ProgramSlot implements Cloneable, Serializable {
      * Persistent Instance variables. This data is directly 
      * mapped to the columns of database table.
      */
-    private Time duration;
-    private Date dateOfProgram;
-    private Time startTime;
+    private Time duration; //duration, i.e. 00:30:00 30 seconds
+    private Date dateOfProgram; //date, i.e. 2012-01-01 1st Jan 2012
+    private Time startTime; //start time, i.e. 12:30:00 tweleve thirty
     private RadioProgram radioProgram;
+    private Producer producer;
+    private Presenter presenter;
 
 
 
@@ -134,4 +138,21 @@ public class ProgramSlot implements Cloneable, Serializable {
         return cloned;
     }
 
+    public Producer getProducer() {
+        return producer;
+    }
+
+    public void setProducer(Producer producer) {
+        this.producer = producer;
+    }
+
+    public Presenter getPresenter() {
+        return presenter;
+    }
+
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
+    }
+    
+    
 }
