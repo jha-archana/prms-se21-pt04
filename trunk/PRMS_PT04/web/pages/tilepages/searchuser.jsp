@@ -51,7 +51,7 @@
 			</tr>
 			<c:forEach var="user" items="${searchuserlist}" varStatus="status">
 				<tr class="${status.index%2==0?'even':'odd'}">
-					<td class="nowrap">${user.name}</td>
+					<a href="${editurl}"><td class="nowrap">${user.name}</td></a>
 					<td class="nowrap">${user.roles}</td>
 				</tr>
 			</c:forEach>
