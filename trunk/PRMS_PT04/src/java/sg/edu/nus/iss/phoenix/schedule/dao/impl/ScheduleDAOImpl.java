@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,12 +47,18 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	/* (non-Javadoc)
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#getObject(java.lang.String)
 	 */
-	@Override
-	public ProgramSlot getObject(String name) throws NotFoundException,
+		/* (non-Javadoc)
+	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#getObject(java.lang.String)
+	 */
+        @Override
+	public ProgramSlot getObject(String duration, Date dateOfProgram, String startTime) throws NotFoundException,
 			SQLException {
 
-		ProgramSlot valueObject = createValueObject();
-		//to do
+		 ProgramSlot valueObject = createValueObject();
+                valueObject.setDateOfProgram(dateOfProgram);
+                valueObject.setDuration(duration);
+                valueObject.setStartTime(startTime);
+                load(valueObject);
                 return valueObject;
 	}
 
