@@ -48,6 +48,21 @@ insert into "user" values('wally', 'wally', 'wally, the bludger', 'producer');
 insert into "user" values('pointyhead', 'pointyhead', 'pointyhead, the manager', 'manager');
 insert into "user" values('catbert', 'catbert', 'catbert, the hr', 'admin:manager');
 insert into "user" values('dogbert', 'dogbert', 'dogbert, the CEO', 'producer:admin');
+insert into "user" values('mercury', 'mercury', 'mercury', 'presenter');
+insert into "user" values('venus', 'venus', 'venus', 'presenter');
+insert into "user" values('mars', 'mars', 'mars', 'presenter');
+insert into "user" values('saturn', 'saturn', 'saturn', 'presenter');
+insert into "user" values('uranus', 'uranus', 'uranus', 'presenter');
+insert into "user" values('neptune', 'neptune', 'neptune', 'presenter');
+insert into "user" values('pluto', 'pluto', 'pluto', 'presenter');
+insert into "user" values('ira', 'ira', 'Ira Steven Behr', 'producer');
+insert into "user" values('harve', 'harve', 'Harve Bennett', 'producer');
+insert into "user" values('rick', 'rick', 'Rick Berman', 'producer');
+insert into "user" values('kenneth', 'kenneth', 'Kenneth Biller', 'producer');
+insert into "user" values('brannon', 'brannon', 'Brannon Braga', 'producer');
+insert into "user" values('gene', 'gene', 'Gene L. Coon', 'producer');
+insert into "user" values('manny', 'manny', 'Manny Coto', 'producer');
+insert into "user" values('robert', 'robert', 'Robert H. Justman', 'producer');
 
 
 -- -----------------------------------------------------
@@ -98,21 +113,40 @@ CREATE INDEX "id_annual_schedule" ON "annual-schedule" ("assingedBy" ASC) ;
 
 CREATE  TABLE "program-slot" (
   "duration" TIME NOT NULL ,
-  "dateOfProgram" TIMESTAMP NOT NULL ,
-  "startTime" TIMESTAMP DEFAULT NULL ,
+  "dateOfProgram" DATE NOT NULL ,
+  "startTime" TIME NOT NULL ,
   "program-name" VARCHAR(45) DEFAULT NULL ,
-  PRIMARY KEY ("duration", "dateOfProgram") ,
+   "presenter-id" VARCHAR(40) DEFAULT NULL,
+    "producer-id" VARCHAR(40) DEFAULT NULL,
+  PRIMARY KEY ("startTime", "dateOfProgram") ,
   CONSTRAINT "name"
     FOREIGN KEY ("program-name" )
     REFERENCES "radio-program" ("name" )
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON UPDATE NO ACTION,
+   CONSTRAINT "presenterid"
+    FOREIGN KEY ("presenter-id" )
+    REFERENCES "user" ("id" )
+ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+CONSTRAINT "producerid"   
+ FOREIGN KEY ("producer-id" )
+    REFERENCES "user" ("id" )
+ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    );
 
 CREATE INDEX "name_program_slot" ON "program-slot" ("program-name" ASC) ;
 
-CREATE UNIQUE INDEX "dateOfProgram_UNIQUE" ON "program-slot" ("dateOfProgram" ASC) ;
+--CREATE UNIQUE INDEX "dateOfProgram_UNIQUE" ON "program-slot" ("dateOfProgram" ASC) ;
+INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-name", "presenter-id", "producer-id") 
+	VALUES ('00:30:00', '2013-09-11', '00:00:00', 'news', 'dilbert', 'wally');
 
+INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-name", "presenter-id", "producer-id") 
+	VALUES ('01:00:00', '2013-09-11', '00:30:00', 'your choice', 'dilbert', 'dilbert');
 
+INSERT INTO "program-slot" ("duration", "dateOfProgram", "startTime", "program-name", "presenter-id", "producer-id") 
+	VALUES ('02:00:00', '2013-09-11', '01:30:00', 'top 10', 'dilbert', 'dogbert');
 -- -----------------------------------------------------
 -- Table "weekly-schedule"
 -- -----------------------------------------------------
