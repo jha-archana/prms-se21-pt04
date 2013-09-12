@@ -18,6 +18,10 @@ import sg.edu.nus.iss.phoenix.radioprogram.delegate.RPDelegate;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RPSearchObject;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 
+import sg.edu.nus.iss.phoenix.authenticate.delegate.AuthenticateDelegate;
+import sg.edu.nus.iss.phoenix.authenticate.entity.UserSearchObject;
+import sg.edu.nus.iss.phoenix.authenticate.entity.User;
+
 /**
  * Servlet implementation class ProcessController
  */
@@ -117,6 +121,17 @@ public class ProcessController extends HttpServlet {
 					"/pages/searchrp.jsp");
 			;
 			rd3.forward(request, response);
+			break;
+                case "searchuser":
+                        AuthenticateDelegate userdel = new AuthenticateDelegate();
+			UserSearchObject usersearch = new UserSearchObject();
+                        ArrayList<User> userlist = new ArrayList<User>();
+			userlist = userdel.findAllUser();
+                    	request.getSession().setAttribute("searchuserlist", userlist);
+			RequestDispatcher su = getServletContext().getRequestDispatcher(
+					"/pages/searchuser.jsp");
+			;
+			su.forward(request, response);
 			break;
 		default:
 			RPDelegate rpdel4 = new RPDelegate();
