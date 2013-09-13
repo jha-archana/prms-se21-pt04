@@ -42,8 +42,8 @@
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.programName" /></td>
-					<td><input type="text" name="programName"
-						value="${param['programName']}" size=15 maxlength=20></td>
+					<td><input type="text" name="radioProgram"
+						value="${param['radioProgram']}" size=15 maxlength=20></td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.presenterName" /></td>
