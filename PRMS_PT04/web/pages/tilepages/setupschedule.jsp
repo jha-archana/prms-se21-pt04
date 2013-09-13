@@ -13,13 +13,43 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link type="text/css" href="<c:url value='/css/jquery-ui-1.8.20.custom.css'/>" rel="stylesheet" />
+<script type="text/javascript" src="<c:url value='/js/jquery-1.7.2.min.js'/>">  </script>
+<script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.20.custom.min.js'/>">  </script>
+<script type="text/javascript" src="<c:url value='/js/jquery.ui.timepicker1.3.js'/>">  </script>
+<link type="text/css" href="<c:url value='/css/jquery.ui.timepicker1.3.css'/>" rel="stylesheet" />
 
 <fmt:setBundle basename="ApplicationResources" />
 
+
+<script type="text/javascript">
+    function validateForm()
+            {
+                var x = document.forms["scheduleForm"]["duration"].value;
+                if (x == null || x == "")
+                {
+                    alert("Duration must be filled out");
+                    return false;
+                }
+            }
+</script>
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		$( ".datepicker" ).datepicker({dateFormat: 'dd/mm/yy'});
+                $("input[name='duration']").timepicker({'minDivision': 5,
+			'closeOnFormclick'		: true,
+			'inputReadOnly'			: true});
+                $("input[name='startTime']").timepicker({'minDivision': 5,
+			'closeOnFormclick'		: true,
+                        'hourFormat'	: 12,
+			'inputReadOnly'			: true});
+	});
+					        
+</script>
 <title><fmt:message key="title.setupschedule" /></title>
 </head>
 <body>
-	<form action="${pageContext.request.contextPath}/controller/setupschedule" method=post>
+	<form name="scheduleForm" action="${pageContext.request.contextPath}/controller/setupschedule" method=post onsubmit="return validateForm()">
 		<center>
 			<table cellpadding=4 cellspacing=2 border=0>
 				<tr>
@@ -32,8 +62,8 @@
 				</tr>
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.dateOfProgram" /></td>
-					<td><input type="text" name="dateOfProgram"
-						value="${param['dateOfProgram']}" size=45 maxlength=20></td>
+					<td><input type="text" name="dateOfProgram" class="datepicker"
+						value="${param['dateOfProgram']}" size=15 maxlength=20></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.startTime" /></td>
