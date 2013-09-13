@@ -80,7 +80,7 @@ public class ScheduleController extends HttpServlet {
                 //Date d1 = Date.valueOf(dateOfProgram);
                 ps.setDateOfProgram(date);
                 RPDelegate rpDel = new RPDelegate();
-                String programName = request.getParameter("programName");
+                String programName = request.getParameter("radioProgram");
                 RadioProgram rp = rpDel.findRP(programName);
                 ps.setRadioProgram(rp);
                 AuthenticateDelegate authDel = new AuthenticateDelegate();
