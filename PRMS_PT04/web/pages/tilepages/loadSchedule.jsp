@@ -18,12 +18,6 @@
 <body>
         <h1><fmt:message key="label.maintainSchedule"/></h1>
         <c:url var="url" scope="page" value="/pages/setupschedule.jsp">
-                <c:param name="duration" value=""/>
-                <c:param name="dateOfProgram" value=""/>
-                <c:param name="startTime" value=""/>
-                <c:param name="programName" value=""/>
-                <c:param name="presenter" value=""/>
-                <c:param name="producer" value=""/>
                 <c:param name="insert" value="true"/>
         </c:url>
         <a href="${url}"><fmt:message key="label.maintainSchedule.add"/></a>
@@ -48,12 +42,7 @@
                      <td class="nowrap">${crudps.producer.id}</td>
                     <td class="nowrap">
                         <c:url var="updurl" scope="page" value="/pages/setupschedule.jsp">
-                            <c:param name="duration" value="${crudps.duration}"/>
-                            <c:param name="dateOfProgram" value="${crudps.dateOfProgram}"/>
-                            <c:param name="startTime" value="${crudps.startTime}"/>
-                             <c:param name="radioProgram" value="${crudps.radioProgram.name}"/>
-                             <c:param name="presenter" value="${crudps.presenter.id}"/>
-                             <c:param name="producer" value="${crudps.producer.id}"/>
+                            <c:param name="id" value="${crudps.id}"/>
                              <c:param name="insert" value="false"/>
                         </c:url>
                         <a href="${updurl}"><fmt:message key="label.maintainSchedule.edit"/></a>

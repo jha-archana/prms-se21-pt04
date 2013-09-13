@@ -24,9 +24,9 @@ public class ScheduleDelegate {
 		return null;	
 	}
 	
-	public ProgramSlot findProgramSlot(String rpName) {
-		//to do
-		return null;	
+	public ProgramSlot findProgramSlot(int id) {
+		ScheduleService service = new ScheduleService();
+		return service.findProgramSlot(id);
 		
 	}
 	public ArrayList<ProgramSlot> findAllProgramSlot() {

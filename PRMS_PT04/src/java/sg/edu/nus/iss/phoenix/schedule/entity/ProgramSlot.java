@@ -22,6 +22,7 @@ public class ProgramSlot implements Cloneable, Serializable {
      * Persistent Instance variables. This data is directly 
      * mapped to the columns of database table.
      */
+    private int id; 
     private String duration;
     private Date dateOfProgram;
     private String startTime;
@@ -42,6 +43,9 @@ public class ProgramSlot implements Cloneable, Serializable {
 
     }
 
+    public ProgramSlot (int id) {
+            this.id=id;
+    }
    
     /** 
      * Get- and Set-methods for persistent variables. The default
@@ -49,6 +53,13 @@ public class ProgramSlot implements Cloneable, Serializable {
      * so these might require some manual additions.
      */
 
+    public int getId(){
+        return this.id;
+    }
+    
+    public void setId(int id){
+        this.id=id;
+    }
     public String getDuration() {
           return this.duration;
     }

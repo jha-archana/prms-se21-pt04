@@ -32,9 +32,15 @@ public class ScheduleService {
 		return null;
 	}
 
-	public ProgramSlot findProgramSlot(String psName) {
-		//to do 
-		return null;
+	public ProgramSlot findProgramSlot(int id) {
+            ProgramSlot programSlot = new ProgramSlot();
+                try{
+                    programSlot = schdao.findObject(id);
+                }catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+                return programSlot;
 	}
 
 	public ArrayList<ProgramSlot> findAllProgramSlot() {
