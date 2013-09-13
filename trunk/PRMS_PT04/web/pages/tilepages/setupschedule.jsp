@@ -16,23 +16,17 @@
 <link type="text/css" href="<c:url value='/css/jquery-ui-1.8.20.custom.css'/>" rel="stylesheet" />
 <script type="text/javascript" src="<c:url value='/js/jquery-1.7.2.min.js'/>">  </script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.20.custom.min.js'/>">  </script>
+<%-- Time Picker js --%>
 <script type="text/javascript" src="<c:url value='/js/jquery.ui.timepicker1.3.js'/>">  </script>
 <link type="text/css" href="<c:url value='/css/jquery.ui.timepicker1.3.css'/>" rel="stylesheet" />
+<%-- Validation Engine js --%>
+<link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css'/>" type="text/css"/>
+<script src="<c:url value='/js/languages/jquery.validationEngine-en.js'/>" type="text/javascript" charset="utf-8"></script>
+<script src="<c:url value='/js/jquery.validationEngine.js'/>" type="text/javascript" charset="utf-8"></script>
 
 <fmt:setBundle basename="ApplicationResources" />
 
 
-<script type="text/javascript">
-    function validateForm()
-            {
-                var x = document.forms["scheduleForm"]["duration"].value;
-                if (x == null || x == "")
-                {
-                    alert("Duration must be filled out");
-                    return false;
-                }
-            }
-</script>
 <script type="text/javascript">
 	jQuery(document).ready(function(){
 		$( ".datepicker" ).datepicker({dateFormat: 'dd/mm/yy'});
@@ -43,51 +37,53 @@
 			'closeOnFormclick'		: true,
                         'hourFormat'	: 12,
 			'inputReadOnly'			: true});
+                 $("#submit").click(function(){
+                        jQuery("#save").validationEngine();
+                    });
 	});
-					        
 </script>
 <title><fmt:message key="title.setupschedule" /></title>
 </head>
 <body>
-	<form name="scheduleForm" action="${pageContext.request.contextPath}/controller/setupschedule" method=post onsubmit="return validateForm()">
+	<form name="scheduleForm" action="${pageContext.request.contextPath}/controller/setupschedule" method=post id="save">
 		<center>
 			<table cellpadding=4 cellspacing=2 border=0>
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.duration" /></td>
 					<td>
                                             <input type="text" name="duration" value="${param['duration']}" size=15
-                                                    maxlength=20>
+                                                    maxlength=20 class="validate[required]" data-prompt-position="centerRight:+40">
                                             <input type="hidden" name="ins" value="true" />
                                         </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.dateOfProgram" /></td>
-					<td><input type="text" name="dateOfProgram" class="datepicker"
-						value="${param['dateOfProgram']}" size=15 maxlength=20></td>
+					<td><input type="text" name="dateOfProgram" class="validate[required] datepicker"
+						value="${param['dateOfProgram']}" data-prompt-position="centerRight:+40"  size=15 maxlength=20></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.startTime" /></td>
 					<td><input type="text" name="startTime"
-						value="${param['startTime']}" size=15 maxlength=20></td>
+						value="${param['startTime']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.programName" /></td>
 					<td><input type="text" name="radioProgram"
-						value="${param['radioProgram']}" size=15 maxlength=20></td>
+						value="${param['radioProgram']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.presenterName" /></td>
 					<td><input type="text" name="presenter"
-						value="${param['presenter']}" size=15 maxlength=20></td>
+						value="${param['presenter']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.producerName" /></td>
 					<td><input type="text" name="producer"
-						value="${param['producer']}" size=15 maxlength=20></td>
+						value="${param['producer']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
 				</tr>
 			</table>
 		</center>
-		<input type="submit" value="Submit"> <input type="reset"
+		<input type="submit" value="Submit" id="submit"> <input type="reset"
 			value="Reset">
 	</form>
 
