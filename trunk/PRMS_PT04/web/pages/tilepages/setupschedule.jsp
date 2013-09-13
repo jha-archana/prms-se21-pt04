@@ -8,6 +8,8 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<jsp:useBean id="schdel" class="sg.edu.nus.iss.phoenix.schedule.delegate.ScheduleDelegate" scope="page"/>
+<jsp:useBean id="rpdel" class="sg.edu.nus.iss.phoenix.radioprogram.delegate.RPDelegate" scope="page"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -45,13 +47,14 @@
 <title><fmt:message key="title.setupschedule" /></title>
 </head>
 <body>
+        <c:set var="sch" value="${schdel.findProgramSlot(param['id'])}"/>
 	<form name="scheduleForm" action="${pageContext.request.contextPath}/controller/setupschedule" method=post id="save">
 		<center>
 			<table cellpadding=4 cellspacing=2 border=0>
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.duration" /></td>
 					<td>
-                                            <input type="text" name="duration" value="${param['duration']}" size=15
+                                            <input type="text" name="duration" value="${sch.getDuration()}" size=15
                                                     maxlength=20 class="validate[required]" data-prompt-position="centerRight:+40">
                                             <input type="hidden" name="ins" value="true" />
                                         </td>
@@ -59,27 +62,27 @@
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.dateOfProgram" /></td>
 					<td><input type="text" name="dateOfProgram" class="validate[required] datepicker"
-						value="${param['dateOfProgram']}" data-prompt-position="centerRight:+40"  size=15 maxlength=20></td>
+						value="${sch.getdateOfProgram()}" data-prompt-position="centerRight:+40"  size=15 maxlength=20></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.startTime" /></td>
 					<td><input type="text" name="startTime"
-						value="${param['startTime']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
+						value="${sch.getStartTime()}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.programName" /></td>
 					<td><input type="text" name="radioProgram"
-						value="${param['radioProgram']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
+						value="${sch.getRadioProgram().getName()}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.presenterName" /></td>
 					<td><input type="text" name="presenter"
-						value="${param['presenter']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
+						value="${sch.getPresenter().getId()}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.producerName" /></td>
 					<td><input type="text" name="producer"
-						value="${param['producer']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
+						value="${sch.getProducer().getId()}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
 				</tr>
 			</table>
 		</center>

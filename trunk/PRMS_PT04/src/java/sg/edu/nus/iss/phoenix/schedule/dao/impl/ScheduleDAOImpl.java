@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,6 +60,15 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                 load(valueObject);
                 return valueObject;
 	}
+        
+        @Override
+        public ProgramSlot findObject(int id) throws NotFoundException, SQLException {
+
+            ProgramSlot valueObject = createValueObject();
+            valueObject.setId(id);
+            load(valueObject);
+            return valueObject;
+        }
 
 	/* (non-Javadoc)
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#load(sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram)
@@ -68,7 +76,12 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	@Override
 	public void load(ProgramSlot valueObject) throws NotFoundException,
 			SQLException {
-                        //To do 
+         String sql = "SELECT * FROM APP.\"program-slot\" WHERE (\"id\" = ? ) ";
+        //PreparedStatement stmt = null;
+            try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+                stmt.setInt(1, valueObject.getId());
+                singleQuery(stmt, valueObject);
+            } 
 	}
 
 	/* (non-Javadoc)
@@ -195,7 +208,34 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	protected void singleQuery(PreparedStatement stmt, ProgramSlot valueObject)
 			throws NotFoundException, SQLException {
 
-		//to do
+		ResultSet result = null;
+
+                try {
+                    result = stmt.executeQuery();
+
+                    if (result.next()) {
+                                valueObject.setId(result.getInt("id"));
+				valueObject.setDuration(result.getString("duration"));
+				valueObject.setDateOfProgram(result.getDate("dateOfProgram"));
+				valueObject.setStartTime(result.getString("startTime"));
+                                RadioProgram rp = new RadioProgram(result.getString("program-name"));
+                                valueObject.setRadioProgram(rp);
+                                User presenter = new User(result.getString("presenter-id"));
+                                valueObject.setPresenter(presenter);
+                                User producer = new User(result.getString("producer-id"));
+                                valueObject.setProducer(producer);
+
+                    } else {
+                        throw new NotFoundException("User Object Not Found!");
+                    }
+                } finally {
+                    if (result != null) {
+                        result.close();
+                    }
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                }
 	}
 
 	/**
@@ -220,7 +260,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
 			while (result.next()) {
 				ProgramSlot temp = createValueObject();
-
+                                temp.setId(result.getInt("id"));
 				temp.setDuration(result.getString("duration"));
 				temp.setDateOfProgram(result.getDate("dateOfProgram"));
 				temp.setStartTime(result.getString("startTime"));

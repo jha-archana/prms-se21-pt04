@@ -31,6 +31,14 @@ public interface ScheduleDAO {
 	public abstract ProgramSlot getObject(String duration, Date dateOfProgram, String startTime)
 			throws NotFoundException, SQLException;
 
+        /**
+	 * findObject-method. This will create and load valueObject contents from
+	 * database using given id as identifier. This method is just a
+	 * convenience method for the real load-method which accepts the valueObject
+	 * as a parameter. Returned valueObject will be created using the
+	 * createValueObject() method.
+	 */
+        public abstract ProgramSlot findObject(int id) throws NotFoundException, SQLException;
 	/**
 	 * load-method. This will load valueObject contents from database using
 	 * Primary-Key as identifier. Upper layer should use this so that
