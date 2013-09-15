@@ -3,6 +3,7 @@ package sg.edu.nus.iss.phoenix.schedule.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
