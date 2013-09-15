@@ -42,14 +42,11 @@
     <definition name="producerSearchPage" extends="homePage">
         <put-attribute name="body" value="/pages/producer/_search.jsp" />
     </definition>
+    <definition name="searchSearchPage" extends="homePage">
+        <put-attribute name="body" value="/pages/producer/_search.jsp" />
+    </definition>
     <definition name="crudSchedulePage" extends="homePage">
         <put-attribute name="body" value="/pages/schedule/_setup.jsp" />
-    </definition>
-    <definition name="annualSchedulePage" extends="homePage">
-        <put-attribute name="body" value="/pages/schedule/_annualSchedule.jsp" />
-    </definition>
-    <definition name="weeklySchedulePage" extends="homePage">
-        <put-attribute name="body" value="/pages/schedule/_weeklySchedule.jsp" />
     </definition>
     <definition name="setupschedulePage" extends="homePage">
         <put-attribute name="body" value="/pages/tilepages/setupschedule.jsp" />

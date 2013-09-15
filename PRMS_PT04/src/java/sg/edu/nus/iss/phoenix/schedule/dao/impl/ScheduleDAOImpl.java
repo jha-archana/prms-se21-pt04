@@ -30,7 +30,7 @@ import sg.edu.nus.iss.phoenix.utils.SDFUtils;
  */
 public class ScheduleDAOImpl implements ScheduleDAO {
     private static final Logger logger = Logger.getLogger(ScheduleDAOImpl.class.getName());
-    private UserDao udao;
+   
         DataSource ds ;
 	//Connection connection;
         
@@ -38,7 +38,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         {
              try {
             ds = (DataSource) InitialContext.doLookup("jdbc/PrmsDatasource");
-            udao = new UserDaoImpl();
+           
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "Cannot connect to the DS");
             }
@@ -229,9 +229,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 				valueObject.setStartTime(result.getString("startTime"));
                                 RadioProgram rp = new RadioProgram(result.getString("program-name"));
                                 valueObject.setRadioProgram(rp);
-                                Presenter presenter = findPresenter(result.getString("producer-id"));
+                                Presenter presenter = new Presenter(result.getString("producer-id"));
                                 valueObject.setPresenter(presenter);
-                                Producer producer = findProducer(result.getString("producer-id"));
+                                Producer producer = new Producer(result.getString("producer-id"));
                                 valueObject.setProducer(producer);
 
                     } else {
@@ -247,40 +247,6 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                 }
 	}
         
-        //BAD 
-        //But to follow the design
-        public Presenter findPresenter(String id){
-        User user;
-        try {
-            user = udao.searchMatching(id);
-            if(user !=null){
-                Presenter presenter = new Presenter();
-                presenter.setId(user.getId());
-                presenter.setName(user.getName());
-                return presenter;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(PresenterService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-        
-         public Producer findProducer(String id){
-        User user;
-        try {
-            user = udao.searchMatching(id);
-            if(user != null ){
-                Producer producer = new Producer();
-                producer.setId(user.getId());
-                producer.setName(user.getName());
-                
-                return producer;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
 
 	/**
 	 * databaseQuery-method. This method is a helper method for internal use. It
@@ -310,9 +276,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 				temp.setStartTime(result.getString("startTime"));
                                 RadioProgram rp = new RadioProgram(result.getString("program-name"));
                                 temp.setRadioProgram(rp);
-                                Presenter presenter = findPresenter(result.getString("presenter-id"));
+                                Presenter presenter = new Presenter(result.getString("presenter-id"));
                                 temp.setPresenter(presenter);
-                                Producer producer = findProducer(result.getString("producer-id"));
+                                Producer producer = new Producer(result.getString("producer-id"));
                                 temp.setProducer(producer);
 				searchResults.add(temp);
 			}
