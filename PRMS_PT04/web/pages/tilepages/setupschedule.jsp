@@ -44,7 +44,11 @@
                     });
 	});
 </script>
-<title><fmt:message key="title.setupschedule" /></title>
+<title>
+    
+    <fmt:message key="title.setupschedule" />
+
+</title>
 </head>
 <body>
         <c:set var="sch" value="${schdel.findProgramSlot(param['id'])}"/>
@@ -75,11 +79,15 @@
 					<td><fmt:message key="label.maintainSchedule.programName" /></td>
 					<td>
                                             <input type="text" name="radioProgram"
-						value="${param['radioProgram_name']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20 readonly>
-                                            <input type="hidden" name="radioProgramId"
-						value="${param['radioProgram_id']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20 readonly>
+						value="${param['radioProgram']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20 readonly>
+                                            
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            <c:url value="/controller/rsrp" var="rsurl">
+                                                <c:param name="returnURL" value="${pageContext.request.requestURL}?${pageContext.request.queryString}"/>
+                                            </c:url>
+                                            <a href="${rsurl}" onclick="alert('hv not done');return false;">Review Select Radio Program</a>
+                                        </td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.presenterName" /></td>
