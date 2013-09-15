@@ -121,7 +121,7 @@ CREATE  TABLE "program-slot" (
   "program-name" VARCHAR(45) DEFAULT NULL ,
    "presenter-id" VARCHAR(40) DEFAULT NULL,
     "producer-id" VARCHAR(40) DEFAULT NULL,
-  PRIMARY KEY ("duration", "dateOfProgram","startTime") ,
+  PRIMARY KEY ("id") ,
   CONSTRAINT "name"
     FOREIGN KEY ("program-name" )
     REFERENCES "radio-program" ("name" )
