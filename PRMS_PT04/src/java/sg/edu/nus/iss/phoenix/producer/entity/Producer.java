@@ -19,9 +19,9 @@ public class Producer implements Serializable,Cloneable{
         this.name = "";
     }
     
-    public Producer(String name){
-        this.id="";
-        this.name = name;
+    public Producer(String id){
+        this.id=id;
+        this.name = "";
     }
     
     public Producer(String id, String name){
