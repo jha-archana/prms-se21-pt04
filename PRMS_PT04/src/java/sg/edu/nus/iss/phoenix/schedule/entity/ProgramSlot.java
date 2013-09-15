@@ -1,11 +1,13 @@
 package sg.edu.nus.iss.phoenix.schedule.entity;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
 import sg.edu.nus.iss.phoenix.producer.entity.Producer;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
+import sg.edu.nus.iss.phoenix.utils.SDFUtils;
 
 /**
  * ProgramSlot aka Schedule
@@ -23,12 +25,12 @@ public class ProgramSlot implements Cloneable, Serializable {
      * mapped to the columns of database table.
      */
     private int id; 
-    private String duration;
+    private Date duration;
     private Date dateOfProgram;
-    private String startTime;
+    private Date startTime;
     private RadioProgram radioProgram;
-    private User presenter;
-    private User producer;
+    private Presenter presenter;
+    private Producer producer;
 
 
 
@@ -60,25 +62,45 @@ public class ProgramSlot implements Cloneable, Serializable {
     public void setId(int id){
         this.id=id;
     }
-    public String getDuration() {
+    public Date getDuration() {
           return this.duration;
     }
+    
+    public void setDuration(Date duration){
+        this.duration = duration;
+    }
+    
     public void setDuration(String durationIn) {
-          this.duration = durationIn;
+        try{
+          Date dur = SDFUtils.SCHEDULE_SDF_TIME.parse(durationIn);
+          setDuration(dur);
+        }catch(ParseException e){
+            e.printStackTrace();;
+        }
     }
 
-    public Date getdateOfProgram() {
+    public Date getDateOfProgram() {
           return this.dateOfProgram;
     }
     public void setDateOfProgram(Date dateOfProgram) {
           this.dateOfProgram = dateOfProgram;
     }
 
-    public String getStartTime() {
+    public Date getStartTime() {
           return this.startTime;
     }
+    
+    public void setStartTime(Date startTime){
+        this.startTime = startTime;
+    }
+    
     public void setStartTime(String startTime) {
-          this.startTime = startTime;
+        try{
+          Date dur = SDFUtils.SCHEDULE_SDF_TIME.parse(startTime);
+          setStartTime(dur);
+        }catch(ParseException e){
+            e.printStackTrace();;
+        }
     }
     
     public RadioProgram getRadioProgram() {
@@ -88,17 +110,17 @@ public class ProgramSlot implements Cloneable, Serializable {
           this.radioProgram = radioProgram;
     }
 
-    public User getPresenter() {
+    public Presenter getPresenter() {
           return this.presenter;
     }
-    public void setPresenter(User presenter) {
+    public void setPresenter(Presenter presenter) {
           this.presenter = presenter;
     }
     
-    public User getProducer() {
+    public Producer getProducer() {
           return this.producer;
     }
-    public void setProducer(User producer) {
+    public void setProducer(Producer producer) {
           this.producer = producer;
     }
 
@@ -113,14 +135,14 @@ public class ProgramSlot implements Cloneable, Serializable {
 
     public void setAll(String durationIn,Date dateOfProgramIn,String startTimeIn,
             String radioProgramIn,String presenterIn,String producerIn) {
-          this.duration = durationIn;
+          setDuration(durationIn);
           this.dateOfProgram = dateOfProgramIn;
-          this.startTime = startTimeIn;
+          setStartTime( startTimeIn);
           RadioProgram rp= new RadioProgram(radioProgramIn);
           this.radioProgram= rp;
-          User p1 = new User(presenterIn);
+          Presenter p1 = new Presenter(presenterIn);
           this.presenter=p1;
-          User p2 = new User(producerIn);
+          Producer p2 = new Producer(producerIn);
           this.producer=p2;
     }
     /** 

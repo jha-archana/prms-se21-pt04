@@ -22,6 +22,10 @@ public class ProducerDelegate {
         producerService = new ProducerService();
     }
     
+    public Producer findProducer(String id){
+        return producerService.findProducer(id);
+    }
+    
     public List<Producer> findAllProducers(Producer example) {
         return producerService.findAllProducers(example);
     }
