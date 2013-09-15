@@ -29,4 +29,8 @@ public class ProducerDelegate {
     public List<Producer> findAllProducers(Producer example, PaginationCriteria criteria) {
         return producerService.findAllProducers(example, criteria);
     }
+    
+    public List<Producer> findAllProducers(){
+        return producerService.findAllProducers();
+    }
 }

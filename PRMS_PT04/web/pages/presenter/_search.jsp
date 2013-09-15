@@ -14,7 +14,7 @@
 		<fmt:message key="title.presenter.search" />
 	</h2>
         <div>
-	<form action="${pageContext.request.contextPath}/RSPresenter/search"
+	<form action="${pageContext.request.contextPath}/ReviewSelectPresenter/search?returnURL=${requestScope.returnURL}"
 		method=post>
 		<center>
 			<table class="framed">
@@ -46,11 +46,12 @@
 				<tr class="${status.index%2==0?'even':'odd'}">
 					<td class="nowrap">${presenter.name}</td>
 					<td class="nowrap">
-                                            <a href='
-                                            <c:url value="/RSPresenter/select">
+                                            <c:url value="/ReviewSelectPresenter/select" var="selurl">
                                                 <c:param name="id" value="${presenter.id}" />
                                                 <c:param name="name" value="${presenter.name}" />
-                                            </c:url>'>Select</a></td>
+                                                <c:param name="returnURL" value="${requestScope.returnURL}"/>
+                                            </c:url>
+                                            <a href='${selurl}'>Select</a></td>
 				</tr>
 			</c:forEach>
 		</table>

@@ -5,7 +5,10 @@
 package sg.edu.nus.iss.phoenix.producer.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,12 +21,13 @@ import sg.edu.nus.iss.phoenix.presenter.delegate.PresenterDelegate;
 import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
 import sg.edu.nus.iss.phoenix.producer.delegate.ProducerDelegate;
 import sg.edu.nus.iss.phoenix.producer.entity.Producer;
+import sg.edu.nus.iss.phoenix.utils.URLUtils;
 
 /**
  *
  * @author jiqin
  */
-@WebServlet(name = "ReviewSelectProducerController", urlPatterns = {"/RSProducer/*"})
+@WebServlet(name = "ReviewSelectProducerController", urlPatterns = {"/ReviewSelectProducer/*"})
 public class ReviewSelectProducerController extends HttpServlet {
 
     private static final String RSProducer_PREV_URL = "RSProducer_caller_URL";
@@ -106,12 +110,25 @@ public class ReviewSelectProducerController extends HttpServlet {
 
     private void processSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ProducerDelegate rpdel = new ProducerDelegate();
-        Producer rp = new Producer();
-        String name = request.getParameter("name"); 
-        rp.setName( name == null? "":name);
+        //direct from search page
+        String returnURL = request.getParameter("returnURL");
+        if(returnURL == null){
+            //from review page
+            returnURL = (String) request.getAttribute("returnURL");
+        }
         
-        List<Producer> data = rpdel.findAllProducers(rp);
+        String name = request.getParameter("name"); 
+        List<Producer> data = new ArrayList<>();
+        if(name == null){
+            data = rpdel.findAllProducers();
+        }else{
+            Producer rp = new Producer();
+            rp.setName( name);
+             data = rpdel.findAllProducers(rp);
+        }
+        
         request.setAttribute("producers", data);
+         request.setAttribute("returnURL", returnURL);
         RequestDispatcher rd = request
                         .getRequestDispatcher("/pages/producer/search.jsp");
         rd.forward(request, response);
@@ -125,30 +142,28 @@ public class ReviewSelectProducerController extends HttpServlet {
            Producer rp = new Producer();
            rp.setName(request.getParameter("name"));
            rp.setId(request.getParameter("id"));
-           HttpSession session = request.getSession();
-           String returnUrl = (String) session.getAttribute(RSProducer_PREV_URL);
-           if(returnUrl != null){
-               
-               //clear the attribute
-                session.removeAttribute(RSProducer_PREV_URL);
-           }
-           //if not set, just go to front controller
-           if(returnUrl == null ) returnUrl = "/pages/home.jsp";
-           request.setAttribute(RETURN_KEY, rp);
-           RequestDispatcher rd1 = request
-                           .getRequestDispatcher(returnUrl);
-           rd1.forward(request, response);
+           String returnURL = request.getParameter("returnURL");
+           Map<String, String> params = new HashMap<>();
+           params.put("producer_id", rp.getId());
+           params.put("producer_name",rp.getName());
+           returnURL = URLUtils.formURL(returnURL, params);
+           //RequestDispatcher rd1 = request
+             //              .getRequestDispatcher(returnURL);
+           response.sendRedirect(returnURL);
            
            
     }
-
+    
+     /**
+     * Process the Review request, it is the default action for ReviewSelectPresenter Use Case
+     * @param request servlet request
+     * @param response  servlet response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void processReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String returnUrl = request.getParameter("returnUrl");
-        if(returnUrl != null){
-            //added to seession
-            HttpSession session = request.getSession();
-            session.setAttribute(RSProducer_PREV_URL, returnUrl);
-        }
+         String returnURL = (String) request.getParameter("returnURL");
+        request.setAttribute("returnURL", returnURL);
         processSearch(request,response);
         
     }

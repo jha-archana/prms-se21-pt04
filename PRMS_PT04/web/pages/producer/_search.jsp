@@ -46,11 +46,13 @@
 				<tr class="${status.index%2==0?'even':'odd'}">
 					<td class="nowrap">${producer.name}</td>
 					<td class="nowrap">
-                                            <a href='
-                                            <c:url value="/RSProducer/select">
+                                             <c:url value="/ReviewSelectProducer/select" var="selurl">
                                                 <c:param name="id" value="${producer.id}" />
                                                 <c:param name="name" value="${producer.name}" />
-                                            </c:url>'>Select</a></td>
+                                                <c:param name="returnURL" value="${requestScope.returnURL}"/>
+                                            </c:url>
+                                            <a href='${selurl}'>Select</a>
+                                          </td>
 				</tr>
 			</c:forEach>
 		</table>

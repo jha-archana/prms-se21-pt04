@@ -76,4 +76,23 @@ public class ProducerService {
         }
         return null;
     }
+    
+    public List<Producer> findAllProducers(){
+         List<Producer> producers = new ArrayList<>();
+        User user = new User();
+        user.setId("");
+        user.setName("");
+        user.setRoles(PRODUCER_ROLE);
+        try{
+            List<User> users = udao.searchMatching(user);
+            if(users!=null){
+                for(User fuser : users){
+                    producers.add(new Producer(fuser.getId(),fuser.getName()));
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return producers;
+    }
 }

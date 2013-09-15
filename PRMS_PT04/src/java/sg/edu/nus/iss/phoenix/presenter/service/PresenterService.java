@@ -75,4 +75,24 @@ public class PresenterService {
         }
         return null;
     }
+    
+    public List<Presenter> findAllPresenters()
+    {
+         List<Presenter> presenters = new ArrayList<>();
+        User user = new User();
+        user.setId("");
+        user.setName("");
+        user.setRoles(PRESENTER_ROLE);
+        try{
+            List<User> users = udao.searchMatching(user);
+            if(users!=null){
+                for(User fuser : users){
+                    presenters.add(new Presenter(fuser.getId(),fuser.getName()));
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return presenters;
+    }
 }
