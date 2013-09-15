@@ -26,6 +26,7 @@ import sg.edu.nus.iss.phoenix.radioprogram.delegate.RPDelegate;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 import sg.edu.nus.iss.phoenix.schedule.delegate.ScheduleDelegate;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.utils.SDFUtils;
 
 /**
  *
@@ -69,20 +70,13 @@ public class ScheduleController extends HttpServlet {
             case "setupschedule":
                 ScheduleDelegate scheDel1 = new ScheduleDelegate();
                 ProgramSlot ps = new ProgramSlot();
+                String ins =  request.getParameter("ins");
                 String duration = request.getParameter("duration");
                 ps.setDuration(duration);
                 String startTime = request.getParameter("startTime");
                 ps.setStartTime(startTime);
                 String dateOfProgram = request.getParameter("dateOfProgram");
-                DateFormat formatter = new SimpleDateFormat("dd/MM/YYYY");
-                Date date = new Date();
-               try{
-                date = formatter.parse(dateOfProgram);
-               }catch(Exception e){
-                   e.printStackTrace();
-               }
-                //Date d1 = Date.valueOf(dateOfProgram);
-                ps.setDateOfProgram(date);
+                ps.setDateOfProgram(dateOfProgram);
                 RPDelegate rpDel = new RPDelegate();
                 String programName = request.getParameter("radioProgram");
                 RadioProgram rp = rpDel.findRP(programName);
@@ -98,13 +92,12 @@ public class ScheduleController extends HttpServlet {
                 Producer producer = prDel.findProducer(p2_id);
                 ps.setProducer(producer);
                 
-                System.out.println(ps.toString());
-                /*if (ins.equalsIgnoreCase("true")) {
-                 rpdel.insertRP(rp);
+                if ("true".equalsIgnoreCase(ins)) {
+                     scheDel1.insertProgramSlot(ps);
                  } else {
-                 rpdel.updateRP(rp);
-                 }*/
-                scheDel1.insertProgramSlot(ps);
+                    scheDel1.updateProgramSlot(ps);
+                 }
+               
                 ArrayList<ProgramSlot> data1 = scheDel1.findAllProgramSlot();
                 request.setAttribute("schd", data1);
                 RequestDispatcher rd = request
