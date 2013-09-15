@@ -1,7 +1,10 @@
 package sg.edu.nus.iss.phoenix.presenter.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,16 +15,19 @@ import javax.servlet.http.HttpSession;
 import sg.edu.nus.iss.phoenix.core.controller.FCUtilities;
 import sg.edu.nus.iss.phoenix.presenter.delegate.PresenterDelegate;
 import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
+import sg.edu.nus.iss.phoenix.utils.URLUtils;
 
 /**
- *
- * @author jiqin
+ * ReviewSelectPresenterController, it will handle the Reivew Select Presenter Use Case
+ * @author Wang Jiqin <a0107596@nus.edu.sg>
+ * @version 1.0
+ * @since 1.0
  */
-@WebServlet(name = "ReviewSelectPresenterController", urlPatterns = {"/RSPresenter/*"})
+@WebServlet(name = "ReviewSelectPresenterController", urlPatterns = {"/ReviewSelectPresenter/*"})
 public class ReviewSelectPresenterController extends HttpServlet {
     
-    private static final String PRESENTER_PREV_URL = "RSPresenter_caller_URL";
     private static final String RETURN_KEY = "selectedPresenter";
+    
     
 
     /**
@@ -42,7 +48,7 @@ public class ReviewSelectPresenterController extends HttpServlet {
 		switch (selection) {
                         //select 
                     case "select":
-                        processSelection(request,response);
+                        processSelect(request,response);
 			break;
                         //search 
                     case "search":
@@ -98,51 +104,72 @@ public class ReviewSelectPresenterController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    /**
+     * Process the Search request 
+     * @param request servlet request
+     * @param response  servlet response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void processSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PresenterDelegate rpdel = new PresenterDelegate();
-        Presenter rp = new Presenter();
+        //direct from search page
+        String returnURL = request.getParameter("returnURL");
+        if(returnURL == null){
+            //from review page
+            returnURL = (String) request.getAttribute("returnURL");
+        }
         String name = request.getParameter("name"); 
-        rp.setName( name == null? "":name);
-        
-        List<Presenter> data = rpdel.findAllPresenters(rp);
+        List<Presenter> data = new ArrayList<>();
+       if(name == null){
+           data = rpdel.findAllPresenters();
+       }else{
+            Presenter rp = new Presenter();
+            rp.setName(name);
+            data = rpdel.findAllPresenters(rp);
+       }
         request.setAttribute("presenters", data);
-        RequestDispatcher rd = request
-                        .getRequestDispatcher("/pages/presenter/search.jsp");
+        request.setAttribute("returnURL", returnURL);
+        RequestDispatcher rd = request.getRequestDispatcher("/pages/presenter/search.jsp");
         rd.forward(request, response);
     }
-
-    private void processSelection(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    
+     /**
+     * Process the Select request 
+     * @param request servlet request
+     * @param response  servlet response
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void processSelect(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
          /**
             * Select the presenter and return to previous page
             */
            PresenterDelegate rpdel = new PresenterDelegate();
            Presenter rp = new Presenter();
            rp.setName(request.getParameter("name"));
-           rp.setId(request.getParameter("uid"));
-           HttpSession session = request.getSession();
-           String returnUrl = (String) session.getAttribute(PRESENTER_PREV_URL);
-           if(returnUrl != null){
-               
-               //clear the attribute
-                session.removeAttribute(PRESENTER_PREV_URL);
-           }
-           //if not set, just go to front controller
-           if(returnUrl == null ) returnUrl = "/pages/home.jsp";
-           request.setAttribute(RETURN_KEY, rp);
-           RequestDispatcher rd1 = request
-                           .getRequestDispatcher(returnUrl);
-           rd1.forward(request, response);
+           rp.setId(request.getParameter("id"));
+           String returnURL = request.getParameter("returnURL");
+           Map<String, String> params = new HashMap<>();
+           params.put("presenter_id", rp.getId());
+           params.put("presenter_name",rp.getName());
+           returnURL = URLUtils.formURL(returnURL, params);
+           
+           response.sendRedirect(returnURL);
            
            
     }
-
+    
+     /**
+     * Process the Review request, it is the default action for ReviewSelectPresenter Use Case
+     * @param request servlet request
+     * @param response  servlet response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void processReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String returnUrl = request.getParameter("returnUrl");
-        if(returnUrl != null){
-            //added to seession
-            HttpSession session = request.getSession();
-            session.setAttribute(PRESENTER_PREV_URL, returnUrl);
-        }
+        String returnURL = (String) request.getParameter("returnURL");
+        request.setAttribute("returnURL", returnURL);
         processSearch(request,response);
         
     }

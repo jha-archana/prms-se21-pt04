@@ -31,8 +31,8 @@
 
 <script type="text/javascript">
 	jQuery(document).ready(function(){
-		$( ".datepicker" ).datepicker({dateFormat: 'dd/mm/yy'});
-                $("input[name='duration']").timepicker({'minDivision': 5,
+		$( ".datepicker" ).datepicker({dateFormat: 'yyyy-mm-dd'});
+                $("input[name='duration']").timepicker({'minDivision': 30,
 			'closeOnFormclick'		: true,
 			'inputReadOnly'			: true});
                 $("input[name='startTime']").timepicker({'minDivision': 5,
@@ -54,35 +54,60 @@
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.duration" /></td>
 					<td>
-                                            <input type="text" name="duration" value="${sch.getDuration()}" size=15
+                                            <input type="text" name="duration" value="${param['duration']}" size=15
                                                     maxlength=20 class="validate[required]" data-prompt-position="centerRight:+40">
                                             <input type="hidden" name="ins" value="true" />
                                         </td>
+                                        <td></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.dateOfProgram" /></td>
 					<td><input type="text" name="dateOfProgram" class="validate[required] datepicker"
-						value="${sch.getdateOfProgram()}" data-prompt-position="centerRight:+40"  size=15 maxlength=20></td>
+						value="${param['dateOfProgram']}" data-prompt-position="centerRight:+40"  size=15 maxlength=20></td>
+                                        <td></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.startTime" /></td>
 					<td><input type="text" name="startTime"
-						value="${sch.getStartTime()}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
+						value="${param['startTime']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.programName" /></td>
-					<td><input type="text" name="radioProgram"
-						value="${sch.getRadioProgram().getName()}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
+					<td>
+                                            <input type="text" name="radioProgram"
+						value="${param['radioProgram_name']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20 readonly>
+                                            <input type="hidden" name="radioProgramId"
+						value="${param['radioProgram_id']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20 readonly>
+                                        </td>
+                                        <td></td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.presenterName" /></td>
-					<td><input type="text" name="presenter"
-						value="${sch.getPresenter().getId()}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
+					<td><input type="text" name="presenterName"
+						value="${param['presenter_name']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20
+                                                readonly>
+                                        <input type="hidden" name="presenterId"
+						value="${param['presenter_id']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20>  
+                                        </td>
+                                        <td>
+                                            <c:url value="/controller/rspresenter" var="rsurl">
+                                                <c:param name="returnURL" value="${pageContext.request.requestURL}?${pageContext.request.queryString}"/>
+                                            </c:url>
+                                            <a href="${rsurl}">Review Select Presenter</a></td>
 				</tr>
                                 <tr>
 					<td><fmt:message key="label.maintainSchedule.producerName" /></td>
-					<td><input type="text" name="producer"
-						value="${sch.getProducer().getId()}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20></td>
+					<td><input type="text" name="producerName"
+						value="${param['producer_id']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20 readonly>
+                                        <input type="hidden" name="producerId"
+						value="${param['producer_id']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20>
+                                        </td>
+                                        <td>
+                                              <c:url value="/controller/rsproducer" var="rsurl">
+                                                <c:param name="returnURL" value="${pageContext.request.requestURL}?${pageContext.request.queryString}"/>
+                                            </c:url>
+                                            <a href="${rsurl}">Review Select Producer</a>
+                                        </td>
 				</tr>
 			</table>
 		</center>
