@@ -82,6 +82,16 @@ public class ProgramSlot implements Cloneable, Serializable {
     public Date getDateOfProgram() {
           return this.dateOfProgram;
     }
+    
+    public void setDateOfProgram(String dateOfProgramStr) {
+          try{
+          Date dur = SDFUtils.SCHEDULE_SDF_DATE.parse(dateOfProgramStr);
+          setDateOfProgram(dur);
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+    }
+     
     public void setDateOfProgram(Date dateOfProgram) {
           this.dateOfProgram = dateOfProgram;
     }

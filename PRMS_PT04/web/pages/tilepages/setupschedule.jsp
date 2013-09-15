@@ -4,10 +4,11 @@
     Author     : Jha Archana
 --%>
 
-<%@ page language="java" contentType="text/html; charset=utf-8"
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <jsp:useBean id="schdel" class="sg.edu.nus.iss.phoenix.schedule.delegate.ScheduleDelegate" scope="page"/>
 <jsp:useBean id="rpdel" class="sg.edu.nus.iss.phoenix.radioprogram.delegate.RPDelegate" scope="page"/>
 
@@ -88,7 +89,7 @@
 					<td><fmt:message key="label.maintainSchedule.producerName" />
                                         </td>
 					<td><input type="text" name="producerName"
-						value="${param['producer_name']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20 readonly>
+						value="${param.producer_name}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20 readonly>
                                         <input type="hidden" name="producerId"
 						value="${param['producer_id']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20>
                                         </td>
