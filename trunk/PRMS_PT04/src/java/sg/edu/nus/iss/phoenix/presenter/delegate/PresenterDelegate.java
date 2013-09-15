@@ -23,6 +23,15 @@ public class PresenterDelegate {
     }
     
     /**
+     * find the presenter by its identifier
+     * @param id
+     * @return Presetner
+     */
+    public Presenter findPresenter(String id){
+        return presenterService.findPresenter(id);
+    }
+    
+    /**
      * Find all presenters by given an example of Presenter value object
      * @param example, an example of Presenter search criteria to do matching
      * @return List contains matched presenters

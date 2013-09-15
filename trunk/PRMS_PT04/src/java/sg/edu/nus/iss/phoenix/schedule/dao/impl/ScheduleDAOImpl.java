@@ -11,11 +11,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
+import sg.edu.nus.iss.phoenix.authenticate.dao.impl.UserDaoImpl;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
+import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
+import sg.edu.nus.iss.phoenix.presenter.service.PresenterService;
+import sg.edu.nus.iss.phoenix.producer.entity.Producer;
+import sg.edu.nus.iss.phoenix.producer.service.ProducerService;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.utils.SDFUtils;
 
 /**
  *
@@ -23,6 +30,7 @@ import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
  */
 public class ScheduleDAOImpl implements ScheduleDAO {
     private static final Logger logger = Logger.getLogger(ScheduleDAOImpl.class.getName());
+    private UserDao udao;
         DataSource ds ;
 	//Connection connection;
         
@@ -30,6 +38,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         {
              try {
             ds = (DataSource) InitialContext.doLookup("jdbc/PrmsDatasource");
+            udao = new UserDaoImpl();
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "Cannot connect to the DS");
             }
@@ -106,12 +115,12 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	public synchronized void create(ProgramSlot valueObject)
 			throws SQLException {
                         System.out.println("duration=="+valueObject.getDuration());
-                        System.out.println("date=="+valueObject.getdateOfProgram());
+                        System.out.println("date=="+valueObject.getDateOfProgram());
 		String sql = "INSERT INTO APP.\"program-slot\" (\"duration\", \"dateOfProgram\",\"startTime\", \"program-name\", \"presenter-id\", \"producer-id\") VALUES (?,?,?,?,?,?) ";
 		 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-			stmt.setString(1,valueObject.getDuration());
-                        stmt.setDate(2, new java.sql.Date(valueObject.getdateOfProgram().getTime()));
-                        stmt.setString(3, valueObject.getStartTime());
+			stmt.setString(1,SDFUtils.SCHEDULE_SDF_TIME.format(valueObject.getDuration()));
+                        stmt.setDate(2, new java.sql.Date(valueObject.getDateOfProgram().getTime()));
+                        stmt.setString(3, SDFUtils.SCHEDULE_SDF_TIME.format(valueObject.getStartTime()));
                         stmt.setString(4, valueObject.getRadioProgram().getName());
                         stmt.setString(5, valueObject.getPresenter().getId());
                         stmt.setString(6, valueObject.getProducer().getId());
@@ -220,9 +229,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 				valueObject.setStartTime(result.getString("startTime"));
                                 RadioProgram rp = new RadioProgram(result.getString("program-name"));
                                 valueObject.setRadioProgram(rp);
-                                User presenter = new User(result.getString("presenter-id"));
+                                Presenter presenter = findPresenter(result.getString("producer-id"));
                                 valueObject.setPresenter(presenter);
-                                User producer = new User(result.getString("producer-id"));
+                                Producer producer = findProducer(result.getString("producer-id"));
                                 valueObject.setProducer(producer);
 
                     } else {
@@ -237,6 +246,41 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                     }
                 }
 	}
+        
+        //BAD 
+        //But to follow the design
+        public Presenter findPresenter(String id){
+        User user;
+        try {
+            user = udao.searchMatching(id);
+            if(user !=null){
+                Presenter presenter = new Presenter();
+                presenter.setId(user.getId());
+                presenter.setName(user.getName());
+                return presenter;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PresenterService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+        
+         public Producer findProducer(String id){
+        User user;
+        try {
+            user = udao.searchMatching(id);
+            if(user != null ){
+                Producer producer = new Producer();
+                producer.setId(user.getId());
+                producer.setName(user.getName());
+                
+                return producer;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
 	/**
 	 * databaseQuery-method. This method is a helper method for internal use. It
@@ -266,9 +310,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 				temp.setStartTime(result.getString("startTime"));
                                 RadioProgram rp = new RadioProgram(result.getString("program-name"));
                                 temp.setRadioProgram(rp);
-                                User presenter = new User(result.getString("presenter-id"));
+                                Presenter presenter = findPresenter(result.getString("presenter-id"));
                                 temp.setPresenter(presenter);
-                                User producer = new User(result.getString("producer-id"));
+                                Producer producer = findProducer(result.getString("producer-id"));
                                 temp.setProducer(producer);
 				searchResults.add(temp);
 			}
