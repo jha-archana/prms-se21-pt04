@@ -49,7 +49,7 @@ public class URLUtils {
                 sb.append(key);
                 sb.append("=");
                 try{
-                    sb.append(URLEncoder.encode(orig.get(key), "UTF-8"));
+                    sb.append(orig.get(key));
                 }catch(Exception e){
                     e.printStackTrace();
                     sb.append("");
@@ -71,10 +71,15 @@ public class URLUtils {
         String[] params = query.split("&");  
         Map<String, String> map = new HashMap<>();  
         for (String param : params)  
-        {  
-            String name = param.split("=")[0];  
-            String value = param.split("=")[1];  
-            map.put(name, value);  
+        {
+            String[] pp= param.split("=");
+            if(pp.length==2){
+               String name = pp[0];  
+                String value = pp[1];  
+                map.put(name, value);  
+            }else{
+                System.out.println(param);
+            }
         }  
         return map;  
     }  
