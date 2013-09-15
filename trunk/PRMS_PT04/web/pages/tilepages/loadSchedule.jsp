@@ -37,7 +37,7 @@
             <c:forEach var="crudps" items="${schd}" varStatus="status">
                 <fmt:formatDate value="${crudps.startTime}" pattern="HH:mm:ss" var="startTimeStr" />
                 <fmt:formatDate value="${crudps.duration}" pattern="HH:mm:ss" var="durationStr" />
-                <fmt:formatDate value="${crudps.dateOfProgram}" pattern="YYYY-mm-dd" var="dateOfProgramStr" />
+                <fmt:formatDate value="${crudps.dateOfProgram}" pattern="YYYY-MM-dd" var="dateOfProgramStr" />
                 <tr class="${status.index%2==0?'even':'odd'}">
                     <td class="nowrap">${durationStr}</td>
                     <td class="nowrap">${dateOfProgramStr}</td>
