@@ -7,7 +7,7 @@ import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 public class PSSearchObject {
                 private Date dateOfProgram;
                 private Time startTime;
-                private RadioProgram radioProgram;
+                private String radioProgram;
 		public PSSearchObject() {
 			super();
 		}
@@ -15,8 +15,7 @@ public class PSSearchObject {
 			super();
 			this.dateOfProgram = dateOfProgram;
                         this.startTime = startTime;
-                        RadioProgram rp= new RadioProgram(radioProgram);
-                        this.radioProgram= rp;
+                        this.radioProgram= radioProgram;
 		}
 		public Date getDateOfProgram() {
 			return dateOfProgram;
@@ -30,10 +29,10 @@ public class PSSearchObject {
 		public void setStartTime(Time startTime) {
 			this.startTime = startTime;
 		}
-		public RadioProgram getRadioProgram() {
+		public String getRadioProgramName() {
 			return radioProgram;
 		}
-		public void setRadioProgram(RadioProgram radioProgram) {
+		public void setRadioProgram(String radioProgram) {
 			this.radioProgram = radioProgram;
 		}
 }
