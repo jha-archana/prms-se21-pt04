@@ -70,11 +70,26 @@ public class ScheduleController extends HttpServlet {
             case "setupschedule":
                 ScheduleDelegate scheDel1 = new ScheduleDelegate();
                 ProgramSlot ps = new ProgramSlot();
+                Date date = null;
                 String ins =  request.getParameter("ins");
                 String duration = request.getParameter("duration");
-                ps.setDuration(duration);
+                String dateString = "01-01-50:"+duration+":00";
+                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yy:HH:mm:SS");
+                try{
+                  date = DATE_FORMAT.parse(dateString);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                System.out.println("Duration COntroller=="+date);
+                ps.setDuration(date);
                 String startTime = request.getParameter("startTime");
-                ps.setStartTime(startTime);
+                dateString = "01-01-50:"+startTime+":00";
+                try{
+                  date = DATE_FORMAT.parse(dateString);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                ps.setStartTime(date);
                 String dateOfProgram = request.getParameter("dateOfProgram");
                 ps.setDateOfProgram(dateOfProgram);
                 RPDelegate rpDel = new RPDelegate();
@@ -82,12 +97,12 @@ public class ScheduleController extends HttpServlet {
                 RadioProgram rp = rpDel.findRP(programName);
                 ps.setRadioProgram(rp);
                 PresenterDelegate pDel = new PresenterDelegate();
-                String p1_id = request.getParameter("presenter_id");
-                String p1_name = request.getParameter("presenter_name");
+                String p1_id = request.getParameter("presenterId");
+                String p1_name = request.getParameter("presenterName");
                 Presenter presenter = pDel.findPresenter(p1_id);
                 ps.setPresenter(presenter);
-                String p2_id = request.getParameter("producer_id");
-                String p2_name = request.getParameter("producer_name");
+                String p2_id = request.getParameter("producerId");
+                String p2_name = request.getParameter("producerName");
                 ProducerDelegate prDel = new ProducerDelegate();
                 Producer producer = prDel.findProducer(p2_id);
                 ps.setProducer(producer);
@@ -95,6 +110,8 @@ public class ScheduleController extends HttpServlet {
                 if ("true".equalsIgnoreCase(ins)) {
                      scheDel1.insertProgramSlot(ps);
                  } else {
+                    String id = request.getParameter("id");
+                    ps.setId(Integer.parseInt(id));
                     scheDel1.updateProgramSlot(ps);
                  }
                

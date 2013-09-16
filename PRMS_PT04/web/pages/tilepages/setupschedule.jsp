@@ -61,7 +61,7 @@
 					<td><fmt:message key="label.maintainSchedule.programName" /></td>
 					<td>
                                             <input type="text" name="radioProgram"
-						value="${param['radioProgram']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20 readonly>
+						value="${param['radioProgram']}" class="validate[required]" data-prompt-position="centerRight:+40" size=15 maxlength=20 >
                                             
                                         </td>
                                         <td>
@@ -106,7 +106,6 @@
 					<td>
                                             <input type="text" name="duration" value="${param['duration']}" size=15
                                                     maxlength=20 class="validate[required]" data-prompt-position="centerRight:+40">
-                                            <input type="hidden" name="ins" value="true" />
                                         </td>
                                         <td></td>
 				</tr>
@@ -114,7 +113,8 @@
 					<td><fmt:message key="label.maintainSchedule.dateOfProgram" /></td>
 					<td><input type="text" name="dateOfProgram" class="validate[required] datepicker"
 						value="${param['dateOfProgram']}" data-prompt-position="centerRight:+40"  size=15 maxlength=20></td>
-                                        <td></td>
+                                        <td> <input type="hidden" name="ins" value="${param['insert']}" />
+                                             <input type="hidden" name="id" value="${param['id']}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="label.maintainSchedule.startTime" /></td>

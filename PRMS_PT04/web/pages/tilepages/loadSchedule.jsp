@@ -71,6 +71,7 @@
                             <c:param name="presenter_name" value="${crudps.presenter.name}"/>
                             <c:param name="producer_id" value="${crudps.producer.id}"/>
                             <c:param name="producer_name" value="${crudps.producer.name}"/>
+                             <c:param name="id" value="${crudps.id}"/>
                              <c:param name="insert" value="false"/>
                         </c:url>
                         

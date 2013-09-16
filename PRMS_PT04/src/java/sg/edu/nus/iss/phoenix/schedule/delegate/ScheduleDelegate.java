@@ -5,7 +5,6 @@
 package sg.edu.nus.iss.phoenix.schedule.delegate;
 
 import java.util.ArrayList;
-import sg.edu.nus.iss.phoenix.radioprogram.entity.RPSearchObject;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
 
@@ -14,15 +13,15 @@ import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
  * @author Jha Archana
  */
 public class ScheduleDelegate {
-    public ArrayList<ProgramSlot> searchSchedule(RPSearchObject rpso) {
+    /*public ArrayList<ProgramSlot> searchSchedule(PSSearchObject rpso) {
 		//to do
 		return null;	
 	}
 	
-	public ArrayList<ProgramSlot> findProgramSlotByCriteria(RPSearchObject rpso) {
+	public ArrayList<ProgramSlot> findProgramSlotByCriteria(PSSearchObject rpso) {
 		//to do
 		return null;	
-	}
+	}*/
 	
 	public ProgramSlot findProgramSlot(int id) {
 		ScheduleService service = new ScheduleService();
@@ -35,16 +34,17 @@ public class ScheduleDelegate {
 		
 	}
 	
-	public void insertProgramSlot(ProgramSlot rp) {
-            if (rp!=null){
+	public void insertProgramSlot(ProgramSlot ps) {
+            if (ps!=null){
 		ScheduleService service = new ScheduleService();
-                service.insertProgramSlot(rp);
+                service.insertProgramSlot(ps);
             }
 	}
-	public void updateProgramSlot(ProgramSlot rp) {
-		//to do
+	public void updateProgramSlot(ProgramSlot ps) {
+		ScheduleService service = new ScheduleService();
+		service.updateProgramSlot(ps);
 	}
-	public void deleteProgramSlot(ProgramSlot rp) {
+	public void deleteProgramSlot(ProgramSlot ps) {
 		//to do
 	}
 }
