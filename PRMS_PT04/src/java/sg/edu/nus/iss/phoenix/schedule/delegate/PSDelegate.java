@@ -14,7 +14,7 @@ import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
  * @author Jeremy
  */
 public class PSDelegate {
-    public ArrayList<ProgramSlot> searchSchedule(PSSearchObject psso) {
+    public ArrayList<ProgramSlot> searchProgramSlot(PSSearchObject psso) {
 		//to do
 		return null;	
 	}
