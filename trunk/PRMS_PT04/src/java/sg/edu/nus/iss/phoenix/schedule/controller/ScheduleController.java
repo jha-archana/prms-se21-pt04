@@ -26,6 +26,7 @@ import sg.edu.nus.iss.phoenix.radioprogram.delegate.RPDelegate;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 import sg.edu.nus.iss.phoenix.schedule.delegate.ScheduleDelegate;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
 import sg.edu.nus.iss.phoenix.utils.SDFUtils;
 
 /**
@@ -129,6 +130,27 @@ public class ScheduleController extends HttpServlet {
                         .getRequestDispatcher("/pages/loadSchedule.jsp");
                 rd2.forward(request, response);
                 break;
+            case "searchsched":
+                 ScheduleDelegate userdel = new ScheduleDelegate();
+                 PSSearchObject ssearch = new PSSearchObject();
+                 ArrayList<ProgramSlot> schedlist = new ArrayList<ProgramSlot>();
+                 if (request.getParameter("date") != null || 
+                        request.getParameter("time") != null ||
+                         request.getParameter("prog") != null) {
+                  //       ssearch.setDateOfProgram(request.getParameter("date"));
+                  //       ssearch.setStartTime(request.getParameter("time"));
+                     //       ssearch.setRadioProgramName(request.getParameter("prog"));
+                  //       schedlist = userdel.searchProgramSlot(ssearch);
+                         schedlist = userdel.findAllProgramSlot();
+                 } else {
+                         schedlist = userdel.findAllProgramSlot();
+                 }
+                 request.getSession().setAttribute("searchschedlist", schedlist);
+                 RequestDispatcher ss = getServletContext().getRequestDispatcher(
+                                 "/pages/searchsched.jsp");
+                 ;
+                 ss.forward(request, response);
+                 break;
             default:
                 ScheduleDelegate scheDel3 = new ScheduleDelegate();
                 ArrayList<ProgramSlot> data3 = scheDel3.findAllProgramSlot();
