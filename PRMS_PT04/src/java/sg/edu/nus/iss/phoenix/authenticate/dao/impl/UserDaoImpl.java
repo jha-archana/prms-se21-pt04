@@ -280,7 +280,7 @@ public class UserDaoImpl implements UserDao {
                     .append("%' ");
         }
 
-        if (valueObject.getName() != null) {
+        if (valueObject.getName() != null && !"".equals(valueObject.getName().trim())) {
             if (first) {
                 first = false;
             }
@@ -315,6 +315,47 @@ public class UserDaoImpl implements UserDao {
         return searchResults;
     }
 
+        @Override
+    public List<User> searchUserMatching(User valueObject) throws SQLException {
+
+        List<User> searchResults = null;
+
+        boolean first = true;
+        StringBuffer sql = new StringBuffer("SELECT * FROM APP.\"user\" WHERE 1=1 ");
+       // String sql = "SELECT * FROM APP.\"user\" WHERE 1=1 ";
+
+        if (valueObject.getId() != null && !"".equals(valueObject.getId().trim())) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND \"id\" like '%").append(valueObject.getId()).append("%' ");
+        }
+
+        if (valueObject.getName() != null && !"".equals(valueObject.getName().trim())) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND \"name\" LIKE '%").append(valueObject.getName()).append("%' ");
+        }
+
+        sql.append("ORDER BY \"id\" ASC ");
+        
+        // Prevent accidential full table results.
+        // Use loadAll if all rows must be returned.
+        if (first) {
+            searchResults = new ArrayList<User>();
+        } else {
+            try (Connection conn = ds.getConnection();) {
+               // searchResults = listQuery(conn.prepareStatement(sql.toString()));
+                searchResults = listQuery(conn.prepareStatement(sql.toString()));
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+
+        return searchResults;
+    }
+        
     /**
      * databaseUpdate-method. This method is a helper method for internal use.
      * It will execute all database handling that will change the information in
