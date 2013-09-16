@@ -44,7 +44,7 @@ public class ScheduleService {
 		return null;
 	}
 
-	public ProgramSlot findProgramSlot(int id) {
+	public ProgramSlot findProgramSlotById(int id) {
             ProgramSlot programSlot = new ProgramSlot();
                 try{
                     programSlot = schdao.findObject(id);

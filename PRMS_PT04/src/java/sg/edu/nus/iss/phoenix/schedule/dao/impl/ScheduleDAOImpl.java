@@ -75,7 +75,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
             ProgramSlot valueObject = createValueObject();
             valueObject.setId(id);
-            load(valueObject);
+            loadById(valueObject);
             return valueObject;
         }
 
@@ -83,12 +83,26 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#load(sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram)
 	 */
 	@Override
-	public void load(ProgramSlot valueObject) throws NotFoundException,
+	public void loadById(ProgramSlot valueObject) throws NotFoundException,
 			SQLException {
          String sql = "SELECT * FROM APP.\"program-slot\" WHERE (\"id\" = ? ) ";
-        //PreparedStatement stmt = null;
             try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
                 stmt.setInt(1, valueObject.getId());
+                singleQuery(stmt, valueObject);
+            } 
+	}
+        
+        /* (non-Javadoc)
+	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#load(sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram)
+	 */
+	@Override
+	public void load(ProgramSlot valueObject) throws NotFoundException,
+			SQLException {
+         String sql = "SELECT * FROM APP.\"program-slot\" WHERE (\"duration\" = ? and \"dateOfProgram\" = ? and \"startTime\" = ? ) ";
+            try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+                stmt.setString(1,SDFUtils.SCHEDULE_SDF_TIME.format(valueObject.getDuration()));
+                stmt.setDate(2, new java.sql.Date(valueObject.getDateOfProgram().getTime()));
+                stmt.setString(3, SDFUtils.SCHEDULE_SDF_TIME.format(valueObject.getStartTime()));
                 singleQuery(stmt, valueObject);
             } 
 	}
