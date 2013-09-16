@@ -19,8 +19,9 @@ import sg.edu.nus.iss.phoenix.radioprogram.entity.RPSearchObject;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 
 import sg.edu.nus.iss.phoenix.authenticate.delegate.AuthenticateDelegate;
-import sg.edu.nus.iss.phoenix.authenticate.entity.UserSearchObject;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
+import sg.edu.nus.iss.phoenix.authenticate.entity.UserSearchObject;
+
 
 /**
  * Servlet implementation class ProcessController
@@ -124,9 +125,16 @@ public class ProcessController extends HttpServlet {
 			break;
                 case "searchuser":
                         AuthenticateDelegate userdel = new AuthenticateDelegate();
-			UserSearchObject usersearch = new UserSearchObject();
+                        UserSearchObject usearch = new UserSearchObject();
                         ArrayList<User> userlist = new ArrayList<User>();
-			userlist = userdel.findAllUser();
+                        if (request.getParameter("name") != null || request.getParameter("id") != null) {
+                            	usearch.setId(request.getParameter("id"));
+				usearch.setName(request.getParameter("name"));
+                                userlist = userdel.searchUsers(usearch);
+                                //userlist = userdel.findAllUser();
+			} else {
+				userlist = userdel.findAllUser();
+			}
                     	request.getSession().setAttribute("searchuserlist", userlist);
 			RequestDispatcher su = getServletContext().getRequestDispatcher(
 					"/pages/searchuser.jsp");
