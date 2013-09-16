@@ -105,6 +105,17 @@ public class AuthenticateService {
         return userList;
     }
 
+    public ArrayList<User> searchUsers(User uso) {
+            ArrayList<User> userList = new ArrayList<User>();
+            try {
+                    userList = (ArrayList<User>) udao.searchUserMatching(uso);
+            } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+            }
+            return userList;
+    }
+        
     public User findUser(String userId) {
         User u = null;
         try {
