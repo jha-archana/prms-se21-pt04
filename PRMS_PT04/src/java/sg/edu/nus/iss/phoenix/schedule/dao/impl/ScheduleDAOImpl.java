@@ -181,12 +181,35 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
 	/* (non-Javadoc)
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#delete(sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram)
-	 */
+         * delte selected program
+          */
 	@Override
 	public void delete(ProgramSlot valueObject) throws NotFoundException,
 			SQLException {
-                        // to do
-	}
+          String sql = "delete FROM APP.\"program-slot\" WHERE (\"id\" = ? ) ";
+           /* try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+                stmt.setInt(1, valueObject.getId());
+                 int rowcount = databaseUpdate(stmt);
+                //singleQuery(stmt, valueObject);
+            } */
+            try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setInt(1, valueObject.getId());
+
+            int rowcount = databaseUpdate(stmt);
+            if (rowcount == 0) {
+                // System.out.println("Object could not be deleted (PrimaryKey not found)");
+                throw new NotFoundException(
+                        "Object could not be deleted! (PrimaryKey not found)");
+            }
+            if (rowcount > 1) {
+                // System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
+                throw new SQLException(
+                        "PrimaryKey Error when updating DB! (Many objects were deleted!)");
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        }
 
 	/* (non-Javadoc)
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#deleteAll(java.sql.Connection)
