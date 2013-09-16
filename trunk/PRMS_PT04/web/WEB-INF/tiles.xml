@@ -18,6 +18,9 @@
     <definition name="searchuserPage" extends="homePage">
         <put-attribute name="body" value="/pages/tilepages/searchuser.jsp" />
     </definition>
+    <definition name="searchschedPage" extends="homePage">
+        <put-attribute name="body" value="/pages/tilepages/searchsched.jsp" />
+    </definition>
     <definition name="searchrpPage" extends="homePage">
         <put-attribute name="body" value="/pages/tilepages/searchrp.jsp" />
     </definition>
