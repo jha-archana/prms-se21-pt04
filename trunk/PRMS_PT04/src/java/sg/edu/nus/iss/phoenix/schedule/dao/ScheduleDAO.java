@@ -55,6 +55,24 @@ public interface ScheduleDAO {
 	 *            This parameter contains the class instance to be loaded.
 	 *            Primary-key field must be set for this to work properly.
 	 */
+	public abstract void loadById(ProgramSlot valueObject)
+			throws NotFoundException, SQLException;
+        
+        /**
+	 * load-method. This will load valueObject contents from database using
+	 * Primary-Key as identifier. Upper layer should use this so that
+	 * valueObject instance is created and only primary-key should be specified.
+	 * Then call this method to complete other persistent information. This
+	 * method will overwrite all other fields except primary-key and possible
+	 * runtime variables. If load can not find matching row, NotFoundException
+	 * will be thrown.
+	 * 
+	 * @param conn
+	 *            This method requires working database connection.
+	 * @param valueObject
+	 *            This parameter contains the class instance to be loaded.
+	 *            Primary-key field must be set for this to work properly.
+	 */
 	public abstract void load(ProgramSlot valueObject)
 			throws NotFoundException, SQLException;
 

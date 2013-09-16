@@ -25,7 +25,7 @@ public class ScheduleDelegate {
 	
 	public ProgramSlot findProgramSlot(int id) {
 		ScheduleService service = new ScheduleService();
-		return service.findProgramSlot(id);
+		return service.findProgramSlotById(id);
 		
 	}
 	public ArrayList<ProgramSlot> findAllProgramSlot() {
