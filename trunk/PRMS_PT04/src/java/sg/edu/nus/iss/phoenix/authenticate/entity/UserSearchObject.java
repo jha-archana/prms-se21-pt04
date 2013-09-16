@@ -10,14 +10,14 @@ package sg.edu.nus.iss.phoenix.authenticate.entity;
  */
 public class UserSearchObject {
 	  private String name;
-	    private String role;
+	    private String id;
 		public UserSearchObject() {
 			super();
 		}
-		public UserSearchObject(String name, String role) {
+		public UserSearchObject(String id, String name) {
 			super();
+                        this.id = id;
 			this.name = name;
-			this.role = role;
 		}
 		public String getName() {
 			return name;
@@ -25,10 +25,10 @@ public class UserSearchObject {
 		public void setName(String name) {
 			this.name = name;
 		}
-		public String getRole() {
-			return role;
+		public String getId() {
+			return id;
 		}
-		public void setRole(String role) {
-			this.role = role;
+		public void setId(String id) {
+			this.id = id;
 		}
 }
