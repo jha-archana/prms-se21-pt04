@@ -7,18 +7,19 @@ package sg.edu.nus.iss.phoenix.schedule.delegate;
 import java.util.ArrayList;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
+import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
 
 /**
  *
  * @author Jha Archana
  */
 public class ScheduleDelegate {
-    /*public ArrayList<ProgramSlot> searchSchedule(PSSearchObject rpso) {
+        public ArrayList<ProgramSlot> searchProgramSlot(PSSearchObject rpso) {
 		//to do
 		return null;	
 	}
 	
-	public ArrayList<ProgramSlot> findProgramSlotByCriteria(PSSearchObject rpso) {
+	/*public ArrayList<ProgramSlot> findProgramSlotByCriteria(PSSearchObject rpso) {
 		//to do
 		return null;	
 	}*/
