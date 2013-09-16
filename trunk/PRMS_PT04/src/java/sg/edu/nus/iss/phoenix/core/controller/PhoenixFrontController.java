@@ -92,6 +92,8 @@ public class PhoenixFrontController extends HttpServlet {
                 return "/ReviewSelectPresenter/";
             case "rsproducer": //Review Select Producer
                 return "/ReviewSelectProducer/";
+             case "deleteschedule":
+                return "/ScheduleController/deleteschedule";
             default:
                 return "/pages/home.jsp";
         }
