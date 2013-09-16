@@ -30,7 +30,13 @@
 				</a>
 			</td>
 	</tr>
-
+	<tr>
+		<td>
+				<a href="<c:url value="/controller/searchsched"/>"> <fmt:message
+						key="caption.menu.searchsched" />
+				</a>
+			</td>
+	</tr>
 	<tr>
 		<td>
 				<a href="<c:url value="/controller/loadrp"/>"> <fmt:message
