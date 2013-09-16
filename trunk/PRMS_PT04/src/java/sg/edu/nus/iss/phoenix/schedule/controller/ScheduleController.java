@@ -142,6 +142,7 @@ public class ScheduleController extends HttpServlet {
                      //       ssearch.setRadioProgramName(request.getParameter("prog"));
                   //       schedlist = userdel.searchProgramSlot(ssearch);
                          schedlist = userdel.findAllProgramSlot();
+                        
                  } else {
                          schedlist = userdel.findAllProgramSlot();
                  }
@@ -151,13 +152,28 @@ public class ScheduleController extends HttpServlet {
                  ;
                  ss.forward(request, response);
                  break;
-            default:
+               case "deleteschedule":
+                 ScheduleDelegate psDelete = new ScheduleDelegate();
+                 Integer id = Integer.parseInt(request.getParameter("id").toString()) ;
+                  ProgramSlot psDel=  psDelete.findProgramSlot(id) ;
+                 psDelete.deleteProgramSlot(psDel);
+                 
                 ScheduleDelegate scheDel3 = new ScheduleDelegate();
                 ArrayList<ProgramSlot> data3 = scheDel3.findAllProgramSlot();
                 request.setAttribute("schd", data3);
                 RequestDispatcher rd3 = request
                         .getRequestDispatcher("/pages/loadSchedule.jsp");
                 rd3.forward(request, response);
+               
+               
+                break;
+            default:
+                ScheduleDelegate scheDel4 = new ScheduleDelegate();
+                ArrayList<ProgramSlot> data4 = scheDel4.findAllProgramSlot();
+                request.setAttribute("schd", data4);
+                RequestDispatcher rd4 = request
+                        .getRequestDispatcher("/pages/loadSchedule.jsp");
+                rd4.forward(request, response);
                 break;
         }
 

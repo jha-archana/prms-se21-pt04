@@ -46,6 +46,7 @@ public class ScheduleDelegate {
 		service.updateProgramSlot(ps);
 	}
 	public void deleteProgramSlot(ProgramSlot ps) {
-		//to do
+		ScheduleService service = new ScheduleService();
+		service.deleteProgramSlot(ps);
 	}
 }

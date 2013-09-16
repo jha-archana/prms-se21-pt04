@@ -104,7 +104,15 @@ public class ScheduleService {
 	}
 
 	public void deleteProgramSlot(ProgramSlot ps) {
-		//to do 
+		try {
+				schdao.delete(ps);
+			} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 	}
 
 }
