@@ -23,21 +23,23 @@
 		method=post>
 		<center>
 			<table class="framed">
-				<tr>
+			<%-- 	<tr>
 					<th width="45%"><fmt:message key="caption.name" /></th>
 					<th width="55%"><fmt:message key="caption.role" /></th>
+			--%>	</tr>
+				<tr> 
+					<td><fmt:message key="fieldLabel.username" /></td>
+					<td><input type="text" name="id" size=45 maxlength=45></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="fieldLabel.userfullname" /></td>
 					<td><input type="text" name="name" size=45 maxlength=45></td>
 				</tr>
 				<tr>
-					<td><fmt:message key="fieldLabel.role" /></td>
-					<td><input type="text" name="role" size=45 maxlength=45></td>
-				</tr>
-				<tr>
-					<td colspan="2" align="center"><input type="submit" value="Submit"> <input
-						type="reset" value="Reset"></td>
+					<td colspan="2" align="center">
+                                            <input type="submit" value="Submit"> 
+                                            <input type="reset" value="Reset">
+                                        </td>
 				</tr>
 			</table>
 		</center>
@@ -46,13 +48,15 @@
 	<c:if test="${! empty  searchuserlist}">
 		<table class="borderAll">
 			<tr>
+				<th><fmt:message key="label.crudusr.id" /></th>
 				<th><fmt:message key="label.crudusr.name" /></th>
-				<th><fmt:message key="label.crudusr.role" /></th>
+                                <th><fmt:message key="label.crudusr.role" /></th>
 			</tr>
 			<c:forEach var="user" items="${searchuserlist}" varStatus="status">
 				<tr class="${status.index%2==0?'even':'odd'}">
-					<a href="${editurl}"><td class="nowrap">${user.name}</td></a>
-					<td class="nowrap">${user.roles}</td>
+					<a href="${editurl}"><td class="nowrap">${user.id}</td></a>
+					<td class="nowrap">${user.name}</td>
+                                        <td class="nowrap">${user.roles}</td>
 				</tr>
 			</c:forEach>
 		</table>
