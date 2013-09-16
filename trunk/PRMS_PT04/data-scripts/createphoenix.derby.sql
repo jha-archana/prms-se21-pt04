@@ -115,9 +115,9 @@ CREATE  TABLE "program-slot" (
   "id" INT not null
         GENERATED ALWAYS AS IDENTITY
         (START WITH 1, INCREMENT BY 1),
-  "duration" VARCHAR(20) NOT NULL ,
+  "duration" TIME NOT NULL ,
   "dateOfProgram" DATE NOT NULL ,
-  "startTime" VARCHAR(20) NOT NULL ,
+  "startTime" TIME NOT NULL ,
   "program-name" VARCHAR(45) DEFAULT NULL ,
    "presenter-id" VARCHAR(40) DEFAULT NULL,
     "producer-id" VARCHAR(40) DEFAULT NULL,

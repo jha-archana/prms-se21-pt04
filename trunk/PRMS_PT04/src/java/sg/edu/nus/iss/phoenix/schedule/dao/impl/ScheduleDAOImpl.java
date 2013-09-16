@@ -116,6 +116,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 			throws SQLException {
                         System.out.println("duration=="+valueObject.getDuration());
                         System.out.println("date=="+valueObject.getDateOfProgram());
+                        System.out.println("StartTime=="+valueObject.getStartTime());
 		String sql = "INSERT INTO APP.\"program-slot\" (\"duration\", \"dateOfProgram\",\"startTime\", \"program-name\", \"presenter-id\", \"producer-id\") VALUES (?,?,?,?,?,?) ";
 		 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setString(1,SDFUtils.SCHEDULE_SDF_TIME.format(valueObject.getDuration()));
@@ -140,8 +141,28 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	@Override
 	public void save(ProgramSlot valueObject) throws NotFoundException,
 			SQLException {
-
-		// to do
+		
+		String sql = "UPDATE APP.\"program-slot\" SET \"duration\" = ?, \"dateOfProgram\" = ?, \"startTime\" = ?, \"program-name\" = ?, \"presenter-id\" = ?, \"producer-id\" = ? WHERE (\"id\" = ? ) ";
+		 try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+			stmt.setString(1,SDFUtils.SCHEDULE_SDF_TIME.format(valueObject.getDuration()));
+                        stmt.setDate(2, new java.sql.Date(valueObject.getDateOfProgram().getTime()));
+                        stmt.setString(3, SDFUtils.SCHEDULE_SDF_TIME.format(valueObject.getStartTime()));
+                        stmt.setString(4, valueObject.getRadioProgram().getName());
+                        stmt.setString(5, valueObject.getPresenter().getId());
+                        stmt.setString(6, valueObject.getProducer().getId());
+                        stmt.setInt(7,valueObject.getId());
+			int rowcount = databaseUpdate(stmt);
+			if (rowcount == 0) {
+				// System.out.println("Object could not be saved! (PrimaryKey not found)");
+				throw new NotFoundException(
+						"Object could not be saved! (PrimaryKey not found)");
+			}
+			if (rowcount > 1) {
+				// System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
+				throw new SQLException(
+						"PrimaryKey Error when updating DB! (Many objects were affected!)");
+			}
+		}
 	}
 
 	/* (non-Javadoc)
