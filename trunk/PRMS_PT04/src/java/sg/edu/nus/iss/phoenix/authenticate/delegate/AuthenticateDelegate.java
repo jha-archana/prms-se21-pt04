@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.authenticate.service.AuthenticateService;
+import sg.edu.nus.iss.phoenix.authenticate.entity.UserSearchObject;
 
 public class AuthenticateDelegate {
 
@@ -33,6 +34,13 @@ public class AuthenticateDelegate {
         return service.isExist(user.getId());
     }
 
+    public ArrayList<User> searchUsers(UserSearchObject uso) {
+            User user = new User(uso.getId());
+            user.setName(uso.getName());
+            AuthenticateService service = new AuthenticateService();
+            return service.searchUsers(user);	
+    }
+        
     public User findUser(String userId){
         AuthenticateService service = new AuthenticateService();
         return service.findUser(userId);
