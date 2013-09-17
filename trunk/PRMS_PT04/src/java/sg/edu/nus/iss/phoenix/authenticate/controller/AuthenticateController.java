@@ -78,10 +78,13 @@ public class AuthenticateController extends HttpServlet {
                 }
                 u.setRoles(roleList);
                 String ins = (String) request.getParameter("ins");
+                String currId = (String) request.getParameter("currId");
 
                 String errorMessage = "";
-                if (adel.checkUser(u)) {
-                    errorMessage = "Error!!!! User exists.";
+                if (!u.getId().equalsIgnoreCase(currId)) {
+                    if (adel.checkUser(u)) {
+                        errorMessage = "Error!!!! User exists.";
+                    }
                 }
 
                 Logger.getLogger(getClass().getName()).log(Level.INFO, "Insert Flag: " + ins);
@@ -90,13 +93,14 @@ public class AuthenticateController extends HttpServlet {
                 } else {
                     adel.updateUser(u);
                 }
-                if (errorMessage == "") {
-                    request.setAttribute("successMsg", "User saved or updated.");
+
+                if (errorMessage.equals("")) {
+                    request.getSession().setAttribute("successMsg", "User saved or updated.");
                 } else {
-                    request.setAttribute("errorMsg", errorMessage);
+                    request.getSession().setAttribute("errorMsg", errorMessage);
                 }
                 ArrayList<User> data = adel.findAllUser();
-                request.setAttribute("usrs", data);
+                request.getSession().setAttribute("searchuserlist", data);
                 RequestDispatcher rd = request
                         .getRequestDispatcher("/pages/crudusr.jsp");
                 rd.forward(request, response);
@@ -107,7 +111,7 @@ public class AuthenticateController extends HttpServlet {
             case "load":
                 AuthenticateDelegate adel1 = new AuthenticateDelegate();
                 ArrayList<User> userList = adel1.findAllUser();
-                request.setAttribute("usrs", userList);
+                request.getSession().setAttribute("searchuserlist", userList);
                 RequestDispatcher rd3 = request
                         .getRequestDispatcher("/pages/crudusr.jsp");
                 rd3.forward(request, response);
@@ -118,7 +122,7 @@ public class AuthenticateController extends HttpServlet {
             default:
                 AuthenticateDelegate adel2 = new AuthenticateDelegate();
                 ArrayList<User> userList2 = adel2.findAllUser();
-                request.setAttribute("usrs", userList2);
+                request.getSession().setAttribute("searchuserlist", userList2);
                 RequestDispatcher rd4 = request
                         .getRequestDispatcher("/pages/crudusr.jsp");
                 rd4.forward(request, response);

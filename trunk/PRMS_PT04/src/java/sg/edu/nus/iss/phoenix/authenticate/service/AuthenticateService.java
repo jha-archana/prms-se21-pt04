@@ -106,16 +106,16 @@ public class AuthenticateService {
     }
 
     public ArrayList<User> searchUsers(User uso) {
-            ArrayList<User> userList = new ArrayList<User>();
-            try {
-                    userList = (ArrayList<User>) udao.searchUserMatching(uso);
-            } catch (SQLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-            }
-            return userList;
+        ArrayList<User> userList = new ArrayList<User>();
+        try {
+            userList = (ArrayList<User>) udao.searchUserMatching(uso);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return userList;
     }
-        
+
     public User findUser(String userId) {
         User u = null;
         try {
@@ -144,9 +144,7 @@ public class AuthenticateService {
 
     public void updateUser(User user) {
         try {
-            if (!isExist(user.getId())) {
-                udao.save(user);
-            }
+            udao.save(user);
         } catch (NotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
