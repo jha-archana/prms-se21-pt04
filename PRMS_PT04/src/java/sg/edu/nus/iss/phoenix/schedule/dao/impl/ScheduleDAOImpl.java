@@ -60,15 +60,16 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#getObject(java.lang.String)
 	 */
         @Override
-	public ProgramSlot getObject(String duration, Date dateOfProgram, String startTime) throws NotFoundException,
+	public List<ProgramSlot> getListByDate(Date dateOfProgram) throws NotFoundException,
 			SQLException {
-
-		 ProgramSlot valueObject = createValueObject();
-                valueObject.setDateOfProgram(dateOfProgram);
-                valueObject.setDuration(duration);
-                valueObject.setStartTime(startTime);
-                load(valueObject);
-                return valueObject;
+                List<ProgramSlot> searchResults = null;
+		String sql = "SELECT * FROM APP.\"program-slot\" WHERE (\"dateOfProgram\" = ? ) ";
+                try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+                    stmt.setDate(1, new java.sql.Date(dateOfProgram.getTime()));
+                    searchResults = listQuery(stmt);
+                    System.out.println("record size"+searchResults.size());
+                }
+		return searchResults;
 	}
         
         @Override
@@ -99,11 +100,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	@Override
 	public void load(ProgramSlot valueObject) throws NotFoundException,
 			SQLException {
-         String sql = "SELECT * FROM APP.\"program-slot\" WHERE (\"duration\" = ? and \"dateOfProgram\" = ? and \"startTime\" = ? ) ";
+         String sql = "SELECT * FROM APP.\"program-slot\" WHERE (\"dateOfProgram\" = ? ) ";
             try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-                stmt.setString(1,SDFUtils.SCHEDULE_SDF_TIME.format(valueObject.getDuration()));
                 stmt.setDate(2, new java.sql.Date(valueObject.getDateOfProgram().getTime()));
-                stmt.setString(3, SDFUtils.SCHEDULE_SDF_TIME.format(valueObject.getStartTime()));
                 singleQuery(stmt, valueObject);
             } 
 	}

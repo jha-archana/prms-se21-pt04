@@ -24,13 +24,10 @@ public interface ScheduleDAO {
 	public abstract ProgramSlot createValueObject();
 
 	/**
-	 * getObject-method. This will create and load valueObject contents from
-	 * database using given Primary-Key as identifier. This method is just a
-	 * convenience method for the real load-method which accepts the valueObject
-	 * as a parameter. Returned valueObject will be created using the
-	 * createValueObject() method.
+	 * getListByDate-method. This will create and load list of objects depending on 
+         * the date of program.
 	 */
-	public abstract ProgramSlot getObject(String duration, Date dateOfProgram, String startTime)
+	public abstract List<ProgramSlot> getListByDate(Date dateOfProgram)
 			throws NotFoundException, SQLException;
 
         /**

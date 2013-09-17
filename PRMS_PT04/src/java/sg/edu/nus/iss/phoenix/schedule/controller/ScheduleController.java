@@ -9,6 +9,8 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,6 +30,7 @@ import sg.edu.nus.iss.phoenix.schedule.delegate.ScheduleDelegate;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
 import sg.edu.nus.iss.phoenix.utils.SDFUtils;
+import sg.edu.nus.iss.phoenix.utils.URLUtils;
 
 /**
  *
@@ -71,26 +74,14 @@ public class ScheduleController extends HttpServlet {
             case "setupschedule":
                 ScheduleDelegate scheDel1 = new ScheduleDelegate();
                 ProgramSlot ps = new ProgramSlot();
-                Date date = null;
                 String ins =  request.getParameter("ins");
                 String duration = request.getParameter("duration");
-                String dateString = "01-01-50:"+duration+":00";
-                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yy:HH:mm:SS");
-                try{
-                  date = DATE_FORMAT.parse(dateString);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                System.out.println("Duration COntroller=="+date);
-                ps.setDuration(date);
+                Date durationDt = scheDel1.getDateValueOfString(duration);
+                System.out.println("Duration COntroller=="+durationDt);
+                ps.setDuration(durationDt);
                 String startTime = request.getParameter("startTime");
-                dateString = "01-01-50:"+startTime+":00";
-                try{
-                  date = DATE_FORMAT.parse(dateString);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                ps.setStartTime(date);
+                Date startTimeDt = scheDel1.getDateValueOfString(startTime);
+                ps.setStartTime(startTimeDt);
                 String dateOfProgram = request.getParameter("dateOfProgram");
                 ps.setDateOfProgram(dateOfProgram);
                 RPDelegate rpDel = new RPDelegate();
@@ -107,17 +98,26 @@ public class ScheduleController extends HttpServlet {
                 ProducerDelegate prDel = new ProducerDelegate();
                 Producer producer = prDel.findProducer(p2_id);
                 ps.setProducer(producer);
-                
-                if ("true".equalsIgnoreCase(ins)) {
-                     scheDel1.insertProgramSlot(ps);
-                 } else {
-                    String id = request.getParameter("id");
-                    ps.setId(Integer.parseInt(id));
-                    scheDel1.updateProgramSlot(ps);
-                 }
-               
+               String errorMessage = "";
+                if(!scheDel1.checkConflict(ps)){
+                        if ("true".equalsIgnoreCase(ins)) {
+                          scheDel1.insertProgramSlot(ps);
+                      } else {
+                         String id = request.getParameter("id");
+                         ps.setId(Integer.parseInt(id));
+                         scheDel1.updateProgramSlot(ps);
+                      } 
+                }else{
+                    errorMessage="Schedule not created ! Conflicted with other Programs !!!";
+                }
+                if (errorMessage.equals("")) {
+                    request.getSession().setAttribute("successMsg", "Schedule Created Successfully");
+                } else {
+                    request.getSession().setAttribute("errorMsg", errorMessage);
+                }
                 ArrayList<ProgramSlot> data1 = scheDel1.findAllProgramSlot();
                 request.setAttribute("schd", data1);
+                request.setAttribute("errorMessage", errorMessage);
                 RequestDispatcher rd = request
                         .getRequestDispatcher("/pages/loadSchedule.jsp");
                 rd.forward(request, response);
