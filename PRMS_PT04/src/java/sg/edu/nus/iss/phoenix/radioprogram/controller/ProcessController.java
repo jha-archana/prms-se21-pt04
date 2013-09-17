@@ -127,7 +127,8 @@ public class ProcessController extends HttpServlet {
                         AuthenticateDelegate userdel = new AuthenticateDelegate();
                         UserSearchObject usearch = new UserSearchObject();
                         ArrayList<User> userlist = new ArrayList<User>();
-                        if (request.getParameter("name") != null || request.getParameter("id") != null) {
+                        if ((request.getParameter("id") != null && !"".equals(request.getParameter("id").trim())) ||
+                                    (request.getParameter("name") != null && !"".equals(request.getParameter("name").trim()))) {
                             	usearch.setId(request.getParameter("id"));
 				usearch.setName(request.getParameter("name"));
                                 userlist = userdel.searchUsers(usearch);
