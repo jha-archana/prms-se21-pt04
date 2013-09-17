@@ -14,9 +14,13 @@ import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
  * @author Jha Archana
  */
 public class ScheduleDelegate {
-        public ArrayList<ProgramSlot> searchProgramSlot(PSSearchObject rpso) {
-		//to do
-		return null;	
+        public ArrayList<ProgramSlot> searchProgramSlot(PSSearchObject psso) {
+            PSSearchObject ps = new PSSearchObject();
+            ps.setStartTime(psso.getStartTime());
+            ps.setDateOfProgram(psso.getDateOfProgram());
+            ps.setRadioProgramName(psso.getRadioProgramName());
+            ScheduleService service = new ScheduleService();
+            return service.searchProgramSlot(ps);	
 	}
 	
 	/*public ArrayList<ProgramSlot> findProgramSlotByCriteria(PSSearchObject rpso) {
