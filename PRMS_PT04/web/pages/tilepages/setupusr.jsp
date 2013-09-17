@@ -34,6 +34,11 @@
                     return false;
                 }
             }
+            function setDispatchAction(value)
+            {
+                document.forms["usrForm"]["action"].value = value;              
+                //alert(document.forms["usrForm"]["action"].value);
+            }
         </script>        
         <title><fmt:message key="title.setupusr" /></title>
     </head>
@@ -47,7 +52,7 @@
                     <tr>
                         <th><fmt:message key="label.crudusr.id" /></th>
                         <td>
-                            <input type="text" name="id" value="${usr.getId()}" size=15
+                            <input type="text" name="id" value="${usr.getId()}" size=15 
                                    maxlength=20>
                         </td>
                     </tr>
@@ -66,7 +71,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th><fmt:message key="label.crudusr.role" /></th>
+                        <th valign="top"><fmt:message key="label.crudusr.role" /></th>
                             <c:set var="strRoles" value="${usr.getRoleString()}"/>
                         <td>
                             <select name="role" id="role" multiple="multiple" style="width:125px">
@@ -85,10 +90,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <th><fmt:message key="label.crudusr.program" /></th>
+                        <th valign="top"><fmt:message key="label.crudusr.program" /></th>
                         <td>
                             <c:set var="psList" value="${sdel.findProgramSlotByUser(usr.getId())}"/>
-                            <ul name="role" id="programs" style="width:125px">
+                            <ul name="role" id="programs" style="width:125px; margin: 0px; padding-left: 15px;">
                                 <c:forEach var="item" items="${psList}" >
                                     <fmt:formatDate value="${item.startTime}" pattern="HH:mm:ss" var="startTimeStr" />
                                     <fmt:formatDate value="${item.duration}" pattern="HH:mm:ss" var="durationStr" />
@@ -111,9 +116,14 @@
                         </td>
                     </tr>
                 </table>
+                <input type="hidden" name="action">
+                <input type="submit" value="Submit" onClick="setDispatchAction('saveupdate')"> <input type="reset" value="Reset">
+                <c:choose>
+                    <c:when test="${psList.size() == 0}">
+                        <input type="submit" value="Delete" onClick="setDispatchAction('delete')">
+                    </c:when>
+                </c:choose>
 
-                <input type="submit" value="Submit"> <input type="reset"
-                                                            value="Reset">
             </center></form>
 
     </body>

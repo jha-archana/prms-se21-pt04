@@ -35,16 +35,17 @@ public class AuthenticateDelegate {
     }
 
     public ArrayList<User> searchUsers(UserSearchObject uso) {
-            User user = new User(uso.getId());
-            user.setName(uso.getName());
-            AuthenticateService service = new AuthenticateService();
-            return service.searchUsers(user);	
+        User user = new User(uso.getId());
+        user.setName(uso.getName());
+        AuthenticateService service = new AuthenticateService();
+        return service.searchUsers(user);
     }
-        
-    public User findUser(String userId){
+
+    public User findUser(String userId) {
         AuthenticateService service = new AuthenticateService();
         return service.findUser(userId);
-    } 
+    }
+
     public void insertUser(User user) {
         AuthenticateService service = new AuthenticateService();
         service.insertUser(user);
@@ -53,6 +54,11 @@ public class AuthenticateDelegate {
     public void updateUser(User user) {
         AuthenticateService service = new AuthenticateService();
         service.updateUser(user);
+    }
+
+    public void deleteUser(User user) {
+        AuthenticateService service = new AuthenticateService();
+        service.deleteUser(user);
     }
 
     public ArrayList<Role> findAllRole() {

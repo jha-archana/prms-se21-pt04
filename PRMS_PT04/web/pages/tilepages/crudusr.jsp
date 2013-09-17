@@ -61,7 +61,6 @@
                 <th><fmt:message key="label.crudusr.id" /></th>
                 <th><fmt:message key="label.crudusr.name" /></th>
                 <th><fmt:message key="label.crudusr.role" /></th>
-                <th>&nbsp;</th>
             </tr>
             <c:forEach var="user" items="${searchuserlist}" varStatus="status">
                 <c:url var="editurl" scope="page" value="/pages/setupusr.jsp">
