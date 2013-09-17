@@ -54,7 +54,7 @@
 		<table class="borderAll">
 			<tr>
 				<th><fmt:message key="label.searchsched.duration" /></th>
-				<th><fmt:message key="label.searchsched.dateOfProgram" /></th>
+                                <th><fmt:message key="label.searchsched.dateOfProgram" /></th>
                                 <th><fmt:message key="label.searchsched.startTime" /></th>
                                 <th><fmt:message key="label.searchsched.programName" /></th>
 				<th><fmt:message key="label.searchsched.presenterName" /></th>
@@ -62,10 +62,13 @@
 			</tr>
 
 			<c:forEach var="sched" items="${searchschedlist}" varStatus="status">
+                                <fmt:formatDate value="${sched.duration}" pattern="HH:mm:ss" var="durationStr" />
+                                <fmt:formatDate value="${sched.startTime}" pattern="HH:mm:ss" var="startTimeStr" />
+                                <fmt:formatDate value="${sched.dateOfProgram}" pattern="YYYY-MM-dd" var="dateOfProgramStr" />
 				<tr class="${status.index%2==0?'even':'odd'}">
-					<a href="${editurl}"><td class="nowrap">${sched.duration}</td></a>
-					<td class="nowrap">${sched.dateOfProgram}</td>
-                                        <td class="nowrap">${sched.startTime}</td>
+                                        <td class="nowrap">${durationStr}</td>
+                                        <a href="${editurl}"><td class="nowrap">${dateOfProgramStr}</td></a>
+                                        <td class="nowrap">${startTimeStr}</td>
                                         <td class="nowrap">${sched.radioProgram.name}</td>
                                         <td class="nowrap">${sched.presenter.id}</td>
                                         <td class="nowrap">${sched.producer.id}</td>
