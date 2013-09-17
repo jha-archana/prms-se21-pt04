@@ -1,7 +1,7 @@
 <%-- 
     Document   : setupschedule
     Created on : Sep 12, 2013, 11:05:47 AM
-    Author     : lenovo
+    Author     : Jha Archana
 --%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
