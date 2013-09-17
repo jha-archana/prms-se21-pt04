@@ -19,10 +19,12 @@
         <tr>
           <td class="userTitle" align="center" width="100%">
             <c:if test="${not empty sessionScope.user}">
-              <fmt:message key="caption.user"/>:
+                <b><fmt:message key="caption.user"/></b>:
               <c:out value="${sessionScope.user.name}"/> &nbsp; &nbsp;
-              <fmt:message key="caption.role"/>:
-              <c:out value="${sessionScope.user.roles[0].role}"/>
+              <b><fmt:message key="caption.role"/></b>:
+              <c:forEach var="item" items="${sessionScope.user.roles}">
+                 <c:out value="${item.role}"/> &nbsp;
+              </c:forEach>
             </c:if>
           </td>
         </tr>
