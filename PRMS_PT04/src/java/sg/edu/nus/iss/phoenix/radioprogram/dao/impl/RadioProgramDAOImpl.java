@@ -221,7 +221,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			if (first) {
 				first = false;
 			}
-			sql.append("AND \"name\" LIKE '").append(valueObject.getName())
+			sql.append("AND \"name\" LIKE '%").append(valueObject.getName())
 					.append("%' ");
 		}
 
@@ -229,7 +229,7 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
 			if (first) {
 				first = false;
 			}
-			sql.append("AND \"desc\" LIKE '").append(valueObject.getDescription())
+			sql.append("AND \"desc\" LIKE '%").append(valueObject.getDescription())
 					.append("%' ");
 		}
 
