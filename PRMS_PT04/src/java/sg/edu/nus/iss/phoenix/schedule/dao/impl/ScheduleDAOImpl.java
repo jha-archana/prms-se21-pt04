@@ -22,6 +22,7 @@ import sg.edu.nus.iss.phoenix.producer.service.ProducerService;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
 import sg.edu.nus.iss.phoenix.utils.SDFUtils;
 
 /**
@@ -121,7 +122,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                 }
 		return searchResults;
 	}
-
+            
 	/* (non-Javadoc)
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#create(sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram)
 	 */
@@ -233,10 +234,51 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#searchMatching(sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram)
 	 */
 	@Override
-	public List<ProgramSlot> searchMatching(ProgramSlot valueObject) throws SQLException {
+	public List<ProgramSlot> searchMatching(PSSearchObject valueObject) throws SQLException {
 
-		List<ProgramSlot> searchResults = new ArrayList<ProgramSlot>();
-		//To do
+                List<ProgramSlot> searchResults = new ArrayList<ProgramSlot>();
+		//openConnection();
+		boolean first = true;
+		StringBuffer sql = new StringBuffer(
+				"SELECT * FROM APP.\"program-slot\" WHERE 1=1 ");
+
+		if (valueObject.getStartTime()!= null && !"".equals(valueObject.getStartTime().trim())) {
+			if (first) {
+				first = false;
+			}
+			sql.append("AND \"startTime\" = '").append(valueObject.getStartTime())
+					.append("' ");
+		}
+
+                
+		if (valueObject.getDateOfProgram()!= null && !"".equals(valueObject.getDateOfProgram().trim())) {
+			if (first) {
+				first = false;
+			}
+			sql.append("AND \"dateOfProgram\" = '").append(valueObject.getDateOfProgram())
+					.append("' ");
+		}
+
+		if (valueObject.getRadioProgramName()!= null) {
+			if (first) {
+				first = false;
+			}
+			sql.append("AND \"program-name\" LIKE '%")
+					.append(valueObject.getRadioProgramName()).append("%' ");
+		}
+
+		sql.append("ORDER BY \"dateOfProgram\" DESC ");
+
+		// Prevent accidential full table results.
+		// Use loadAll if all rows must be returned.
+		if (first)
+			searchResults = new ArrayList<ProgramSlot>();
+                else{
+                     try( Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString());) {
+			searchResults = listQuery(stmt);
+                     }
+                }
+		
 		return searchResults;
 	}
 
