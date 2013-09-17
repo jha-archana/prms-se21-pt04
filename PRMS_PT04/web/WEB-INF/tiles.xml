@@ -45,6 +45,9 @@
     <definition name="producerSearchPage" extends="homePage">
         <put-attribute name="body" value="/pages/producer/_search.jsp" />
     </definition>
+    <definition name="radioProgramSearchPage" extends="homePage">
+        <put-attribute name="body" value="/pages/radioprogram/_search.jsp" />
+    </definition>
     <definition name="searchSearchPage" extends="homePage">
         <put-attribute name="body" value="/pages/producer/_search.jsp" />
     </definition>

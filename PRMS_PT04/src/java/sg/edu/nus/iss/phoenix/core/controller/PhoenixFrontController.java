@@ -92,6 +92,8 @@ public class PhoenixFrontController extends HttpServlet {
                 return "/ReviewSelectPresenter/";
             case "rsproducer": //Review Select Producer
                 return "/ReviewSelectProducer/";
+            case "rsradioprogram": //Review Select Radio Program
+                return "/ReviewSelectRadioProgram/";
              case "deleteschedule":
                 return "/ScheduleController/deleteschedule";
             default:
@@ -99,3 +101,5 @@ public class PhoenixFrontController extends HttpServlet {
         }
     }
 }
+
+

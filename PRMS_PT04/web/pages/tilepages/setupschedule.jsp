@@ -65,10 +65,10 @@
                                             
                                         </td>
                                         <td>
-                                            <c:url value="/controller/rsrp" var="rsurl">
+                                            <c:url value="/controller/rsradioprogram" var="rsurl">
                                                 <c:param name="returnURL" value="${pageContext.request.requestURL}?${pageContext.request.queryString}"/>
                                             </c:url>
-                                            <a href="${rsurl}" onclick="alert('hv not done');return false;">Review Select Radio Program</a>
+                                            <a href="${rsurl}" >Review Select Radio Program</a>
                                         </td>
 				</tr>
                                 <tr>
