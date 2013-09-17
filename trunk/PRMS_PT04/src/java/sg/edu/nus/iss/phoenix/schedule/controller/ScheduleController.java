@@ -131,20 +131,19 @@ public class ScheduleController extends HttpServlet {
                 rd2.forward(request, response);
                 break;
             case "searchsched":
-                 ScheduleDelegate userdel = new ScheduleDelegate();
+                 ScheduleDelegate scheddel = new ScheduleDelegate();
                  PSSearchObject ssearch = new PSSearchObject();
+                 RPDelegate rpDel2 = new RPDelegate();
                  ArrayList<ProgramSlot> schedlist = new ArrayList<ProgramSlot>();
-                 if (request.getParameter("date") != null || 
-                        request.getParameter("time") != null ||
-                         request.getParameter("prog") != null) {
-                  //       ssearch.setDateOfProgram(request.getParameter("date"));
-                  //       ssearch.setStartTime(request.getParameter("time"));
-                     //       ssearch.setRadioProgramName(request.getParameter("prog"));
-                  //       schedlist = userdel.searchProgramSlot(ssearch);
-                         schedlist = userdel.findAllProgramSlot();
-                        
+                 if ((request.getParameter("date") != null && !"".equals(request.getParameter("date").trim())) || 
+                         (request.getParameter("time") != null && !"".equals(request.getParameter("time").trim())) ||
+                         (request.getParameter("prog") != null && !"".equals(request.getParameter("prog").trim()))) {
+                         ssearch.setStartTime(request.getParameter("time"));
+                         ssearch.setDateOfProgram(request.getParameter("date"));
+                         ssearch.setRadioProgramName(request.getParameter("prog"));
+                         schedlist = scheddel.searchProgramSlot(ssearch);                        
                  } else {
-                         schedlist = userdel.findAllProgramSlot();
+                         schedlist = scheddel.findAllProgramSlot();
                  }
                  request.getSession().setAttribute("searchschedlist", schedlist);
                  RequestDispatcher ss = getServletContext().getRequestDispatcher(
