@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:useBean id="adel" class="sg.edu.nus.iss.phoenix.authenticate.delegate.AuthenticateDelegate" scope="page"/>
+<jsp:useBean id="sdel" class="sg.edu.nus.iss.phoenix.schedule.delegate.ScheduleDelegate" scope="page"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
@@ -40,80 +41,74 @@
         <c:set var="usr" value="${adel.findUser(param['id'])}"/>
         <form name="usrForm" action="${pageContext.request.contextPath}/controller/setupusr" method="post" onsubmit="return validateForm()" >
             <center>
+                <input type="hidden" name="currId" value="${param['id']}" >
+                <input type="hidden" name="ins" value="${param['insert']}" />
                 <table cellpadding=4 cellspacing=2 border=0>
                     <tr>
                         <th><fmt:message key="label.crudusr.id" /></th>
-                        <td><c:if test="${param['insert'] == 'true'}">
-                                <input type="text" name="id" value="${usr.getId()}" size=15
-                                       maxlength=20>
-                                <input type="hidden" name="ins" value="true" />
-                            </c:if> 
-                            <c:if test="${param['insert']=='false'}">
-                                <input type="text" name="roid" value="${usr.getId()}" size=15
-                                       maxlength=20 readonly="readonly">
-                                <input type="hidden" name="ins" value="false" />
-                            </c:if></td>
+                        <td>
+                            <input type="text" name="id" value="${usr.getId()}" size=15
+                                   maxlength=20>
+                        </td>
                     </tr>
                     <tr>
                         <th><fmt:message key="label.crudusr.name" /></th>
-                        <td><c:if test="${param['insert'] == 'true'}">
-                                <input type="text" name="name" value="${usr.getName()}" size=15
-                                       maxlength=20>
-                                <input type="hidden" name="ins" value="true" />
-                            </c:if> 
-                            <c:if test="${param['insert']=='false'}">
-                                <input type="text" name="roname" value="${usr.getName()}" size=15
-                                       maxlength=20 readonly="readonly">
-                                <input type="hidden" name="ins" value="false" />
-                            </c:if></td>
+                        <td>
+                            <input type="text" name="name" value="${usr.getName()}" size=15
+                                   maxlength=20>
+                        </td>
                     </tr>
                     <tr>
                         <th><fmt:message key="label.crudusr.pwd" /></th>
-                        <td><c:if test="${param['insert'] == 'true'}">
-                                <input type="text" name="pwd" value="${usr.getPassword()}" size=15
-                                       maxlength=20>
-                                <input type="hidden" name="ins" value="true" />
-                            </c:if> 
-                            <c:if test="${param['insert']=='false'}">
-                                <input type="text" name="ropwd" value="${usr.getPassword()}" size=15
-                                       maxlength=20 readonly="readonly">
-                                <input type="hidden" name="ins" value="false" />
-                            </c:if></td>
+                        <td>
+                            <input type="text" name="pwd" value="${usr.getPassword()}" size=15
+                                   maxlength=20>
+                        </td>
                     </tr>
                     <tr>
                         <th><fmt:message key="label.crudusr.role" /></th>
                             <c:set var="strRoles" value="${usr.getRoleString()}"/>
-                        <td><c:if test="${param['insert'] == 'true'}">
-                                <select name="role" id="role" multiple="multiple" style="width:125px">
-                                    <c:forEach var="item" items="${adel.findAllRole()}" >
-                                        <c:set var="strRole" value="${item.getRole()}" />
-                                        <c:choose>
-                                            <c:when test="${fn:contains(strRoles, strRole)}">
-                                                <option value="${item.getRole()}" selected="true">${item.getRole()}</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="${item.getRole()}">${item.getRole()}</option>
-                                            </c:otherwise>
-                                        </c:choose>
+                        <td>
+                            <select name="role" id="role" multiple="multiple" style="width:125px">
+                                <c:forEach var="item" items="${adel.findAllRole()}" >
+                                    <c:set var="strRole" value="${item.getRole()}" />
+                                    <c:choose>
+                                        <c:when test="${fn:contains(strRoles, strRole)}">
+                                            <option value="${item.getRole()}" selected="true">${item.getRole()}</option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <option value="${item.getRole()}">${item.getRole()}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                            </select>                              
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><fmt:message key="label.crudusr.program" /></th>
+                        <td>
+                            <c:set var="psList" value="${sdel.findProgramSlotByUser(usr.getId())}"/>
+                            <ul name="role" id="programs" style="width:125px">
+                                <c:forEach var="item" items="${psList}" >
+                                    <fmt:formatDate value="${item.startTime}" pattern="HH:mm:ss" var="startTimeStr" />
+                                    <fmt:formatDate value="${item.duration}" pattern="HH:mm:ss" var="durationStr" />
+                                    <fmt:formatDate value="${item.dateOfProgram}" pattern="YYYY-MM-dd" var="dateOfProgramStr" />
+                                    <c:url var="editurl" scope="page" value="/pages/setupschedule.jsp">
+                                        <c:param name="duration" value="${durationStr}"/>
+                                        <c:param name="startTime" value="${startTimeStr}"/>
+                                        <c:param name="dateOfProgram" value="${dateOfProgramStr}"/>
+                                        <c:param name="radioProgram" value="${item.radioProgram.name}"/>
+                                        <c:param name="presenter_id" value="${item.presenter.id}"/>
+                                        <c:param name="presenter_name" value="${item.presenter.name}"/>
+                                        <c:param name="producer_id" value="${item.producer.id}"/>
+                                        <c:param name="producer_name" value="${item.producer.name}"/>
+                                        <c:param name="id" value="${item.id}"/>
+                                        <c:param name="insert" value="false"/>
+                                    </c:url>
+                                    <li value="${item.getId()}"><a href="${editurl}">${item.radioProgram.name}</a></li>
                                     </c:forEach>
-                                </select>                              
-                            </c:if> 
-                            <c:if test="${param['insert']=='false'}">
-                                <select name="role" id="role" multiple="multiple" style="width:125px" disabled="disabled" class="select">
-                                    <c:forEach var="item" items="${adel.findAllRole()}" >
-                                        <c:set var="strRole" value="${item.getRole()}" />
-                                        <c:choose>
-                                            <c:when test="${fn:contains(strRoles, strRole)}">
-                                                <option value="${item.getRole()}" selected="true">${item.getRole()}</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="${item.getRole()}">${item.getRole()}</option>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:forEach>
-                                </select>
-                                <input type="hidden" name="ins" value="false" />
-                            </c:if></td>
+                            </ul>              
+                        </td>
                     </tr>
                 </table>
 
