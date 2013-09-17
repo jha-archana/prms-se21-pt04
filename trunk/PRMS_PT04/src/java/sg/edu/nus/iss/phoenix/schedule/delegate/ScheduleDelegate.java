@@ -5,6 +5,7 @@
 package sg.edu.nus.iss.phoenix.schedule.delegate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
 import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
@@ -60,5 +61,15 @@ public class ScheduleDelegate {
     public ArrayList<ProgramSlot> findProgramSlotByUser(String userId) {
         ScheduleService service = new ScheduleService();
         return service.findProgramSlotByUserId(userId);
+    }
+    
+    public Date getDateValueOfString(String time){
+        ScheduleService service = new ScheduleService();
+        return service.getDateValueOfString(time);
+    }
+    
+    public boolean checkConflict(ProgramSlot ps) {
+        ScheduleService service = new ScheduleService();
+        return service.checkConflict(ps);
     }
 }

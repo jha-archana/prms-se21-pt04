@@ -1,7 +1,12 @@
 package sg.edu.nus.iss.phoenix.schedule.service;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
@@ -10,8 +15,9 @@ import sg.edu.nus.iss.phoenix.presenter.service.PresenterService;
 import sg.edu.nus.iss.phoenix.producer.service.ProducerService;
 import sg.edu.nus.iss.phoenix.radioprogram.dao.RadioProgramDAO;
 import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
-import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
+import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.utils.SDFUtils;
 
 /**
  *
@@ -46,9 +52,14 @@ public class ScheduleService {
         return schedList;
     }
 
-    public ArrayList<ProgramSlot> findProgramSlotByCriteria(ProgramSlot ps) {
-        //to do 
-        return null;
+    public List<ProgramSlot> findProgramSlotByDate(Date dateOfProgram) {
+        List<ProgramSlot> programSlot =new ArrayList<ProgramSlot>();
+        try{
+            programSlot =  schdao.getListByDate(dateOfProgram);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return programSlot;
     }
 
     public ProgramSlot findProgramSlotById(int id) {
@@ -146,5 +157,61 @@ public class ScheduleService {
             e.printStackTrace();
         }
         return filterList;
+    }
+    
+    public Date getDateValueOfString(String time){
+        Date date = null;
+        String dateString = "01-01-50:"+time+":00";
+        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yy:HH:mm:SS");
+        try{
+          date = DATE_FORMAT.parse(dateString);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return date;
+    }
+    
+    public boolean checkConflict(ProgramSlot psInput) {
+        boolean isConflict = false;
+        List<ProgramSlot> psList = findProgramSlotByDate(psInput.getDateOfProgram());
+        Iterator<ProgramSlot> psListIterator = psList.iterator();
+        while(psListIterator.hasNext()){
+            ProgramSlot progSlot = psListIterator.next();
+            System.out.println("StartTime=="+progSlot.getStartTime());
+            int hour = getHour(progSlot.getDuration());
+            int minute = getMinute(progSlot.getDuration());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(psInput.getStartTime());
+            cal.add(Calendar.HOUR, hour);
+            cal.add(Calendar.MINUTE, minute);
+            System.out.println("StartTime + hr=="+cal.getTime());
+            
+            //Check if input start time equals to db start time
+            if(SDFUtils.SCHEDULE_SDF_TIME.format(progSlot.getStartTime()).equals(SDFUtils.SCHEDULE_SDF_TIME.format(psInput.getStartTime()))){
+                isConflict = true;
+            }
+            //Check after adding the duration into the start time
+            else if(SDFUtils.SCHEDULE_SDF_TIME.format(progSlot.getStartTime()).equals(SDFUtils.SCHEDULE_SDF_TIME.format(cal.getTime()))){
+                isConflict = true;
+             }/*else if(){
+                isConflict = true;
+             }*/
+        }
+        
+        return isConflict;
+    }
+    
+    public int getHour(Date date){
+            Calendar durHr = Calendar.getInstance();
+            durHr.setTime(date);
+            int hour = durHr.get(Calendar.HOUR_OF_DAY);
+            return hour;
+    }
+    
+    public int getMinute(Date date){
+            Calendar durMinute = Calendar.getInstance();
+            durMinute.setTime(date);
+            int minute = durMinute.get(Calendar.MINUTE);
+            return minute;
     }
 }
