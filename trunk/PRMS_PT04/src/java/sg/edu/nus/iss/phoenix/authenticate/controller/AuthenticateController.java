@@ -67,37 +67,49 @@ public class AuthenticateController extends HttpServlet {
                 u.setId(request.getParameter("id"));
                 u.setName(request.getParameter("name"));
                 u.setPassword(request.getParameter("pwd"));
-
-                ArrayList<Role> roleList = new ArrayList<Role>();
-                String[] roles = request.getParameterValues("role");
-                for (int i = 0; i < roles.length; i++) {
-                    Role r = adel.findRole(roles[i].toString());
-                    if (r != null) {
-                        roleList.add(r);
-                    }
-                }
-                u.setRoles(roleList);
-                String ins = (String) request.getParameter("ins");
-                String currId = (String) request.getParameter("currId");
-
                 String errorMessage = "";
-                if (!u.getId().equalsIgnoreCase(currId)) {
-                    if (adel.checkUser(u)) {
-                        errorMessage = "Error!!!! User exists.";
+                String action = request.getParameter("action");
+                if (action.equalsIgnoreCase("submit")) {
+                    ArrayList<Role> roleList = new ArrayList<Role>();
+                    String[] roles = request.getParameterValues("role");
+                    for (int i = 0; i < roles.length; i++) {
+                        Role r = adel.findRole(roles[i].toString());
+                        if (r != null) {
+                            roleList.add(r);
+                        }
+                    }
+                    u.setRoles(roleList);
+                    String ins = (String) request.getParameter("ins");
+                    String currId = (String) request.getParameter("currId");
+
+
+                    if (!u.getId().equalsIgnoreCase(currId)) {
+                        if (adel.checkUser(u)) {
+                            errorMessage = "Error!!!! User exists.";
+                        }
+                    }
+
+                    Logger.getLogger(getClass().getName()).log(Level.INFO, "Insert Flag: " + ins);
+                    if (ins.equalsIgnoreCase("true")) {
+                        adel.insertUser(u);
+                    } else {
+                        adel.updateUser(u);
+                    }
+
+                    if (errorMessage.equals("")) {
+                        request.getSession().setAttribute("successMsg", "User saved or updated.");
+                    } else {
+                        request.getSession().setAttribute("errorMsg", errorMessage);
                     }
                 }
+                if (action.equalsIgnoreCase("delete")) {
+                    adel.deleteUser(u);
 
-                Logger.getLogger(getClass().getName()).log(Level.INFO, "Insert Flag: " + ins);
-                if (ins.equalsIgnoreCase("true")) {
-                    adel.insertUser(u);
-                } else {
-                    adel.updateUser(u);
-                }
-
-                if (errorMessage.equals("")) {
-                    request.getSession().setAttribute("successMsg", "User saved or updated.");
-                } else {
-                    request.getSession().setAttribute("errorMsg", errorMessage);
+                    if (errorMessage.equals("")) {
+                        request.getSession().setAttribute("successMsg", "User deleted successfully.");
+                    } else {
+                        request.getSession().setAttribute("errorMsg", errorMessage);
+                    }
                 }
                 ArrayList<User> data = adel.findAllUser();
                 request.getSession().setAttribute("searchuserlist", data);

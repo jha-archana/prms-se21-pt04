@@ -154,6 +154,18 @@ public class AuthenticateService {
         }
     }
 
+    public void deleteUser(User user) {
+        try {
+            udao.delete(user);
+        } catch (NotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     public boolean isExist(String userId) {
         User userExist = null;
         try {
