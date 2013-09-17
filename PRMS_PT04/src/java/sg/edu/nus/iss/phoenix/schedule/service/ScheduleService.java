@@ -11,6 +11,7 @@ import sg.edu.nus.iss.phoenix.producer.service.ProducerService;
 import sg.edu.nus.iss.phoenix.radioprogram.dao.RadioProgramDAO;
 import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
 
 /**
  *
@@ -34,9 +35,15 @@ public class ScheduleService {
                 rpDao = factory.getRadioProgramDAO();
 	}
 
-	public ArrayList<ProgramSlot> searchProgramSlot(ProgramSlot progSl) {
-		//to do 
-		return null;
+	public ArrayList<ProgramSlot> searchProgramSlot(PSSearchObject ps) {
+                ArrayList<ProgramSlot> schedList = new ArrayList<ProgramSlot>();
+                try {
+                        schedList = (ArrayList<ProgramSlot>) schdao.searchMatching(ps);
+                } catch (SQLException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                }
+                return schedList;
 	}
 
 	public ArrayList<ProgramSlot> findProgramSlotByCriteria(ProgramSlot ps) {
