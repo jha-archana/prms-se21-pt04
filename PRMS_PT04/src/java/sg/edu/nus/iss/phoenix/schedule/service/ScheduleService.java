@@ -178,40 +178,34 @@ public class ScheduleService {
         while(psListIterator.hasNext()){
             ProgramSlot progSlot = psListIterator.next();
             System.out.println("StartTime=="+progSlot.getStartTime());
-            int hour = getHour(progSlot.getDuration());
-            int minute = getMinute(progSlot.getDuration());
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(psInput.getStartTime());
-            cal.add(Calendar.HOUR, hour);
-            cal.add(Calendar.MINUTE, minute);
-            System.out.println("StartTime + hr=="+cal.getTime());
-            
+            Date dbstartTimeDur = addHourAndMinute(progSlot.getStartTime(),progSlot.getDuration());
+            System.out.println("StartTime + hr=="+dbstartTimeDur);
+            Date inStartTimeDur = addHourAndMinute(psInput.getStartTime(),psInput.getDuration());
             //Check if input start time equals to db start time
-            if(SDFUtils.SCHEDULE_SDF_TIME.format(progSlot.getStartTime()).equals(SDFUtils.SCHEDULE_SDF_TIME.format(psInput.getStartTime()))){
+            if(progSlot.getStartTime().compareTo(psInput.getStartTime())==0){
                 isConflict = true;
             }
-            //Check after adding the duration into the start time
-            else if(SDFUtils.SCHEDULE_SDF_TIME.format(progSlot.getStartTime()).equals(SDFUtils.SCHEDULE_SDF_TIME.format(cal.getTime()))){
+            //Check after adding the duration plus start time of db and input start time
+            else if(psInput.getStartTime().compareTo(dbstartTimeDur)<=0){
                 isConflict = true;
-             }/*else if(){
+             }
+            //Check after adding the duration plus start time of input and db start time
+            else if(inStartTimeDur.compareTo(progSlot.getStartTime())<=0){
                 isConflict = true;
-             }*/
+             }
         }
-        
         return isConflict;
     }
-    
-    public int getHour(Date date){
+
+    public Date addHourAndMinute(Date date,Date DateToAdd){
             Calendar durHr = Calendar.getInstance();
-            durHr.setTime(date);
+            durHr.setTime(DateToAdd);
             int hour = durHr.get(Calendar.HOUR_OF_DAY);
-            return hour;
-    }
-    
-    public int getMinute(Date date){
-            Calendar durMinute = Calendar.getInstance();
-            durMinute.setTime(date);
-            int minute = durMinute.get(Calendar.MINUTE);
-            return minute;
+            int minute = durHr.get(Calendar.MINUTE);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.add(Calendar.HOUR, hour);
+            cal.add(Calendar.MINUTE, minute);
+            return cal.getTime();
     }
 }
