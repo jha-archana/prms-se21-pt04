@@ -143,8 +143,9 @@ public class ProgramSlot implements Cloneable, Serializable {
      * individual set-methods.
      */
 
-    public void setAll(String durationIn,Date dateOfProgramIn,String startTimeIn,
+    public void setAll(int id,String durationIn,Date dateOfProgramIn,String startTimeIn,
             String radioProgramIn,String presenterIn,String producerIn) {
+           setId(id);
           setDuration(durationIn);
           this.dateOfProgram = dateOfProgramIn;
           setStartTime( startTimeIn);
@@ -177,7 +178,8 @@ public class ProgramSlot implements Cloneable, Serializable {
     public String toString() {
         StringBuffer out = new StringBuffer();
         out.append("\nProgramSlot class, mapping to table program-slot\n");
-        out.append("Persistent attributes: \n"); 
+        out.append("Persistent attributes: \n");
+        out.append("id = " + this.id + "\n");
         out.append("duration = " + this.duration + "\n"); 
         out.append("dateOfProgram = " + this.dateOfProgram + "\n"); 
         out.append("startTime = " + this.startTime + "\n"); 

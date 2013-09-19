@@ -22,7 +22,7 @@
         </c:url>
         <a href="${url}"><fmt:message key="label.maintainSchedule.add"/></a>
         <br/><br/>
-        <error>${errorMsg}</error><success>${successMsg}</success>
+        <error><font color="red">${errorMsg}</font></error><success><font color="red">${successMsg}</font></success>
         <table class="borderAll">
             <tr>
                 <th><fmt:message key="label.maintainSchedule.duration"/></th>
