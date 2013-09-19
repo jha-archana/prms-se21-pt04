@@ -68,8 +68,8 @@ public class ScheduleDelegate {
         return service.getDateValueOfString(time);
     }
     
-    public boolean checkConflict(ProgramSlot ps) {
+    public boolean checkConflict(ProgramSlot ps,String id) {
         ScheduleService service = new ScheduleService();
-        return service.checkConflict(ps);
+        return service.checkConflict(ps,id);
     }
 }

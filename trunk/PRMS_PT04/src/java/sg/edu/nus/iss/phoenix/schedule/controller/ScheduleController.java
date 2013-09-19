@@ -98,22 +98,23 @@ public class ScheduleController extends HttpServlet {
                 ProducerDelegate prDel = new ProducerDelegate();
                 Producer producer = prDel.findProducer(p2_id);
                 ps.setProducer(producer);
+                String psId = "";
+                 psId = request.getParameter("id");
                String errorMessage = "";
-                if(!scheDel1.checkConflict(ps)){
+                if(!scheDel1.checkConflict(ps,psId)){
                         if ("true".equalsIgnoreCase(ins)) {
                           scheDel1.insertProgramSlot(ps);
                       } else {
-                         String id = request.getParameter("id");
-                         ps.setId(Integer.parseInt(id));
+                         ps.setId(Integer.parseInt(psId));
                          scheDel1.updateProgramSlot(ps);
                       } 
                 }else{
-                    errorMessage="Schedule not created ! Conflicted with other Programs !!!";
+                    errorMessage="Schedule not Saved ! Conflicted with other Programs !!!";
                 }
                 if (errorMessage.equals("")) {
-                    request.getSession().setAttribute("successMsg", "Schedule Created Successfully");
+                    request.setAttribute("successMsg", "Schedule Saved Successfully");
                 } else {
-                    request.getSession().setAttribute("errorMsg", errorMessage);
+                    request.setAttribute("errorMsg", errorMessage);
                 }
                 ArrayList<ProgramSlot> data1 = scheDel1.findAllProgramSlot();
                 request.setAttribute("schd", data1);

@@ -171,7 +171,7 @@ public class ScheduleService {
         return date;
     }
     
-    public boolean checkConflict(ProgramSlot psInput) {
+    public boolean checkConflict(ProgramSlot psInput,String id) {
         boolean isConflict = false;
         List<ProgramSlot> psList = findProgramSlotByDate(psInput.getDateOfProgram());
         Iterator<ProgramSlot> psListIterator = psList.iterator();
@@ -181,6 +181,12 @@ public class ScheduleService {
             Date dbstartTimeDur = addHourAndMinute(progSlot.getStartTime(),progSlot.getDuration());
             System.out.println("StartTime + hr=="+dbstartTimeDur);
             Date inStartTimeDur = addHourAndMinute(psInput.getStartTime(),psInput.getDuration());
+            //For modification then skip if same id
+            if(!id.equals("")){
+                if(Integer.parseInt(id)==progSlot.getId()){
+                    continue;
+                }
+            }
             //Check if input start time equals to db start time
             if(progSlot.getStartTime().compareTo(psInput.getStartTime())==0){
                 isConflict = true;
