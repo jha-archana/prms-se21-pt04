@@ -153,7 +153,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, valueObject.getPassword());
             stmt.setString(2, valueObject.getName());
-            stmt.setString(3, valueObject.getRoles().get(0).getRole());
+            stmt.setString(3, valueObject.getRoleString());
 
             stmt.setString(4, valueObject.getId());
 

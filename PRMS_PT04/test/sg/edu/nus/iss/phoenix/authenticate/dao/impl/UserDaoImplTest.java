@@ -7,7 +7,9 @@ package sg.edu.nus.iss.phoenix.authenticate.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.sql.DataSource;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -20,6 +22,7 @@ import static org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
 import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
+import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 
 
 /**
@@ -84,10 +87,12 @@ public class UserDaoImplTest {
         
         System.out.println("getObject");
         String sql = "SELECT * FROM APP.\"user\" WHERE (\"id\" = ? ) ";
+        
         User user  = new User("test0001");
         user.setName("test 0001");
         user.setPassword("testpassword");
         user.setRoles(new ArrayList<Role>());
+        //mock up
         when(ds.getConnection()).thenReturn(conn);
         when(conn.prepareStatement(sql)).thenReturn(stmt);
         when(stmt.executeQuery()).thenReturn(rs);  
@@ -96,8 +101,9 @@ public class UserDaoImplTest {
         when(rs.getString("name")).thenReturn(user.getName());
         when(rs.getString("password")).thenReturn(user.getPassword());
         when(rs.getString("role")).thenReturn(user.getRoleString());
+        //test
         User result = uDao.getObject("test0001");
-        
+        //verification
         assertEquals("test0001", result.getId());
         assertEquals(user.getName(), result.getName());
         assertEquals(user.getPassword(),result.getPassword());
@@ -137,7 +143,25 @@ public class UserDaoImplTest {
         assertEquals(user.getPassword(),valueObject.getPassword());
         assertEquals(user.getRoleString(),valueObject.getRoleString());
         
+       
+        
     }
+    
+     @Test(expected=NotFoundException.class)
+    public void testLoadNotFound() throws Exception {
+        //load a not in db object
+        System.out.println("testLoadNotFound");
+        String sql = "SELECT * FROM APP.\"user\" WHERE (\"id\" = ? ) ";
+       
+        when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeQuery()).thenReturn(rs);  
+        when(rs.next()).thenReturn(false);
+        
+         User valueObject404 = new User("test0002");
+         uDao.load(valueObject404);
+         
+     }
 
     /**
      * Test of loadAll method, of class UserDaoImpl.
@@ -145,8 +169,25 @@ public class UserDaoImplTest {
     @Test
     public void testLoadAll() throws Exception {
         System.out.println("loadAll");
+         String sql = "SELECT * FROM APP.\"user\" ORDER BY \"id\" ASC ";
+        User user  = new User("test0001");
+        user.setName("test 0001");
+        user.setPassword("testpassword");
+        user.setRoles(new ArrayList<Role>());
+        when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeQuery()).thenReturn(rs);  
+        when(rs.next()).thenReturn(true).thenReturn(false);
         
-        fail("The test case is a prototype.");
+        when(rs.getString("id")).thenReturn(user.getId());
+        when(rs.getString("name")).thenReturn(user.getName());
+        when(rs.getString("password")).thenReturn(user.getPassword());
+        when(rs.getString("role")).thenReturn(user.getRoleString());
+        List<User> users = uDao.loadAll();
+        
+        assertEquals(1, users.size());
+        assertEquals(user.getId(), users.get(0).getId());
+        
     }
 
     /**
@@ -155,8 +196,21 @@ public class UserDaoImplTest {
     @Test
     public void testCreate() throws Exception {
         System.out.println("create");
+        String sql = "INSERT INTO APP.\"user\" ( \"id\", \"password\", \"name\", \"role\") VALUES (?, ?, ?, ?) ";
+          User user  = new User("test0001");
+        user.setName("test 0001");
+        user.setPassword("testpassword");
+        ArrayList<Role> roles = new ArrayList<>();
+        roles.add(new Role("presenter"));
+        roles.add(new Role("producer"));
+        user.setRoles(roles);
         
-        fail("The test case is a prototype.");
+        when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeUpdate()).thenReturn(1);
+        
+        uDao.create(user);
+        
     }
 
     /**
@@ -165,8 +219,21 @@ public class UserDaoImplTest {
     @Test
     public void testSave() throws Exception {
         System.out.println("save");
+        String sql = "UPDATE APP.\"user\" SET \"password\" = ?, \"name\" = ?, \"role\" = ? WHERE (\"id\" = ? ) ";
+         User user  = new User("test0001");
+        user.setName("test 0001");
+        user.setPassword("testpassword");
+        ArrayList<Role> roles = new ArrayList<>();
+        roles.add(new Role("presenter"));
+        roles.add(new Role("producer"));
+        user.setRoles(roles);
         
-        fail("The test case is a prototype.");
+        when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeUpdate()).thenReturn(1);
+        
+         uDao.save(user);
+        
     }
 
     /**
@@ -175,8 +242,13 @@ public class UserDaoImplTest {
     @Test
     public void testDelete() throws Exception {
         System.out.println("delete");
-        
-        fail("The test case is a prototype.");
+         String sql = "DELETE FROM APP.\"user\" WHERE (\"id\" = ? ) ";
+          User user  = new User("test0001");
+         when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeUpdate()).thenReturn(1);
+         
+        uDao.delete(user);
     }
 
     /**
@@ -185,8 +257,11 @@ public class UserDaoImplTest {
     @Test
     public void testDeleteAll() throws Exception {
         System.out.println("deleteAll");
-        
-        fail("The test case is a prototype.");
+         String sql = "DELETE FROM APP.\"user\"";
+         when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeUpdate()).thenReturn(1);
+        uDao.deleteAll();
     }
 
     /**
@@ -195,67 +270,14 @@ public class UserDaoImplTest {
     @Test
     public void testCountAll() throws Exception {
         System.out.println("countAll");
+        String sql = "SELECT count(*) FROM APP.\"user\"";
+        when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeQuery()).thenReturn(rs); 
+        when(rs.next()).thenReturn(true).thenReturn(false);
+        when(rs.getInt(1)).thenReturn(1);
+        int counter = uDao.countAll();
+        assertEquals(1,counter );
         
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of searchMatching method, of class UserDaoImpl.
-     */
-    @Test
-    public void testSearchMatching_String() throws Exception {
-        System.out.println("searchMatching");
-        
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of searchMatching method, of class UserDaoImpl.
-     */
-    @Test
-    public void testSearchMatching_User() throws Exception {
-        System.out.println("searchMatching");
-        
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of searchUserMatching method, of class UserDaoImpl.
-     */
-    @Test
-    public void testSearchUserMatching() throws Exception {
-        System.out.println("searchUserMatching");
-        
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of databaseUpdate method, of class UserDaoImpl.
-     */
-    @Test
-    public void testDatabaseUpdate() throws Exception {
-        System.out.println("databaseUpdate");
-        
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of singleQuery method, of class UserDaoImpl.
-     */
-    @Test
-    public void testSingleQuery() throws Exception {
-        System.out.println("singleQuery");
-        
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of listQuery method, of class UserDaoImpl.
-     */
-    @Test
-    public void testListQuery() throws Exception {
-        System.out.println("listQuery");
-        
-        fail("The test case is a prototype.");
     }
 }
