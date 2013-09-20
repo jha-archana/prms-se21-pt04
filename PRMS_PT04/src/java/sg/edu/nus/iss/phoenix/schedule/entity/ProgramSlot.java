@@ -202,6 +202,18 @@ public class ProgramSlot implements Cloneable, Serializable {
        //to do
         return cloned;
     }
+    
+        @Override
+    public boolean equals(Object obj)
+    {
+        if(!(obj instanceof ProgramSlot)) return false;
+        ProgramSlot p = (ProgramSlot) obj;
+        //if same id
+        if(p.getId() == this.id) return true;
+        //if same value?
+        return p.getDateOfProgram().equals(this.dateOfProgram) && p.getStartTime().equals(this.startTime);
+        
+    }
 
 }
 
