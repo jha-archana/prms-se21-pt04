@@ -12,7 +12,9 @@ import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
+import sg.edu.nus.iss.phoenix.core.dao.DAOFactory;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
+import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
 import sg.edu.nus.iss.phoenix.utils.PaginationCriteria;
 
@@ -21,10 +23,26 @@ import sg.edu.nus.iss.phoenix.utils.PaginationCriteria;
  * @author jiqin
  */
 public class PresenterService {
-    DAOFactoryImpl factory;
+    DAOFactory factory;
     UserDao udao;
+
+    public DAOFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(DAOFactory factory) {
+        this.factory = factory;
+    }
+
+    public UserDao getUdao() {
+        return udao;
+    }
+
+    public void setUdao(UserDao udao) {
+        this.udao = udao;
+    }
     
-    private static ArrayList<Role> PRESENTER_ROLE;
+    public static ArrayList<Role> PRESENTER_ROLE;
     {
         Role role = new Role("presenter");
         PRESENTER_ROLE = new ArrayList<>();
@@ -35,6 +53,12 @@ public class PresenterService {
     public PresenterService(){
         factory = new DAOFactoryImpl();
         udao = factory.getUserDAO();
+    }
+    
+    public PresenterService(DAOFactory factory)
+    {
+        this.factory = factory;
+         udao = factory.getUserDAO();
     }
     
     public List<Presenter> findAllPresenters(Presenter example, PaginationCriteria criteria){
@@ -63,13 +87,18 @@ public class PresenterService {
     public Presenter findPresenter(String id){
         User user;
         try {
-            user = udao.searchMatching(id);
-            if(user !=null){
+            try {
+                user = udao.getObject(id);
+                if(user !=null){
                 Presenter presenter = new Presenter();
                 presenter.setId(user.getId());
                 presenter.setName(user.getName());
                 return presenter;
+             }
+            } catch (NotFoundException ex) {
+                Logger.getLogger(PresenterService.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(PresenterService.class.getName()).log(Level.SEVERE, null, ex);
         }
