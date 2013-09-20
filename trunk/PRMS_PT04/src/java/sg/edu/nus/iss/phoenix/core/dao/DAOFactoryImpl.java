@@ -1,5 +1,8 @@
 package sg.edu.nus.iss.phoenix.core.dao;
 
+import java.util.logging.Level;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 import sg.edu.nus.iss.phoenix.authenticate.dao.RoleDao;
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDaoImpl;
@@ -15,13 +18,14 @@ import sg.edu.nus.iss.phoenix.schedule.dao.impl.WeeklyScheduleDAOImpl;
 
 public class DAOFactoryImpl implements DAOFactory {
 
-    //private static DAOFactoryImpl instance ;
+    
     private UserDao userDAO;
     private RoleDao roleDAO;
     private RadioProgramDAO radioProgramDA0;
     private AnnualScheduleDAO annualScheduleDAO;
     private WeeklyScheduleDAO weeklyScheduleDAO;
     private ScheduleDAO scheduleDAO;
+    private DataSource ds;
 
     public DAOFactoryImpl() {
         userDAO = new UserDaoImpl();
@@ -32,19 +36,20 @@ public class DAOFactoryImpl implements DAOFactory {
         scheduleDAO = new ScheduleDAOImpl();
     }
     
-    /*
-    private static synchronized DAOFactoryImpl getInstance() {
-        if (instance == null) {
-            synchronized (DAOFactoryImpl.class) {  
-                if (instance == null) 
-                {
-                    instance = new DAOFactoryImpl();
-                }
-            }
-        }
-        return instance;
+    public DAOFactoryImpl(DataSource ds){
+         this.ds = ds;
+        userDAO = new UserDaoImpl(ds);
+         roleDAO = new RoleDaoImpl(ds);
+         radioProgramDA0 = new RadioProgramDAOImpl(ds);
+         annualScheduleDAO = new AnnualScheduleDAOImpl(ds);
+         weeklyScheduleDAO = new WeeklyScheduleDAOImpl(ds);
+         scheduleDAO = new ScheduleDAOImpl(ds);
     }
-    */
+    
+    @Override
+    public void setDataSource(DataSource ds){
+       
+    }
     
     @Override
     public UserDao getUserDAO() {

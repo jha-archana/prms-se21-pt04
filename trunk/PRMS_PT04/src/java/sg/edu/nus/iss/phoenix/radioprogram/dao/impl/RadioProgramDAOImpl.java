@@ -37,6 +37,11 @@ public class RadioProgramDAOImpl implements RadioProgramDAO {
             }
         }
         
+        public RadioProgramDAOImpl(DataSource ds)
+        {
+            this.ds = ds;
+        }
+        
 	/* (non-Javadoc)
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#createValueObject()
 	 */

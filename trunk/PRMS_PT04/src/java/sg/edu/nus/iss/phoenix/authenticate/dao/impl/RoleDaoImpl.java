@@ -37,6 +37,11 @@ public class RoleDaoImpl implements RoleDao {
             logger.log(Level.SEVERE, "Cannot connect to the DS");
         }
     }
+    
+    public RoleDaoImpl(DataSource ds)
+    {
+        this.ds = ds;
+    }
 
     /*
      * (non-Javadoc)

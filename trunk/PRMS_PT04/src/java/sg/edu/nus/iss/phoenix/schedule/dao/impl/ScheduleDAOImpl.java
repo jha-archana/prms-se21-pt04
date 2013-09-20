@@ -44,6 +44,10 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                 logger.log(Level.SEVERE, "Cannot connect to the DS");
             }
         }
+
+        public ScheduleDAOImpl(DataSource ds) {
+           this.ds = ds;
+        }
         
 	/* (non-Javadoc)
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.RadioProgramDAO#createValueObject()

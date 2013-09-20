@@ -4,6 +4,7 @@
  */
 package sg.edu.nus.iss.phoenix.core.dao;
 
+import javax.sql.DataSource;
 import sg.edu.nus.iss.phoenix.authenticate.dao.RoleDao;
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.radioprogram.dao.RadioProgramDAO;
@@ -28,5 +29,7 @@ public interface DAOFactory {
         WeeklyScheduleDAO getWeeklyScheduleDAO();
         
         ScheduleDAO getScheduleDAO();
+        
+        void setDataSource(DataSource ds);
 	
 }
