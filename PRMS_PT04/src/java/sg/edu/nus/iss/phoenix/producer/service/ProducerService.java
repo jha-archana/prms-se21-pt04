@@ -12,7 +12,9 @@ import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
+import sg.edu.nus.iss.phoenix.core.dao.DAOFactory;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
+import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.producer.entity.Producer;
 import sg.edu.nus.iss.phoenix.utils.PaginationCriteria;
 
@@ -21,10 +23,10 @@ import sg.edu.nus.iss.phoenix.utils.PaginationCriteria;
  * @author jiqin
  */
 public class ProducerService {
-    DAOFactoryImpl factory;
+    DAOFactory factory;
     UserDao udao;
     
-    private static ArrayList<Role> PRODUCER_ROLE;
+    public static ArrayList<Role> PRODUCER_ROLE;
     {
         Role role = new Role("producer");
         PRODUCER_ROLE = new ArrayList<>();
@@ -34,6 +36,11 @@ public class ProducerService {
     
     public ProducerService(){
         factory = new DAOFactoryImpl();
+        udao = factory.getUserDAO();
+    }
+    
+    public ProducerService(DAOFactory factory){
+        this.factory = factory;
         udao = factory.getUserDAO();
     }
     
@@ -63,14 +70,19 @@ public class ProducerService {
     public Producer findProducer(String id){
         User user;
         try {
-            user = udao.searchMatching(id);
-            if(user != null ){
-                Producer producer = new Producer();
-                producer.setId(user.getId());
-                producer.setName(user.getName());
-                
-                return producer;
+            try {
+                user = udao.getObject(id);
+                   if(user != null ){
+                        Producer producer = new Producer();
+                        producer.setId(user.getId());
+                        producer.setName(user.getName());
+
+                        return producer;
+                    }
+            } catch (NotFoundException ex) {
+                Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
             }
+         
         } catch (SQLException ex) {
             Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -94,5 +106,21 @@ public class ProducerService {
             e.printStackTrace();
         }
         return producers;
+    }
+    
+     public DAOFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(DAOFactory factory) {
+        this.factory = factory;
+    }
+
+    public UserDao getUdao() {
+        return udao;
+    }
+
+    public void setUdao(UserDao udao) {
+        this.udao = udao;
     }
 }
