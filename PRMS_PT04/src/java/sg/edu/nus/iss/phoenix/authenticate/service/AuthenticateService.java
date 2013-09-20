@@ -1,6 +1,5 @@
 package sg.edu.nus.iss.phoenix.authenticate.service;
 
-import com.sun.xml.rpc.processor.modeler.j2ee.xml.string;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -10,6 +9,7 @@ import sg.edu.nus.iss.phoenix.authenticate.dao.RoleDao;
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
+import sg.edu.nus.iss.phoenix.core.dao.DAOFactory;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 
@@ -17,19 +17,39 @@ public class AuthenticateService {
 
     private static final Logger logger =
             Logger.getLogger(AuthenticateService.class.getName());
-    DAOFactoryImpl factory;
+    DAOFactory factory;
     UserDao udao;
     RoleDao rdao;
-
+    
+    /**
+     * default constructor, it will use the default implementation of DAOFactory
+     */
     public AuthenticateService() {
-        super();
-        // TODO Auto-generated constructor stub
-        factory = new DAOFactoryImpl();
+        this.factory = new DAOFactoryImpl();
         udao = factory.getUserDAO();
         rdao = factory.getRoleDAO();
-
     }
-
+    
+    /**
+     * Constructor with instance of DAOFactory
+     * @param factory DAOFactory
+     */
+    public AuthenticateService(DAOFactory factory){
+        this.factory = factory;
+        this.udao = factory.getUserDAO();
+        this.rdao = factory.getRoleDAO();
+    }
+    
+    /**
+     * Set the DAOFacotry
+     * @param factory DAOFactory
+     */
+    public void setFactory(DAOFactory factory) {
+        this.factory = factory;
+        udao = factory.getUserDAO();
+        rdao = factory.getRoleDAO();
+    }
+    
     /*
      public User validateUserIdPassword(User user) {
      ArrayList<User> userList = new ArrayList<User>();

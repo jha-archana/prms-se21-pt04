@@ -40,6 +40,10 @@ public class UserDaoImpl implements UserDao {
         }
         //connection = openConnection();
     }
+    
+    public UserDaoImpl(DataSource ds){
+        this.ds = ds;
+    }
 
     /*
      * (non-Javadoc)
