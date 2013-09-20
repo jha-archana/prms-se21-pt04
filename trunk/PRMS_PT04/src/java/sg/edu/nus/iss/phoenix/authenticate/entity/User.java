@@ -172,4 +172,16 @@ public class User implements Cloneable, Serializable {
         }
         return cloned;
     }
+    
+     @Override
+    public boolean equals(Object object)
+    {
+        if(!(object instanceof User)) return false;
+        User obj = (User) object;
+        
+        return obj.getId().equals(this.getId()) && obj.getName().equals(this.getName());
+    }
+    
+   
+   
 }
