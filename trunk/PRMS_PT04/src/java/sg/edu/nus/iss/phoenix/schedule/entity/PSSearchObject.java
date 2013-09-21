@@ -42,4 +42,13 @@ public class PSSearchObject {
         public void setRadioProgramName(String radioProgramName) {
               this.radioProgramName = radioProgramName;
         }
+        
+        @Override 
+        public boolean equals(Object obj){
+            if(!(obj instanceof PSSearchObject)) return false;
+            PSSearchObject os = (PSSearchObject) obj;
+            return this.dateOfProgram.equals(os.getDateOfProgram()) &&
+                    this.radioProgramName.equals(os.getRadioProgramName()) &&
+                    this.startTime.equals(os.getStartTime());
+        }
 }
