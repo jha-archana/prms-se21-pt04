@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sg.edu.nus.iss.phoenix.core.dao.DAOFactory;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.presenter.service.PresenterService;
@@ -25,7 +26,47 @@ import sg.edu.nus.iss.phoenix.utils.SDFUtils;
  */
 public class ScheduleService {
 
-    DAOFactoryImpl factory;
+    public DAOFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(DAOFactory factory) {
+        this.factory = factory;
+    }
+
+    public ScheduleDAO getSchdao() {
+        return schdao;
+    }
+
+    public void setSchdao(ScheduleDAO schdao) {
+        this.schdao = schdao;
+    }
+
+    public PresenterService getPresenterService() {
+        return presenterService;
+    }
+
+    public void setPresenterService(PresenterService presenterService) {
+        this.presenterService = presenterService;
+    }
+
+    public ProducerService getProducerService() {
+        return producerService;
+    }
+
+    public void setProducerService(ProducerService producerService) {
+        this.producerService = producerService;
+    }
+
+    public RadioProgramDAO getRpDao() {
+        return rpDao;
+    }
+
+    public void setRpDao(RadioProgramDAO rpDao) {
+        this.rpDao = rpDao;
+    }
+
+    DAOFactory factory;
     ScheduleDAO schdao;
     PresenterService presenterService;
     ProducerService producerService;
@@ -33,16 +74,23 @@ public class ScheduleService {
 
     public ScheduleService() {
         super();
-        // TODO Auto-generated constructor stub
         factory = new DAOFactoryImpl();
         schdao = factory.getScheduleDAO();
         presenterService = new PresenterService();
         producerService = new ProducerService();
         rpDao = factory.getRadioProgramDAO();
     }
+    
+    public ScheduleService(DAOFactory factory) {    
+        this.factory = factory;
+        schdao = factory.getScheduleDAO();
+        presenterService = new PresenterService(factory);
+        producerService = new ProducerService(factory);
+        rpDao = factory.getRadioProgramDAO();
+    }
 
     public ArrayList<ProgramSlot> searchProgramSlot(PSSearchObject ps) {
-        ArrayList<ProgramSlot> schedList = new ArrayList<ProgramSlot>();
+        ArrayList<ProgramSlot> schedList = new ArrayList<>();
         try {
             schedList = (ArrayList<ProgramSlot>) schdao.searchMatching(ps);
         } catch (SQLException e) {
@@ -210,7 +258,7 @@ public class ScheduleService {
             int minute = durHr.get(Calendar.MINUTE);
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            cal.add(Calendar.HOUR, hour);
+            cal.add(Calendar.HOUR_OF_DAY, hour);
             cal.add(Calendar.MINUTE, minute);
             return cal.getTime();
     }
