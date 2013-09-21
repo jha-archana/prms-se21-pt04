@@ -332,7 +332,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 				valueObject.setStartTime(result.getString("startTime"));
                                 RadioProgram rp = new RadioProgram(result.getString("program-name"));
                                 valueObject.setRadioProgram(rp);
-                                Presenter presenter = new Presenter(result.getString("producer-id"));
+                                Presenter presenter = new Presenter(result.getString("presenter-id"));
                                 valueObject.setPresenter(presenter);
                                 Producer producer = new Producer(result.getString("producer-id"));
                                 valueObject.setProducer(producer);
