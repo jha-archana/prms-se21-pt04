@@ -20,6 +20,22 @@ public class AuthenticateService {
     DAOFactory factory;
     UserDao udao;
     RoleDao rdao;
+
+    public UserDao getUdao() {
+        return udao;
+    }
+
+    public void setUdao(UserDao udao) {
+        this.udao = udao;
+    }
+
+    public RoleDao getRdao() {
+        return rdao;
+    }
+
+    public void setRdao(RoleDao rdao) {
+        this.rdao = rdao;
+    }
     
     /**
      * default constructor, it will use the default implementation of DAOFactory

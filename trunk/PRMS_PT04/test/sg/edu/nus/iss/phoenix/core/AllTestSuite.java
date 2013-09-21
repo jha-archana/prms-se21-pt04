@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import sg.edu.nus.iss.phoenix.authenticate.dao.impl.UserDaoImplTest;
+import sg.edu.nus.iss.phoenix.authenticate.service.AuthenticateService;
 import sg.edu.nus.iss.phoenix.presenter.service.PresenterServiceTest;
 import sg.edu.nus.iss.phoenix.producer.service.ProducerServiceTest;
 import sg.edu.nus.iss.phoenix.schedule.dao.impl.ScheduleDAOImplTest;
@@ -22,6 +23,7 @@ import sg.edu.nus.iss.phoenix.schedule.service.ScheduleServiceTest;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+    AuthenticateService.class,
    UserDaoImplTest.class,
    PresenterServiceTest.class,
    ProducerServiceTest.class,
