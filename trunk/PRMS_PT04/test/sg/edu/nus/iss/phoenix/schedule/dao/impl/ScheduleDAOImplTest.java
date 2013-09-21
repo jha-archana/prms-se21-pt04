@@ -3,6 +3,7 @@ package sg.edu.nus.iss.phoenix.schedule.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
@@ -13,8 +14,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import sg.edu.nus.iss.phoenix.authenticate.dao.impl.UserDaoImpl;
+import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
+import sg.edu.nus.iss.phoenix.producer.entity.Producer;
+import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 
@@ -80,8 +85,42 @@ public class ScheduleDAOImplTest {
     @Test
     public void testGetListByDate() throws Exception {
         System.out.println("getListByDate");
-        //TODO
-        fail("The test case is a prototype.");
+        String sql = "SELECT * FROM APP.\"program-slot\" WHERE (\"dateOfProgram\" = ? ) ";
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2012);
+        cal.set(Calendar.MONTH, Calendar.JANUARY);
+        cal.set(Calendar.DAY_OF_MONTH,1);
+        Date dateOfProgram = cal.getTime();
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR, 1);
+        time.set(Calendar.MINUTE, 0);
+        time.set(Calendar.SECOND,0);
+        Date startTime = time.getTime();
+        Date duration = time.getTime();
+        ProgramSlot  p = new ProgramSlot();
+        p.setId(1);
+        p.setDateOfProgram(dateOfProgram);
+        p.setDuration(duration);
+        p.setStartTime(startTime);
+        p.setPresenter(new Presenter("pre1"));
+        p.setProducer(new Producer("prod1"));
+        p.setRadioProgram(new RadioProgram("testProgram"));
+        when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeQuery()).thenReturn(rs);  
+        when(rs.next()).thenReturn(true).thenReturn(false);
+        when(rs.getInt("id")).thenReturn(1);
+        when(rs.getString("duration")).thenReturn("01:00:00");
+        when(rs.getString("startTime")).thenReturn("01:00:00");
+        when(rs.getString("dateOfProgram")).thenReturn("2012-01-01");
+        when(rs.getString("program-name")).thenReturn("testProgram");
+        when(rs.getString("presenter-id")).thenReturn("pre1");
+        when(rs.getString("producer-id")).thenReturn("prod1");
+        
+        List<ProgramSlot> schedules = sDao.getListByDate(dateOfProgram);
+        assertEquals(1, schedules.size());
+        assertEquals("testProgram", schedules.get(0).getRadioProgram().getName());
+        
     }
 
     /**
@@ -90,8 +129,42 @@ public class ScheduleDAOImplTest {
     @Test
     public void testFindObject() throws Exception {
         System.out.println("findObject");
-        //TODO
-        fail("The test case is a prototype.");
+        String sql = "SELECT * FROM APP.\"program-slot\" WHERE (\"id\" = ? ) ";
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2012);
+        cal.set(Calendar.MONTH, Calendar.JANUARY);
+        cal.set(Calendar.DAY_OF_MONTH,1);
+        Date dateOfProgram = cal.getTime();
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR, 1);
+        time.set(Calendar.MINUTE, 0);
+        time.set(Calendar.SECOND,0);
+        Date startTime = time.getTime();
+        Date duration = time.getTime();
+        ProgramSlot  p = new ProgramSlot();
+        p.setId(1);
+        p.setDateOfProgram(dateOfProgram);
+        p.setDuration(duration);
+        p.setStartTime(startTime);
+        p.setPresenter(new Presenter("pre1"));
+        p.setProducer(new Producer("prod1"));
+        p.setRadioProgram(new RadioProgram("testProgram"));
+        when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeQuery()).thenReturn(rs);  
+        when(rs.next()).thenReturn(true).thenReturn(false);
+        when(rs.getInt("id")).thenReturn(1);
+        when(rs.getString("duration")).thenReturn("01:00:00");
+        when(rs.getString("startTime")).thenReturn("01:00:00");
+        when(rs.getString("dateOfProgram")).thenReturn("2012-01-01");
+        when(rs.getString("program-name")).thenReturn("testProgram");
+        when(rs.getString("presenter-id")).thenReturn("pre1");
+        when(rs.getString("producer-id")).thenReturn("prod1");
+        
+        ProgramSlot schedule = sDao.findObject(1);
+        assertNotNull(schedule);
+        assertEquals("pre1", schedule.getPresenter().getId());
+        
     }
 
     /**
@@ -100,18 +173,28 @@ public class ScheduleDAOImplTest {
     @Test
     public void testLoadById() throws Exception {
         System.out.println("loadById");
-       //TODO
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of load method, of class ScheduleDAOImpl.
-     */
-    @Test
-    public void testLoad() throws Exception {
-        System.out.println("load");
-       //TODO
-        fail("The test case is a prototype.");
+        String sql = "SELECT * FROM APP.\"program-slot\" WHERE (\"id\" = ? ) ";
+        
+        when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeQuery()).thenReturn(rs);  
+        when(rs.next()).thenReturn(true).thenReturn(false);
+        when(rs.getInt("id")).thenReturn(1);
+        when(rs.getString("duration")).thenReturn("01:00:00");
+        when(rs.getString("startTime")).thenReturn("01:00:00");
+        when(rs.getString("dateOfProgram")).thenReturn("2012-01-01");
+        when(rs.getString("program-name")).thenReturn("testProgram");
+        when(rs.getString("presenter-id")).thenReturn("pre1");
+        when(rs.getString("producer-id")).thenReturn("prod1");
+        ProgramSlot valueObject = new ProgramSlot();
+        valueObject.setId(1);
+        
+         sDao.loadById(valueObject);
+        assertNotNull(valueObject);
+        assertEquals("pre1", valueObject.getPresenter().getId());
+        assertEquals("prod1", valueObject.getProducer().getId());
+        
+        
     }
 
     /**
@@ -120,8 +203,23 @@ public class ScheduleDAOImplTest {
     @Test
     public void testLoadAll() throws Exception {
         System.out.println("loadAll");
-       //TODO
-        fail("The test case is a prototype.");
+       String sql = "SELECT * FROM APP.\"program-slot\" ORDER BY \"dateOfProgram\" DESC ";
+       when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeQuery()).thenReturn(rs);  
+        when(rs.next()).thenReturn(true).thenReturn(false);
+        when(rs.getInt("id")).thenReturn(1);
+        when(rs.getString("duration")).thenReturn("01:00:00");
+        when(rs.getString("startTime")).thenReturn("01:00:00");
+        when(rs.getString("dateOfProgram")).thenReturn("2012-01-01");
+        when(rs.getString("program-name")).thenReturn("testProgram");
+        when(rs.getString("presenter-id")).thenReturn("pre1");
+        when(rs.getString("producer-id")).thenReturn("prod1");
+        
+        List<ProgramSlot> schedules = sDao.loadAll();
+        assertEquals(1, schedules.size());
+        assertEquals("testProgram", schedules.get(0).getRadioProgram().getName());
+        
     }
 
     /**
@@ -130,8 +228,31 @@ public class ScheduleDAOImplTest {
     @Test
     public void testCreate() throws Exception {
         System.out.println("create");
-        //TODO
-        fail("The test case is a prototype.");
+        String sql = "INSERT INTO APP.\"program-slot\" (\"duration\", \"dateOfProgram\",\"startTime\", \"program-name\", \"presenter-id\", \"producer-id\") VALUES (?,?,?,?,?,?) ";
+        when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeUpdate()).thenReturn(1);  
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2012);
+        cal.set(Calendar.MONTH, Calendar.JANUARY);
+        cal.set(Calendar.DAY_OF_MONTH,1);
+        Date dateOfProgram = cal.getTime();
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR, 1);
+        time.set(Calendar.MINUTE, 0);
+        time.set(Calendar.SECOND,0);
+        Date startTime = time.getTime();
+        Date duration = time.getTime();
+        ProgramSlot  p = new ProgramSlot();
+        p.setDateOfProgram(dateOfProgram);
+        p.setDuration(duration);
+        p.setStartTime(startTime);
+        p.setPresenter(new Presenter("pre1"));
+        p.setProducer(new Producer("prod1"));
+        p.setRadioProgram(new RadioProgram("testProgram"));
+        
+        sDao.create(p);
+        
     }
 
     /**
@@ -140,8 +261,32 @@ public class ScheduleDAOImplTest {
     @Test
     public void testSave() throws Exception {
         System.out.println("save");
-       //TODO
-        fail("The test case is a prototype.");
+       String sql = "UPDATE APP.\"program-slot\" SET \"duration\" = ?, \"dateOfProgram\" = ?, \"startTime\" = ?, \"program-name\" = ?, \"presenter-id\" = ?, \"producer-id\" = ? WHERE (\"id\" = ? ) ";
+       when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeUpdate()).thenReturn(1);  
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2012);
+        cal.set(Calendar.MONTH, Calendar.JANUARY);
+        cal.set(Calendar.DAY_OF_MONTH,1);
+        Date dateOfProgram = cal.getTime();
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR, 1);
+        time.set(Calendar.MINUTE, 0);
+        time.set(Calendar.SECOND,0);
+        Date startTime = time.getTime();
+        Date duration = time.getTime();
+        ProgramSlot  p = new ProgramSlot();
+        p.setId(1);
+        p.setDateOfProgram(dateOfProgram);
+        p.setDuration(duration);
+        p.setStartTime(startTime);
+        p.setPresenter(new Presenter("pre1"));
+        p.setProducer(new Producer("prod1"));
+        p.setRadioProgram(new RadioProgram("testProgram"));
+        
+        sDao.save(p);
+        
     }
 
     /**
@@ -150,67 +295,32 @@ public class ScheduleDAOImplTest {
     @Test
     public void testDelete() throws Exception {
         System.out.println("delete");
-       //TODO
-        fail("The test case is a prototype.");
+       String sql = "delete FROM APP.\"program-slot\" WHERE (\"id\" = ? ) ";
+       when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(sql)).thenReturn(stmt);
+        when(stmt.executeUpdate()).thenReturn(1);  
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2012);
+        cal.set(Calendar.MONTH, Calendar.JANUARY);
+        cal.set(Calendar.DAY_OF_MONTH,1);
+        Date dateOfProgram = cal.getTime();
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR, 1);
+        time.set(Calendar.MINUTE, 0);
+        time.set(Calendar.SECOND,0);
+        Date startTime = time.getTime();
+        Date duration = time.getTime();
+        ProgramSlot  p = new ProgramSlot();
+        p.setId(1);
+        p.setDateOfProgram(dateOfProgram);
+        p.setDuration(duration);
+        p.setStartTime(startTime);
+        p.setPresenter(new Presenter("pre1"));
+        p.setProducer(new Producer("prod1"));
+        p.setRadioProgram(new RadioProgram("testProgram"));
+        sDao.delete(p);
+        
+        
     }
 
-    /**
-     * Test of deleteAll method, of class ScheduleDAOImpl.
-     */
-    @Test
-    public void testDeleteAll() throws Exception {
-        System.out.println("deleteAll");
-       //TODO
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of countAll method, of class ScheduleDAOImpl.
-     */
-    @Test
-    public void testCountAll() throws Exception {
-        System.out.println("countAll");
-        //TODO
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of searchMatching method, of class ScheduleDAOImpl.
-     */
-    @Test
-    public void testSearchMatching() throws Exception {
-        System.out.println("searchMatching");
-      //TODO
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of databaseUpdate method, of class ScheduleDAOImpl.
-     */
-    @Test
-    public void testDatabaseUpdate() throws Exception {
-        System.out.println("databaseUpdate");
-       //TODO
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of singleQuery method, of class ScheduleDAOImpl.
-     */
-    @Test
-    public void testSingleQuery() throws Exception {
-        System.out.println("singleQuery");
-      //TODO
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of listQuery method, of class ScheduleDAOImpl.
-     */
-    @Test
-    public void testListQuery() throws Exception {
-        System.out.println("listQuery");
-      //TODO
-        fail("The test case is a prototype.");
-    }
 }
