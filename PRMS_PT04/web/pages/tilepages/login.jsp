@@ -8,6 +8,11 @@
 <title><fmt:message key="title.login" /></title>
 </head>
 <body>
+    <div>
+    <h3> You can use following demo account to login.</h3>
+    <div> Username: pointyhead</div>
+    <div> Password: pointyhead</div>
+    </div>
 	<form action="${pageContext.request.contextPath}/controller/login"
 		method=post>
 		<h2>
