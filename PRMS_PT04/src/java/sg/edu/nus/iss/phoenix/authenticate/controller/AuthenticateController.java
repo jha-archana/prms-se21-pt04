@@ -20,6 +20,7 @@ import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
 import sg.edu.nus.iss.phoenix.core.controller.FCUtilities;
 
 /**
+ * Servlet implementation class AuthenticateController
  *
  * @author erik.pyanto
  */
@@ -29,6 +30,7 @@ public class AuthenticateController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
+     * Default constructor.
      * @see HttpServlet#HttpServlet()
      */
     public AuthenticateController() {

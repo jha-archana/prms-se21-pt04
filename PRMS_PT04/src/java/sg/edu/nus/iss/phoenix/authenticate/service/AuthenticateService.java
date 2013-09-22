@@ -87,8 +87,13 @@ public class AuthenticateService {
      return null;
      }
      */
-    //The user that we pass in to authenticate is different from the
-    //instance that is returned
+    /**
+     * The user that we pass in to authenticate is different from the instance
+     * that is returned
+     *
+     * @param toAuth
+     * @return
+     */
     public User validateUserIdPassword(final User toAuth) {
         User found = null;
         try {
@@ -134,6 +139,7 @@ public class AuthenticateService {
 
     /**
      * to retrieve all user in the repository
+     *
      * @return list of user object
      */
     public ArrayList<User> findAllUser() {
