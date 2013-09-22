@@ -36,7 +36,7 @@ public class AuthenticateService {
     public void setRdao(RoleDao rdao) {
         this.rdao = rdao;
     }
-    
+
     /**
      * default constructor, it will use the default implementation of DAOFactory
      */
@@ -45,19 +45,21 @@ public class AuthenticateService {
         udao = factory.getUserDAO();
         rdao = factory.getRoleDAO();
     }
-    
+
     /**
      * Constructor with instance of DAOFactory
+     *
      * @param factory DAOFactory
      */
-    public AuthenticateService(DAOFactory factory){
+    public AuthenticateService(DAOFactory factory) {
         this.factory = factory;
         this.udao = factory.getUserDAO();
         this.rdao = factory.getRoleDAO();
     }
-    
+
     /**
      * Set the DAOFacotry
+     *
      * @param factory DAOFactory
      */
     public void setFactory(DAOFactory factory) {
@@ -65,7 +67,7 @@ public class AuthenticateService {
         udao = factory.getUserDAO();
         rdao = factory.getRoleDAO();
     }
-    
+
     /*
      public User validateUserIdPassword(User user) {
      ArrayList<User> userList = new ArrayList<User>();
@@ -130,6 +132,10 @@ public class AuthenticateService {
         return user;
     }
 
+    /**
+     * to retrieve all user in the repository
+     * @return list of user object
+     */
     public ArrayList<User> findAllUser() {
         ArrayList<User> userList = new ArrayList<User>();
         try {
@@ -141,6 +147,13 @@ public class AuthenticateService {
         return userList;
     }
 
+    /**
+     * to retrieve user from repository with matching user criteria to see user
+     * criteria, go to searchUserMatching method
+     *
+     * @param uso
+     * @return a list of user object matching the criteria
+     */
     public ArrayList<User> searchUsers(User uso) {
         ArrayList<User> userList = new ArrayList<User>();
         try {
@@ -152,6 +165,12 @@ public class AuthenticateService {
         return userList;
     }
 
+    /**
+     * to retrieve user by id
+     *
+     * @param userId
+     * @return specific user object or null if not found
+     */
     public User findUser(String userId) {
         User u = null;
         try {
@@ -163,6 +182,11 @@ public class AuthenticateService {
         return u;
     }
 
+    /**
+     * to insert new user
+     *
+     * @param user t
+     */
     public void insertUser(User user) {
         try {
             if (!isExist(user.getId())) {
@@ -178,6 +202,11 @@ public class AuthenticateService {
         }
     }
 
+    /**
+     * to update existing user
+     *
+     * @param user t
+     */
     public void updateUser(User user) {
         try {
             udao.save(user);
@@ -190,6 +219,11 @@ public class AuthenticateService {
         }
     }
 
+    /**
+     * to delete existing user
+     *
+     * @param user t
+     */
     public void deleteUser(User user) {
         try {
             udao.delete(user);
@@ -202,6 +236,12 @@ public class AuthenticateService {
         }
     }
 
+    /**
+     * to check if user is exist by id
+     *
+     * @param userId
+     * @return true or false
+     */
     public boolean isExist(String userId) {
         User userExist = null;
         try {
@@ -215,6 +255,11 @@ public class AuthenticateService {
         return false;
     }
 
+    /**
+     * to find all role
+     *
+     * @return an array list of Role object
+     */
     public ArrayList<Role> findAllRoles() {
         ArrayList<Role> roleList = new ArrayList<Role>();
         try {
@@ -226,6 +271,12 @@ public class AuthenticateService {
         return roleList;
     }
 
+    /**
+     * to find role by name
+     *
+     * @param role
+     * @return instance of Role object
+     */
     public Role findRole(String role) {
         Role r = null;
         try {
