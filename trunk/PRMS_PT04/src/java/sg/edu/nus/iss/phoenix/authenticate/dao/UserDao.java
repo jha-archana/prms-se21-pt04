@@ -127,7 +127,7 @@ public interface UserDao {
 	public abstract void deleteAll() throws SQLException;
 
 	/**
-	 * coutAll-method. This method will return the number of all rows from table
+	 * countAll-method. This method will return the number of all rows from table
 	 * that matches this Dao. The implementation will simply execute
 	 * "select count(primarykey) from table". If table is empty, the return
 	 * value is 0. This method should be used before calling loadAll, to make
