@@ -21,6 +21,7 @@ import sg.edu.nus.iss.phoenix.utils.PaginationCriteria;
 /**
  *
  * @author jiqin
+ * @author Eain Dra Nilar ---add comments to prepare javadoc
  */
 public class ProducerService {
     DAOFactory factory;
@@ -33,17 +34,32 @@ public class ProducerService {
         PRODUCER_ROLE.add(role);
     }
     
-    
+ /**
+ * Constructor of Producer Service  
+ *
+ */
     public ProducerService(){
         factory = new DAOFactoryImpl();
         udao = factory.getUserDAO();
     }
-    
+    /**
+ * Constructor of Producer Service with DAOFactory  
+ *
+ */
     public ProducerService(DAOFactory factory){
         this.factory = factory;
         udao = factory.getUserDAO();
     }
-    
+ /**
+ * Returns List of Producer object  
+ * <p>
+ * This method return Producer list of producers according to its given criteria
+ *
+ * @param  example Producer object 
+ * @param  criteria search criteria 
+ * @return      List of producers
+ *
+ */
     public List<Producer> findAllProducers(Producer example, PaginationCriteria criteria){
         List<Producer> producers = new ArrayList<>();
         User user = new User();
@@ -62,11 +78,27 @@ public class ProducerService {
         }
         return producers;
     }
-    
+  /**
+ * Returns List of all Producer objects  
+ * <p>
+ * This method return all  Producer list of producers according to its given criteria
+ *
+ * @param  example Producer object 
+ * @return      List of producers
+ *
+ */
     public List<Producer> findAllProducers(Producer example) {
         return findAllProducers(example, PaginationCriteria.getDefaultCriteria());
     }
-    
+ /**
+ * Returns producer object according to argument id 
+ * <p>
+ * This method return producer object according to its argument id
+ *
+ * @param  id id of Producer 
+ * @return      producer object
+ *
+ */  
     public Producer findProducer(String id){
         User user;
         try {
@@ -88,7 +120,14 @@ public class ProducerService {
         }
         return null;
     }
-    
+  /**
+ * Returns List of Producer object  
+ * <p>
+ * This method return all producer object 
+ *
+ * @return      List of producers
+ *
+ */
     public List<Producer> findAllProducers(){
          List<Producer> producers = new ArrayList<>();
         User user = new User();

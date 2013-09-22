@@ -21,6 +21,7 @@ import sg.edu.nus.iss.phoenix.utils.PaginationCriteria;
 /**
  *
  * @author jiqin
+ * @author Eain Dra Nilar ---add comments to prepare javadoc
  */
 public class PresenterService {
     DAOFactory factory;
@@ -49,18 +50,33 @@ public class PresenterService {
         PRESENTER_ROLE.add(role);
     }
     
-    
+ /**
+ * Constructor of Presenter Service  
+ *
+ */
     public PresenterService(){
         factory = new DAOFactoryImpl();
         udao = factory.getUserDAO();
     }
-    
+ /**
+ * Constructor of Presenter Service  with DAOFactory
+ *
+ */
     public PresenterService(DAOFactory factory)
     {
         this.factory = factory;
          udao = factory.getUserDAO();
     }
-    
+    /**
+ * Returns List of Presenter object  
+ * <p>
+ * This method return Presenter list according to its given criteria
+ *
+ * @param  example Presenter object 
+ * @param  criteria search criteria 
+ * @return      List of Presenter object
+ *
+ */
     public List<Presenter> findAllPresenters(Presenter example, PaginationCriteria criteria){
         List<Presenter> presenters = new ArrayList<>();
         User user = new User();
@@ -79,11 +95,27 @@ public class PresenterService {
         }
         return presenters;
     }
-    
+ /**
+ * Returns List of all Presenter objects  
+ * <p>
+ * This method return all  Presenter list of Presenter according to its given criteria
+ *
+ * @param  example Presenter object 
+ * @return      List of Presenter
+ *
+ */
     public List<Presenter> findAllPresenters(Presenter example) {
         return findAllPresenters(example, PaginationCriteria.getDefaultCriteria());
     }
-    
+    /**
+ * Returns Presenter object according to argument id 
+ * <p>
+ * This method return Presenter object according to its argument id
+ *
+ * @param  id id of Presenter 
+ * @return     Presenter object
+ *
+ */ 
     public Presenter findPresenter(String id){
         User user;
         try {
@@ -104,7 +136,14 @@ public class PresenterService {
         }
         return null;
     }
-    
+    /**
+ * Returns List of Presenter object  
+ * <p>
+ * This method return all Presenter object 
+ *
+ * @return      List of Presenters
+ *
+ */
     public List<Presenter> findAllPresenters()
     {
          List<Presenter> presenters = new ArrayList<>();
