@@ -23,45 +23,88 @@ import sg.edu.nus.iss.phoenix.utils.SDFUtils;
 /**
  *
  * @author Jha Archana
+ * @author Srinivasa Reddy Puchakayala
+ * @author Wang Jiqin
+ * @author Eain Dra Nilar ---add comments to prepare javadoc
  */
 public class ScheduleService {
-
+/**
+ * Call DaoFactory 
+ *
+ * @retun factory object 
+ */
     public DAOFactory getFactory() {
         return factory;
     }
-
+/**
+ *Register DaoFactory 
+ *
+ * @param factory DAOFactory object 
+ */
     public void setFactory(DAOFactory factory) {
         this.factory = factory;
     }
-
+/**
+ * Call ScheduleDAO 
+ *
+ * @retun ScheduleDAO 
+ */
     public ScheduleDAO getSchdao() {
         return schdao;
     }
-
+/**
+ *Register scheduleDao  
+ *
+ * @param schdao ScheduleDAO object 
+ */
     public void setSchdao(ScheduleDAO schdao) {
         this.schdao = schdao;
     }
-
+/**
+ * Call PresenterService to use its operation  
+ *
+ * @retun PresenterService  
+ */
     public PresenterService getPresenterService() {
         return presenterService;
     }
-
+ /**
+ *Register PresenterService 
+ *
+ * @param presenterService PresenterService object 
+ */
     public void setPresenterService(PresenterService presenterService) {
         this.presenterService = presenterService;
     }
-
+/**
+ * Call ProducerService to use its operation  
+ *
+ * @retun ProducerService  
+ */
     public ProducerService getProducerService() {
         return producerService;
     }
-
+/**
+ *Register ProducerService 
+ *
+ * @param producerService ProducerService object 
+ */
     public void setProducerService(ProducerService producerService) {
         this.producerService = producerService;
     }
-
+/**
+ * Call RadioProgramDAO to use its operation  
+ *
+ * @retun RadioProgramDAO object 
+ */
     public RadioProgramDAO getRpDao() {
         return rpDao;
     }
-
+/**
+ *Register RadioProgram 
+ *
+ * @param rpDao RadioProgramDAO object
+ */
     public void setRpDao(RadioProgramDAO rpDao) {
         this.rpDao = rpDao;
     }
@@ -71,7 +114,10 @@ public class ScheduleService {
     PresenterService presenterService;
     ProducerService producerService;
     RadioProgramDAO rpDao;
-
+/**
+ * Constructor of Schedule Service  
+ *
+ */
     public ScheduleService() {
         super();
         factory = new DAOFactoryImpl();
@@ -80,7 +126,10 @@ public class ScheduleService {
         producerService = new ProducerService();
         rpDao = factory.getRadioProgramDAO();
     }
-    
+ /**
+ * Constructor of Schedule Service with DAOFactory
+ *
+ */
     public ScheduleService(DAOFactory factory) {    
         this.factory = factory;
         schdao = factory.getScheduleDAO();
@@ -88,7 +137,17 @@ public class ScheduleService {
         producerService = new ProducerService(factory);
         rpDao = factory.getRadioProgramDAO();
     }
-
+/**
+ * Returns Program Slot object that is existing schedule program searching with program slot object 
+ * The ps argument must specify program slot object 
+ * <p>
+ * This method always returns immediately, whether or not program 
+ * slot exists. 
+ *
+ * @param  ps schedule program or program slot object 
+ * @return      the program slot finding by ps
+ *
+ */
     public ArrayList<ProgramSlot> searchProgramSlot(PSSearchObject ps) {
         ArrayList<ProgramSlot> schedList = new ArrayList<>();
         try {
@@ -99,7 +158,17 @@ public class ScheduleService {
         }
         return schedList;
     }
-
+/**
+ * Returns Program Slot object that is existing schedule program searching with date argument  
+ * The dateOfProgram argument must specify an date of program slot 
+ * <p>
+ * This method always returns immediately, whether or not program 
+ * slot exists in argument dateOfProgram. 
+ *
+ * @param  dateOfProgram date of program slot
+ * @return      the program slot finding by its date
+ *
+ */
     public List<ProgramSlot> findProgramSlotByDate(Date dateOfProgram) {
         List<ProgramSlot> programSlot =new ArrayList<ProgramSlot>();
         try{
@@ -109,7 +178,17 @@ public class ScheduleService {
         }
         return programSlot;
     }
-
+/**
+ * Returns Program Slot object that is existing schedule program searching with id  
+ * The id argument must specify an id of program slot 
+ * <p>
+ * This method always returns immediately, whether or not program 
+ * slot exists. 
+ *
+ * @param  id id of program slot
+ * @return      the program slot finding by its id
+ *
+ */
     public ProgramSlot findProgramSlotById(int id) {
         ProgramSlot programSlot = new ProgramSlot();
         try {
@@ -125,7 +204,15 @@ public class ScheduleService {
         }
         return programSlot;
     }
-
+/**
+ * Returns the list of all existing  Program Slot object 
+ * <p>
+ * This method always returns immediately, load all existing 
+ * program slots with it assigned presenters and producers 
+ *
+ * @return      the array List of existing program slots
+ *
+ */
     public ArrayList<ProgramSlot> findAllProgramSlot() {
         ArrayList<ProgramSlot> currentList = new ArrayList<ProgramSlot>();
         try {
@@ -146,7 +233,15 @@ public class ScheduleService {
         return currentList;
 
     }
-
+/**
+ * Inserting new program slot
+ * <p>
+ * This method insert new schedule with its radio program , presenter and producer
+ *
+ * @param  ps- new schedule or program slot 
+ * @return      void
+ *
+ */
     public void insertProgramSlot(ProgramSlot ps) {
         try {
             schdao.create(ps);
@@ -155,7 +250,16 @@ public class ScheduleService {
             e.printStackTrace();
         }
     }
-
+/**
+ * Updating schedule program 
+ * <p>
+ * This method update schedule program
+ *
+ * @param  ps- existing program slot 
+ * @return      void
+ *
+ */
+    
     public void updateProgramSlot(ProgramSlot ps) {
         try {
             schdao.save(ps);
@@ -168,6 +272,15 @@ public class ScheduleService {
         }
 
     }
+/**
+ * deleting schedule program or program slot
+ * <p>
+ * This method is to delete existing schedule program
+ *
+ * @param  ps- existing program slot object that want to delete 
+ * @return      void
+ *
+ */
 
     public void deleteProgramSlot(ProgramSlot ps) {
         try {
@@ -180,7 +293,17 @@ public class ScheduleService {
             e.printStackTrace();
         }
     }
-
+/**
+ * Return the list of program slots that is search by argument userId 
+ * 
+ * <p>
+ * This method is to return list of program slots which is assigned user .
+ * User can be presenter or producer
+ *
+ * @param  userId ,the id of presenter or producer
+ * @return  list of program Slots that assigned argument userId
+ *
+ */
     public ArrayList<ProgramSlot> findProgramSlotByUserId(String userId) {
         ArrayList<ProgramSlot> filterList = new ArrayList<ProgramSlot>();
         ArrayList<ProgramSlot> currentList = new ArrayList<ProgramSlot>();
@@ -206,7 +329,16 @@ public class ScheduleService {
         }
         return filterList;
     }
-    
+    /**
+ * Return Date value of argument String time 
+ * <p>
+ * This method is to format and  covert Date value from string time
+ *
+ * @param  time String value of time  
+ * @return  Date Date type return after format and convert string argument
+ *
+ */
+
     public Date getDateValueOfString(String time){
         Date date = null;
         String dateString = "01-01-50:"+time+":00";
@@ -218,7 +350,16 @@ public class ScheduleService {
         }
         return date;
     }
-    
+    /**
+ * Return the boolean value after checking conflict of program slot
+ * <p>
+ * This method is to check the conflict between two argument
+ *
+ * @param  psInput input program slot 
+ * @param  id  id of prgram slot 
+ * @return     true for conflicts exist and false for not exist conflict
+ *
+ */
     public boolean checkConflict(ProgramSlot psInput,String id) {
         boolean isConflict = false;
         List<ProgramSlot> psList = findProgramSlotByDate(psInput.getDateOfProgram());
@@ -250,7 +391,17 @@ public class ScheduleService {
         }
         return isConflict;
     }
-
+/**
+ * Return the date object of two Date argument
+ * 
+ * <p>
+ * This method is to calculate two date and returned it as Date type
+ *
+ * @param  date the date to calculate
+ * @param  DateToAdd the date to add
+ * @return     the Date after calculation
+ *
+ */
     public Date addHourAndMinute(Date date,Date DateToAdd){
             Calendar durHr = Calendar.getInstance();
             durHr.setTime(DateToAdd);
