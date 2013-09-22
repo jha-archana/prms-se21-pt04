@@ -21,14 +21,12 @@ import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactory;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
-import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
 import sg.edu.nus.iss.phoenix.presenter.service.PresenterService;
 import sg.edu.nus.iss.phoenix.producer.entity.Producer;
-import sg.edu.nus.iss.phoenix.utils.PaginationCriteria;
 
 /**
- *
- * @author tmswj
+ * Unit Test class for ProducerService
+* @author Wang Jiqin <a0107596@nus.edu.sg>
  */
 public class ProducerServiceTest {
     private ProducerService pService;

@@ -9,8 +9,8 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
 /**
- *
- * @author tmswj
+ * Test Runner
+ * @author Wang Jiqin <a0107596@nus.edu.sg>
  */
 public class TestRunner {
     public static void main(String[] args) {

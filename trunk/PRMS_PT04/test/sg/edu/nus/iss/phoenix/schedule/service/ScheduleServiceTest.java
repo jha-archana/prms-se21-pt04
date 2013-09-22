@@ -33,8 +33,8 @@ import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 
 /**
- *
- * @author tmswj
+ * Unit Test class for ScheduleService
+ * @author Wang Jiqin <a0107596@nus.edu.sg>
  */
 public class ScheduleServiceTest {
 
