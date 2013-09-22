@@ -16,16 +16,14 @@ import static org.junit.Assert.*;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
-import sg.edu.nus.iss.phoenix.authenticate.dao.impl.UserDaoImpl;
 import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
 import sg.edu.nus.iss.phoenix.producer.entity.Producer;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
-import sg.edu.nus.iss.phoenix.schedule.entity.PSSearchObject;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 
 /**
- *
- * @author tmswj
+ * Unit Test Class for ScheduleDAOImpl
+ * @author Wang Jiqin <a0107596@nus.edu.sg>
  */
 public class ScheduleDAOImplTest {
     

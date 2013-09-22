@@ -25,8 +25,8 @@ import sg.edu.nus.iss.phoenix.core.dao.DAOFactory;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 
 /**
- *
- * @author jiqin
+ * Unit Test class for AuthenticateService 
+ * @author Wang Jiqin <a0107596@nus.edu.sg>
  */
 public class AuthenticateServiceTest {
     

@@ -18,12 +18,12 @@ import sg.edu.nus.iss.phoenix.schedule.dao.impl.ScheduleDAOImplTest;
 import sg.edu.nus.iss.phoenix.schedule.service.ScheduleServiceTest;
 
 /**
- *
- * @author tmswj
+ * Test Suite
+ * @author Wang Jiqin <a0107596@nus.edu.sg>
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    AuthenticateService.class,
+   AuthenticateService.class,
    UserDaoImplTest.class,
    PresenterServiceTest.class,
    ProducerServiceTest.class,

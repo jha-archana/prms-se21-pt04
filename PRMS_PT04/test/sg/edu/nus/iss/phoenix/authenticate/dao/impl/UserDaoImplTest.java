@@ -7,7 +7,6 @@ package sg.edu.nus.iss.phoenix.authenticate.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
@@ -27,7 +26,7 @@ import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 
 /**
  * Unit Test for UserDaoImpl class
- * 
+ * @author Wang Jiqin <a0107596@nus.edu.sg>
  */
 public class UserDaoImplTest {
     

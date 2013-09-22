@@ -26,8 +26,8 @@ import sg.edu.nus.iss.phoenix.presenter.entity.Presenter;
 import sg.edu.nus.iss.phoenix.utils.PaginationCriteria;
 
 /**
- *
- * @author tmswj
+ * Unit Test class for PresenterService
+ * @author Wang Jiqin <a0107596@nus.edu.sg>
  */
 public class PresenterServiceTest {
     
